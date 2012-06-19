@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <artifactId>ananya-kilkari-report</artifactId>
-        <groupId>org.motechproject.ananya.kilkari.report</groupId>
+        <artifactId>ananya-reports</artifactId>
+        <groupId>org.motechproject.ananya.reports</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
-    <name>Ananya Kilkari Report Web</name>
+    <name>Ananya Report Web</name>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
-    <artifactId>ananya-kilkari-report-web</artifactId>
+    <artifactId>ananya-reports-web</artifactId>
     <url>http://maven.apache.org</url>
 
     <dependencies>
@@ -30,7 +30,7 @@
     </dependencies>
 
     <build>
-        <finalName>ananya-kilkari-report-web</finalName>
+        <finalName>ananya-reports-web</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -67,9 +67,10 @@
                         <phase>initialize</phase>
                         <configuration>
                             <target>
-                                <property name="runtime-classpath" refid="maven.runtime.classpath"/>
                                 <ant antfile="${project.basedir}/build/build.xml" target = "clean.existing.database"/>
-                                <ant antfile="${project.basedir}/build/build.xml" target = "initialize.and.migrate.db"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target = "initialize.db"/>
+                                <property name="runtime-classpath" refid="maven.runtime.classpath"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target="migrate.db"/>
                             </target>
                         </configuration>
                         <goals>

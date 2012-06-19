@@ -14,7 +14,7 @@
                       classpathref="dependencies"/>
     </target>
 
-    <target name="initialize.and.migrate.db">
+    <target name="initialize.db">
         <sequential>
             <echo message="Initializing report database"/>
             <path id="dependencies">
@@ -26,16 +26,22 @@
                          password="password"
                          schemas="report"
                          classpathref="dependencies"/>
+        </sequential>
+    </target>
 
+    <target name="migrate.db">
+        <sequential>
             <echo message="Applying database migrations"/>
-
-
+            <path id="dependencies">
+                <fileset file="${basedir}/build/postgresql-9.1-901.jdbc4.jar"/>
+            </path>
             <flyway:migrate driver="org.postgresql.Driver"
                             url="jdbc:postgresql://localhost/ananya/"
                             user="postgres"
                             password="password"
                             schemas="report"
+                            baseDir="${basedir}/src/main/resources/db/migration/"
                             classpathref="dependencies"/>
-        </sequential>
+            </sequential>
     </target>
 </project>
