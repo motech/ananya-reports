@@ -2,14 +2,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>ananya-kilkari-report</artifactId>
-        <groupId>ananya-kilkari-report</groupId>
+        <groupId>org.motechproject.ananya.kilkari.report</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
+    <name>Ananya Kilkari Report Web</name>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>web</artifactId>
     <packaging>war</packaging>
-    <name>web Maven Webapp</name>
+    <artifactId>ananya-kilkari-report-web</artifactId>
     <url>http://maven.apache.org</url>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -17,8 +18,66 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.flyway</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
     </dependencies>
+
     <build>
-        <finalName>web</finalName>
+        <finalName>ananya-kilkari-report-web</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.basedir}/../build/maven.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.googlecode.flyway</groupId>
+                        <artifactId>flyway-ant</artifactId>
+                        <version>1.6.1</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>Clean databases</id>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <target>
+                                <property name="runtime-classpath" refid="maven.runtime.classpath"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target = "clean.existing.database"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target = "initialize.and.migrate.db"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
