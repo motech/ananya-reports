@@ -26,7 +26,10 @@
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.motechproject</groupId>
+            <artifactId>motech-delivery-ops</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -64,13 +67,14 @@
                 <executions>
                     <execution>
                         <id>Clean databases</id>
-                        <phase>initialize</phase>
+                        <phase>pre-integration-test</phase>
                         <configuration>
-                            <target>
-                                <ant antfile="${project.basedir}/build/build.xml" target = "clean.existing.database"/>
-                                <ant antfile="${project.basedir}/build/build.xml" target = "initialize.db"/>
+
+                            <target >
                                 <property name="runtime-classpath" refid="maven.runtime.classpath"/>
-                                <ant antfile="${project.basedir}/build/build.xml" target="migrate.db"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target = "clean.existing.database" />
+                                <ant antfile="${project.basedir}/build/build.xml" target="migrate.db" />
+
                             </target>
                         </configuration>
                         <goals>
