@@ -8,7 +8,7 @@
     <modules>
         <module>ananya-reports-web</module>
     </modules>
-    <groupId>org.motechproject.ananya.reports</groupId>
+    <groupId>org.motechproject.ananya-reports</groupId>
     <artifactId>ananya-reports</artifactId>
     <version>0.1-SNAPSHOT</version>
 

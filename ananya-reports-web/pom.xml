@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>ananya-reports</artifactId>
-        <groupId>org.motechproject.ananya.reports</groupId>
+        <groupId>org.motechproject.ananya-reports</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <name>Ananya Report Web</name>
