@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.motechproject.ananya-reports</groupId>
+            <artifactId>ananya-reports-migrations</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
@@ -64,12 +69,10 @@
                         <id>Clean databases</id>
                         <phase>pre-integration-test</phase>
                         <configuration>
-
-                            <target >
-                                <property name="runtime-classpath" refid="maven.runtime.classpath"/>
-                                <ant antfile="${project.basedir}/build/build.xml" target = "clean.existing.database" />
-                                <ant antfile="${project.basedir}/build/build.xml" target="migrate.db" />
-
+                            <target>
+                                <property name="runtime-classpath" refid="maven.test.classpath"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target="clean.existing.database"/>
+                                <ant antfile="${project.basedir}/build/build.xml" target="migrate.db"/>
                             </target>
                         </configuration>
                         <goals>

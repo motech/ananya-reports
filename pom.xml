@@ -7,6 +7,7 @@
     <name>Ananya Reports</name>
     <modules>
         <module>ananya-reports-web</module>
+        <module>ananya-reports-migrations</module>
     </modules>
     <groupId>org.motechproject.ananya-reports</groupId>
     <artifactId>ananya-reports</artifactId>
@@ -113,6 +114,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.motechproject.ananya-reports</groupId>
+                <artifactId>ananya-reports-migrations</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>postgresql</groupId>
                 <artifactId>postgresql</artifactId>
