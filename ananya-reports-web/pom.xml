@@ -5,7 +5,7 @@
         <groupId>org.motechproject.ananya-reports</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
-    <name>Ananya Report Web</name>
+    <name>Ananya Reports Web</name>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <artifactId>ananya-reports-web</artifactId>
