@@ -8,6 +8,12 @@ public class SubscriberLocation {
 
     private String panchayat;
 
+    public SubscriberLocation(String district, String block, String panchayat) {
+        this.district = district;
+        this.block = block;
+        this.panchayat = panchayat;
+    }
+
     public String getDistrict() {
         return district;
     }
