@@ -7,7 +7,7 @@
                       url="jdbc:postgresql://localhost/ananya/"
                       user="postgres"
                       password="password"
-                      schemas="report"
+                      schemas="kilkari"
                       classpath="${runtime-classpath}"/>
     </target>
 
@@ -17,7 +17,7 @@
                             url="jdbc:postgresql://localhost/ananya/"
                             user="postgres"
                             password="password"
-                            schemas="report"
+                            schemas="kilkari"
                             baseDir="/db/migration"
                             classpath="${runtime-classpath}"/>
     </target>

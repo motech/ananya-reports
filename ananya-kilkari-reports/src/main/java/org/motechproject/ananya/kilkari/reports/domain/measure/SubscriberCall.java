@@ -5,7 +5,7 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscriber_call")
+@Table(name = "subscriber_call_measure")
 public class SubscriberCall {
 
     @Id

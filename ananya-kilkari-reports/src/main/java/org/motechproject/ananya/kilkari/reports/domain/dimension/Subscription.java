@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.domain.dimension;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscription", uniqueConstraints = {@UniqueConstraint(columnNames = {"subscription_id"})})
+@Table(name = "subscriptions", uniqueConstraints = {@UniqueConstraint(columnNames = {"subscription_id"})})
 public class Subscription {
 
     @Id
