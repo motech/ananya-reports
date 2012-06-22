@@ -1,10 +1,11 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequestBuilder;
-
+@Ignore
 public class TestCallCenterSubscriptionRequestBuilder implements SubscriptionRequestBuilder {
 
     @Override
