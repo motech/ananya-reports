@@ -5,8 +5,8 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscription_status_measure")
-public class SubscriptionStatus {
+@Table(name = "subscriber_call_measure")
+public class SubscriberCallMeasure {
 
     @Id
     @Column(name = "id")
@@ -17,11 +17,17 @@ public class SubscriptionStatus {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "call_status")
+    private String callStatus;
 
-    @Column(name = "week_number")
-    private int weekNumber;
+    @Column(name = "retry_count")
+    private int retryCount;
+
+    @Column(name = "duration")
+    private int duration;
+
+    @Column(name = "ring_duration")
+    private int ringDuration;
 
     @ManyToOne
     @JoinColumn(name = "channel_id", nullable = false)
@@ -39,7 +45,7 @@ public class SubscriptionStatus {
     @JoinColumn(name = "time_id", nullable = false)
     private TimeDimension timeDimension;
 
-    public SubscriptionStatus() {
+    public SubscriberCallMeasure() {
     }
 
     public Integer getId() {
@@ -58,20 +64,36 @@ public class SubscriptionStatus {
         this.subscription = subscription;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCallStatus() {
+        return callStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCallStatus(String callStatus) {
+        this.callStatus = callStatus;
     }
 
-    public int getWeekNumber() {
-        return weekNumber;
+    public int getRetryCount() {
+        return retryCount;
     }
 
-    public void setWeekNumber(int weekNumber) {
-        this.weekNumber = weekNumber;
+    public void setRetryCount(int retryCount) {
+        this.retryCount = retryCount;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getRingDuration() {
+        return ringDuration;
+    }
+
+    public void setRingDuration(int ringDuration) {
+        this.ringDuration = ringDuration;
     }
 
     public ChannelDimension getChannelDimension() {

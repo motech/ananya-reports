@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "channel_dimension")
+@NamedQuery(name = ChannelDimension.FIND_BY_CHANNEL_NAME, query = "select c from channel_dimension c where c.channel=:channel")
 public class ChannelDimension {
 
     @Id
@@ -13,6 +14,7 @@ public class ChannelDimension {
 
     @Column(name = "channel")
     private String channel;
+    public static final String FIND_BY_CHANNEL_NAME = "find.by.channel.name";
 
     public ChannelDimension() {
     }

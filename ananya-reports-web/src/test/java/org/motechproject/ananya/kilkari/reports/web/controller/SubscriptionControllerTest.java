@@ -5,7 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
-import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
+import org.motechproject.ananya.kilkari.reports.service.SubscriptionRequestService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 
@@ -20,12 +20,12 @@ public class SubscriptionControllerTest {
     private SubscriptionController subscriptionController;
 
     @Mock
-    private SubscriptionService subscriptionService;
+    private SubscriptionRequestService subscriptionRequestService;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriptionController = new SubscriptionController(subscriptionService);
+        subscriptionController = new SubscriptionController(subscriptionRequestService);
     }
 
     @Test
@@ -55,6 +55,6 @@ public class SubscriptionControllerTest {
                 )
                 .andExpect(status().isOk());
 
-        verify(subscriptionService).createSubscription(any(SubscriptionRequest.class));
+        verify(subscriptionRequestService).createSubscription(any(SubscriptionRequest.class));
     }
 }

@@ -1,7 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
-import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
+import org.motechproject.ananya.kilkari.reports.service.SubscriptionRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/subscription")
 public class SubscriptionController {
 
-    private SubscriptionService subscriptionService;
+    private SubscriptionRequestService subscriptionRequestService;
 
     @Autowired
-    public SubscriptionController(SubscriptionService subscriptionService) {
-        this.subscriptionService = subscriptionService;
+    public SubscriptionController(SubscriptionRequestService subscriptionRequestService) {
+        this.subscriptionRequestService = subscriptionRequestService;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public void createSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
-        subscriptionService.createSubscription(subscriptionRequest);
+        subscriptionRequestService.createSubscription(subscriptionRequest);
     }
 }

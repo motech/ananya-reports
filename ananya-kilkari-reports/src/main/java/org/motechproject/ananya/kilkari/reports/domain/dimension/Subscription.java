@@ -41,6 +41,18 @@ public class Subscription {
     public Subscription() {
     }
 
+    public Subscription(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
+                        ChannelDimension channelDimension, OperatorDimension operatorDimension,
+                        LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
+        this.subscriber = subscriber;
+        this.subscriptionPackDimension = subscriptionPackDimension;
+        this.channelDimension = channelDimension;
+        this.operatorDimension = operatorDimension;
+        this.locationDimension = locationDimension;
+        this.timeDimension = timeDimension;
+        this.subscriptionId = subscriptionId;
+    }
+
     public Integer getId() {
         return id;
     }

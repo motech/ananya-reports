@@ -5,8 +5,8 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscriber_call_measure")
-public class SubscriberCall {
+@Table(name = "subscription_status_measure")
+public class SubscriptionStatusMeasure {
 
     @Id
     @Column(name = "id")
@@ -17,17 +17,11 @@ public class SubscriberCall {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
-    @Column(name = "call_status")
-    private String callStatus;
+    @Column(name = "status")
+    private String status;
 
-    @Column(name = "retry_count")
-    private int retryCount;
-
-    @Column(name = "duration")
-    private int duration;
-
-    @Column(name = "ring_duration")
-    private int ringDuration;
+    @Column(name = "week_number")
+    private int weekNumber;
 
     @ManyToOne
     @JoinColumn(name = "channel_id", nullable = false)
@@ -45,7 +39,19 @@ public class SubscriberCall {
     @JoinColumn(name = "time_id", nullable = false)
     private TimeDimension timeDimension;
 
-    public SubscriberCall() {
+    public SubscriptionStatusMeasure() {
+    }
+
+    public SubscriptionStatusMeasure(Subscription subscription, String status, int weekNumber,
+                                     ChannelDimension channelDimension, OperatorDimension operatorDimension,
+                                     SubscriptionPackDimension subscriptionPackDimension, TimeDimension timeDimension) {
+        this.subscription = subscription;
+        this.status = status;
+        this.weekNumber = weekNumber;
+        this.channelDimension = channelDimension;
+        this.operatorDimension = operatorDimension;
+        this.subscriptionPackDimension = subscriptionPackDimension;
+        this.timeDimension = timeDimension;
     }
 
     public Integer getId() {
@@ -64,36 +70,20 @@ public class SubscriberCall {
         this.subscription = subscription;
     }
 
-    public String getCallStatus() {
-        return callStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCallStatus(String callStatus) {
-        this.callStatus = callStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public int getRetryCount() {
-        return retryCount;
+    public int getWeekNumber() {
+        return weekNumber;
     }
 
-    public void setRetryCount(int retryCount) {
-        this.retryCount = retryCount;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public int getRingDuration() {
-        return ringDuration;
-    }
-
-    public void setRingDuration(int ringDuration) {
-        this.ringDuration = ringDuration;
+    public void setWeekNumber(int weekNumber) {
+        this.weekNumber = weekNumber;
     }
 
     public ChannelDimension getChannelDimension() {

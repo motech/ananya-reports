@@ -47,6 +47,20 @@ public class Subscriber {
     public Subscriber() {
     }
 
+    public Subscriber(String msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
+                      DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
+                      TimeDimension timeDimension, OperatorDimension operatorDimension) {
+        this.msisdn = msisdn;
+        this.name = name;
+        this.ageOfBeneficiary = ageOfBeneficiary;
+        this.estimatedDateOfDelivery = estimatedDateOfDelivery;
+        this.dateOfBirth = dateOfBirth;
+        this.channelDimension = channelDimension;
+        this.locationDimension = locationDimension;
+        this.timeDimension = timeDimension;
+        this.operatorDimension = operatorDimension;
+    }
+
     public Integer getId() {
         return id;
     }

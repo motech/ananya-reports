@@ -24,7 +24,26 @@ public class SubscriptionRequest {
     private DateTime dateOfBirth;
 
     private SubscriberLocation location;
+    
+    private int subscriptionWeekNumber;
 
+    private String operator;
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public int getSubscriptionWeekNumber() {
+        return subscriptionWeekNumber;
+    }
+
+    public void setSubscriptionWeekNumber(int subscriptionWeekNumber) {
+        this.subscriptionWeekNumber = subscriptionWeekNumber;
+    }
 
     public String getSubscriptionId() {
         return subscriptionId;
