@@ -6,10 +6,10 @@
     <packaging>pom</packaging>
     <name>Ananya Reports</name>
     <modules>
+        <module>ananya-kilkari-reports</module>
         <module>ananya-reports-migrations</module>
         <module>ananya-reports-web</module>
         <module>ananya-internal</module>
-        <module>ananya-kilkari-reports</module>
     </modules>
     <groupId>org.motechproject.ananya-reports</groupId>
     <artifactId>ananya-reports</artifactId>
