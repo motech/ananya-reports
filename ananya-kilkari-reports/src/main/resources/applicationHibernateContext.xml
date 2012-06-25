@@ -8,19 +8,42 @@
                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
+        <!--<property name="driverClass" value="org.postgresql.Driver"/>-->
+        <!--<property name="jdbcUrl" value="jdbc:postgresql://localhost/ananya/"/>-->
+        <!--<property name="user" value="postgres"/>-->
+        <!--<property name="password" value="password"/>-->
+        <!--<property name="maxPoolSize" value="${hibernate.c3p0.max_size}"/>-->
+        <!--<property name="minPoolSize" value="${hibernate.c3p0.min_size}"/>-->
+        <!--<property name="checkoutTimeout" value="${hibernate.c3p0.timeout}"/>-->
+        <!--<property name="maxStatements" value="${hibernate.c3p0.max_statements}"/>-->
+        <!--<property name="idleConnectionTestPeriod" value="${hibernate.c3p0.idle_test_period}"/>-->
+        <!--<property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>-->
+    <!--</bean>-->
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost/ananya/"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="password"/>
+
+    </bean>
+
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.OperatorDimension</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.ChannelDimension</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.TimeDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension</value>
+                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.OperatorDimension</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure</value>
+                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension</value>
+                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.TimeDimension</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure</value>
+                <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure</value>
             </list>
         </property>
 
@@ -34,18 +57,6 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driverClassName}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="maxPoolSize" value="${hibernate.c3p0.max_size}"/>
-        <property name="minPoolSize" value="${hibernate.c3p0.min_size}"/>
-        <property name="checkoutTimeout" value="${hibernate.c3p0.timeout}"/>
-        <property name="maxStatements" value="${hibernate.c3p0.max_statements}"/>
-        <property name="idleConnectionTestPeriod" value="${hibernate.c3p0.idle_test_period}"/>
-        <property name="acquireIncrement" value="${hibernate.c3p0.acquire_increment}"/>
-    </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>

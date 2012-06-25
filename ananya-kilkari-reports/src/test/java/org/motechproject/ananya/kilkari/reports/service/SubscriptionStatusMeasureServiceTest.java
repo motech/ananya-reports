@@ -60,7 +60,7 @@ public class SubscriptionStatusMeasureServiceTest {
         subscriptionRequest.setOperator(operator);
         subscriptionRequest.setPack(subscriptionPack);
 
-        ChannelDimension channelDimension = new ChannelDimension();
+        ChannelDimension channelDimension = new ChannelDimension("IVR");
         TimeDimension timeDimension = new TimeDimension();
         OperatorDimension operatorDimension = new OperatorDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension();
@@ -74,8 +74,8 @@ public class SubscriptionStatusMeasureServiceTest {
         when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         Subscription subscription = new Subscription();
         subscription.setSubscriptionId(subscriptionId);
-        when(subscriptionService.makeFor(subscriber, subscriptionPackDimension,channelDimension,operatorDimension,
-                null,timeDimension, subscriptionId)).thenReturn(subscription);
+        when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
+                null, timeDimension, subscriptionId)).thenReturn(subscription);
         
         subscriptionStatusMeasureService.createFor(subscriptionRequest);
 

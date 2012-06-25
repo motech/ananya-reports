@@ -8,9 +8,10 @@
     <context:component-scan base-package="org.motechproject.ananya.kilkari"/>
 
     <context:property-placeholder location="classpath*:*.properties"/>
+    <context:annotation-config/>
+    <context:spring-configured/>
 
     <util:properties id="ananyaProperties" location="classpath:/ananya_reports.properties"/>
-
     <import resource="classpath:applicationHibernateContext.xml" />
 
 </beans>

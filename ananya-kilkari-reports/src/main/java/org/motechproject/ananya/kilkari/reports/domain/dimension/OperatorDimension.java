@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "operator_dimension")
-@NamedQuery(name = OperatorDimension.FIND_BY_OPERATOR_NAME, query = "select o from operator_dimension o where o.operator=:operator")
+@NamedQuery(name = OperatorDimension.FIND_BY_OPERATOR_NAME, query = "select o from OperatorDimension o where o.operator=:operator")
 public class OperatorDimension {
 
     @Id

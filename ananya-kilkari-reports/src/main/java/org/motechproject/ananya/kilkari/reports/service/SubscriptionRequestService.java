@@ -8,6 +8,9 @@ public class SubscriptionRequestService {
 
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
 
+    public SubscriptionRequestService() {
+    }
+
     public SubscriptionRequestService(SubscriptionStatusMeasureService subscriptionStatusMeasureService) {
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
     }
