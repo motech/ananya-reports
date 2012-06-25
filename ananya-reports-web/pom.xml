@@ -9,7 +9,6 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <artifactId>ananya-reports-web</artifactId>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <jetty.port>9979</jetty.port>
@@ -23,7 +22,12 @@
         <dependency>
             <groupId>org.motechproject.ananya-reports</groupId>
             <artifactId>ananya-reports-migrations</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject.ananya-reports</groupId>
+            <artifactId>ananya-kilkari-reports</artifactId>
         </dependency>
         <dependency>
             <groupId>com.googlecode.flyway</groupId>
@@ -86,12 +90,12 @@
             <artifactId>mockito-all</artifactId>
         </dependency>
         <dependency>
-            <groupId>ananya-reports</groupId>
+            <groupId>org.motechproject.ananya-reports</groupId>
             <artifactId>ananya-internal</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>ananya-reports</groupId>
+            <groupId>org.motechproject.ananya-reports</groupId>
             <artifactId>ananya-kilkari-reports</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -175,26 +179,6 @@
                     <stopKey>secret</stopKey>
                     <stopPort>6669</stopPort>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

@@ -132,16 +132,6 @@
                 <version>1.2.2</version>
             </dependency>
             <dependency>
-                <groupId>org.motechproject.ananya-reports</groupId>
-                <artifactId>ananya-reports-migrations</artifactId>
-                <version>0.1-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>org.motechproject.ananya-reports</groupId>
-                <artifactId>ananya-kilkari-reports</artifactId>
-                <version>0.1-SNAPSHOT</version>
-            </dependency>
-            <dependency>
                 <groupId>postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>9.1-901.jdbc4</version>
