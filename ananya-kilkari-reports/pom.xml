@@ -21,7 +21,7 @@
             <artifactId>commons-dbcp</artifactId>
         </dependency>
         <dependency>
-            <groupId>ananya-reports</groupId>
+            <groupId>org.motechproject.ananya-reports</groupId>
             <artifactId>ananya-internal</artifactId>
             <version>${project.version}</version>
         </dependency>
