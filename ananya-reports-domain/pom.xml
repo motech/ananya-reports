@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ananya-kilkari-reports</artifactId>
+    <artifactId>ananya-reports-domain</artifactId>
 
     <dependencies>
         <dependency>
@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject.ananya-reports</groupId>
-            <artifactId>ananya-internal</artifactId>
+            <artifactId>ananya-reports-internal</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Hibernate -->

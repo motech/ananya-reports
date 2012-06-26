@@ -27,7 +27,8 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject.ananya-reports</groupId>
-            <artifactId>ananya-kilkari-reports</artifactId>
+            <artifactId>ananya-reports-domain</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.flyway</groupId>
@@ -91,12 +92,12 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject.ananya-reports</groupId>
-            <artifactId>ananya-internal</artifactId>
+            <artifactId>ananya-reports-internal</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.motechproject.ananya-reports</groupId>
-            <artifactId>ananya-kilkari-reports</artifactId>
+            <artifactId>ananya-reports-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -12,6 +12,7 @@ import org.springframework.test.web.server.setup.MockMvcBuilders;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
@@ -29,25 +30,24 @@ public class SubscriptionControllerTest {
     }
 
     @Test
-    @Ignore
     public void shouldCreateSubscription() throws Exception {
 
         String subscriptionRequestJson = "{\n" +
-                "   \"subscriptionId\":\"sid\",\n" +
-                "   \"channel\":\"IVR\",\n" +
-                "   \"msisdn\":\"9740123123\",\n" +
-                "   \"pack\":\"PCK1\",\n" +
-                "   \"name\":\"Sukamma\",\n" +
-                "   \"ageOfBeneficiary\":24,\n" +
-                "   \"edd\":\"2010-05-05\", \n" +
-                "   \"dob\":\"2010-05-05\",\n" +
-                "   \"location\":{\n" +
-                "      \"district\":\"Patna\",\n" +
-                "      \"block\":\"Dulhin Bazar\",\n" +
-                "      \"panchayat\":\"Rajipur\"\n" +
-                "   },\n" +
-                "   \"weekNo\":2,\n" +
-                "   \"operator\":\"airtel\"\n" +
+                "\"subscriptionId\":\"sid\",\n" +
+                "\"channel\":\"IVR\",\n" +
+                "\"msisdn\":\"9740123123\",\n" +
+                "\"pack\":\"PCK1\",\n" +
+                "\"name\":\"Sukamma\",\n" +
+                "\"ageOfBeneficiary\":24,\n" +
+                "\"edd\":\"2010-05-05\", \n" +
+                "\"dob\":\"2010-05-05\",\n" +
+                "\"location\":{\n" +
+                "\"district\":\"Patna\",\n" +
+                "\"block\":\"Dulhin Bazar\",\n" +
+                "\"panchayat\":\"Rajipur\"\n" +
+                "},\n" +
+                "\"weekNo\":2,\n" +
+                "\"operator\":\"airtel\"\n" +
                 "}";
 
         MockMvcBuilders.standaloneSetup(subscriptionController).build()
@@ -56,7 +56,6 @@ public class SubscriptionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
-
-        verify(subscriptionRequestService).createSubscription(any(SubscriptionRequest.class));
+       verify(subscriptionRequestService).createSubscription(any(SubscriptionRequest.class));
     }
 }

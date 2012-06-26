@@ -6,8 +6,8 @@
     <packaging>pom</packaging>
     <name>Ananya Reports</name>
     <modules>
-        <module>ananya-internal</module>
-        <module>ananya-kilkari-reports</module>
+        <module>ananya-reports-internal</module>
+        <module>ananya-reports-domain</module>
         <module>ananya-reports-web</module>
         <module>ananya-reports-migrations</module>
     </modules>
