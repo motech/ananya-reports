@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "subscriptions", uniqueConstraints = {@UniqueConstraint(columnNames = {"subscription_id"})})
+@NamedQuery(name = Subscription.FIND_BY_SUBSCRIPTION_ID, query = "select s from Subscription s where s.subscriptionId=:subscriptionId")
 public class Subscription {
 
     @Id
@@ -37,6 +38,7 @@ public class Subscription {
 
     @Column(name = "subscription_id")
     private String subscriptionId;
+    public static final String FIND_BY_SUBSCRIPTION_ID = "find.by.subscription.id";
 
     public Subscription() {
     }

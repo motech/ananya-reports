@@ -3,6 +3,7 @@ package org.motechproject.ananya.kilkari.reports.domain.dimension;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "subscribers")
@@ -23,10 +24,10 @@ public class Subscriber {
     private int ageOfBeneficiary;
 
     @Column(name = "estimated_date_of_delivery")
-    private DateTime estimatedDateOfDelivery;
+    private Date estimatedDateOfDelivery;
 
     @Column(name = "date_of_birth")
-    private DateTime dateOfBirth;
+    private Date dateOfBirth;
 
     @ManyToOne
     @JoinColumn(name = "channel_id", nullable = false)
@@ -53,8 +54,8 @@ public class Subscriber {
         this.msisdn = msisdn;
         this.name = name;
         this.ageOfBeneficiary = ageOfBeneficiary;
-        this.estimatedDateOfDelivery = estimatedDateOfDelivery;
-        this.dateOfBirth = dateOfBirth;
+        this.estimatedDateOfDelivery = new Date(estimatedDateOfDelivery.toDate().getTime());
+        this.dateOfBirth = new Date(dateOfBirth.toDate().getTime());
         this.channelDimension = channelDimension;
         this.locationDimension = locationDimension;
         this.timeDimension = timeDimension;
@@ -94,19 +95,19 @@ public class Subscriber {
     }
 
     public DateTime getEstimatedDateOfDelivery() {
-        return estimatedDateOfDelivery;
+        return new DateTime(estimatedDateOfDelivery);
     }
 
     public void setEstimatedDateOfDelivery(DateTime estimatedDateOfDelivery) {
-        this.estimatedDateOfDelivery = estimatedDateOfDelivery;
+        this.estimatedDateOfDelivery = new Date(estimatedDateOfDelivery.toDate().getTime());
     }
 
     public DateTime getDateOfBirth() {
-        return dateOfBirth;
+        return new DateTime(dateOfBirth);
     }
 
     public void setDateOfBirth(DateTime dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = new Date(dateOfBirth.toDate().getTime());
     }
 
     public ChannelDimension getChannelDimension() {

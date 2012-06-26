@@ -24,7 +24,8 @@ public class SubscriptionRequest {
     private DateTime dateOfBirth;
 
     private SubscriberLocation location;
-    
+
+    @JsonProperty("weekNo")
     private int subscriptionWeekNumber;
 
     private String operator;

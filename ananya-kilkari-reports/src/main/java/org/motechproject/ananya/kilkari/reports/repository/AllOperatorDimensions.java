@@ -18,6 +18,6 @@ public class AllOperatorDimensions {
 
     public OperatorDimension fetchFor(String operator) {
         return (OperatorDimension) template.getUniqueResult(OperatorDimension.FIND_BY_OPERATOR_NAME,
-                new String[]{"channel"}, new Object[]{operator});
+                new String[]{"operator"}, new Object[]{operator});
     }
 }

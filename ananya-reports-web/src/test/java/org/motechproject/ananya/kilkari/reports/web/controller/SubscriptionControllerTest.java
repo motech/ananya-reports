@@ -45,7 +45,9 @@ public class SubscriptionControllerTest {
                 "      \"district\":\"Patna\",\n" +
                 "      \"block\":\"Dulhin Bazar\",\n" +
                 "      \"panchayat\":\"Rajipur\"\n" +
-                "   }\n" +
+                "   },\n" +
+                "   \"weekNo\":2,\n" +
+                "   \"operator\":\"airtel\"\n" +
                 "}";
 
         MockMvcBuilders.standaloneSetup(subscriptionController).build()

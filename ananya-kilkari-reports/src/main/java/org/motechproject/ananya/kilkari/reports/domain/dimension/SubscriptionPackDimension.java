@@ -19,6 +19,10 @@ public class SubscriptionPackDimension {
     public SubscriptionPackDimension() {
     }
 
+    public SubscriptionPackDimension(String subscriptionPack) {
+        this.subscriptionPack = subscriptionPack;
+    }
+
     public Integer getId() {
         return id;
     }

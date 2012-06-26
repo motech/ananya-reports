@@ -17,4 +17,11 @@ public class AllTimeDimension {
         template.save(timeDimension);
         return timeDimension;
     }
+
+    public TimeDimension fetchFor(DateTime dateTime) {
+        return (TimeDimension) template.getUniqueResult(
+                TimeDimension.FIND_BY_DAY_MONTH_YEAR,
+                new String[]{"year", "month", "day"},
+                new Object[]{dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfYear()});
+    }
 }

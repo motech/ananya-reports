@@ -19,6 +19,10 @@ public class OperatorDimension {
     public OperatorDimension() {
     }
 
+    public OperatorDimension(String operator) {
+        this.operator = operator;
+    }
+
     public Integer getId() {
         return id;
     }

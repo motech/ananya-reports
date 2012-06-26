@@ -46,45 +46,42 @@ public class SubscriptionStatusMeasureServiceTest {
     }
 
     @Test
-    public void shouldCreateSubscriptionStatusMeasure() {
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
-        String msisdn = "1235";
+    public void shouldCreateSubscriptionStatusMeasure(){
+        String msisdn = "998";
         String channel = "IVR";
-        String subscriptionId = "sub-112";
+        String subscriptionId = "sub112";
         String operator = "airtel";
         String subscriptionPack = "PCK1";
-
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
         subscriptionRequest.setMsisdn(msisdn);
         subscriptionRequest.setChannel(channel);
         subscriptionRequest.setSubscriptionId(subscriptionId);
         subscriptionRequest.setOperator(operator);
         subscriptionRequest.setPack(subscriptionPack);
 
-        ChannelDimension channelDimension = new ChannelDimension("IVR");
+        ChannelDimension channelDimension = new ChannelDimension();
         TimeDimension timeDimension = new TimeDimension();
         OperatorDimension operatorDimension = new OperatorDimension();
-        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension();
         Subscriber subscriber = new Subscriber();
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension();
+        Subscription subscription = new Subscription();
+        subscription.setSubscriptionId(subscriptionId);
+
+        when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
-        when(allTimeDimension.makeFor(any(DateTime.class))).thenReturn(timeDimension);
-        when(allSubscribers.getOrMakeFor(eq(msisdn), anyString(), anyInt(), any(DateTime.class), any(DateTime.class),
-                eq(channelDimension), any(LocationDimension.class), eq(timeDimension), eq(operatorDimension))).thenReturn(subscriber);
-        when(subscriptionService.exists(subscriptionId)).thenReturn(false);
-        Subscription subscription = new Subscription();
-        subscription.setSubscriptionId(subscriptionId);
-        when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                null, timeDimension, subscriptionId)).thenReturn(subscription);
+        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
+        when(allSubscribers.save(msisdn, null, 0, null, null, channelDimension, null,
+                timeDimension, operatorDimension)).thenReturn(subscriber);
+        when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
+                operatorDimension, null, timeDimension, subscriptionId)).thenReturn(subscription);
         
         subscriptionStatusMeasureService.createFor(subscriptionRequest);
-
-        ArgumentCaptor captor = ArgumentCaptor.forClass(SubscriptionStatusMeasureService.class);
+        
+        ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         verify(allSubscriptionStatusMeasure).add(captor.capture());
-
-        SubscriptionStatusMeasure value = (SubscriptionStatusMeasure)captor.getValue();
-        assertEquals(subscriptionId,value.getSubscription().getSubscriptionId());
-
-
+        SubscriptionStatusMeasure value = captor.getValue();
+        assertEquals(subscriptionId, value.getSubscription().getSubscriptionId());
     }
 }

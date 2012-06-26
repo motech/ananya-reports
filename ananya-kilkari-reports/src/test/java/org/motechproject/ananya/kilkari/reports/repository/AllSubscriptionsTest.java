@@ -1,0 +1,55 @@
+package org.motechproject.ananya.kilkari.reports.repository;
+
+import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class AllSubscriptionsTest extends SpringIntegrationTest{
+    @Autowired
+    private AllSubscriptions allSubscriptions;
+    @Autowired
+    private AllTimeDimension allTimeDimensions;
+
+    @After
+    @Before
+    public void After() {
+        template.deleteAll(template.loadAll(Subscription.class));
+        template.deleteAll(template.loadAll(Subscriber.class));
+        template.deleteAll(template.loadAll(ChannelDimension.class));
+        template.deleteAll(template.loadAll(OperatorDimension.class));
+        template.deleteAll(template.loadAll(LocationDimension.class));
+        template.deleteAll(template.loadAll(TimeDimension.class));
+        template.deleteAll(template.loadAll(SubscriptionPackDimension.class));
+    }
+
+    @Test
+    public void shouldFindBySubscriptionId(){
+        String subscriptionId = "sub11";
+        DateTime now = DateTime.now();
+        ChannelDimension channelDimension = new ChannelDimension("IVR");
+        template.save(channelDimension);
+        OperatorDimension operatorDimension = new OperatorDimension("airtel");
+        template.save(operatorDimension);
+        LocationDimension locationDimension = new LocationDimension("locId", "district", "block", "panchayat");
+        template.save(locationDimension);
+        TimeDimension timeDimension = new TimeDimension(now);
+        template.save(timeDimension);
+        Subscriber subscriber = new Subscriber("998","",0, now, now, channelDimension, 
+                locationDimension, timeDimension, operatorDimension);
+        template.save(subscriber);
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("PCK1");
+        template.save(subscriptionPackDimension);
+
+        allSubscriptions.save(subscriber, subscriptionPackDimension, channelDimension,
+                operatorDimension, locationDimension, timeDimension, subscriptionId);
+
+        Subscription subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
+        assertEquals(subscriptionId,subscription.getSubscriptionId());
+    }
+}

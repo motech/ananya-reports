@@ -26,6 +26,13 @@ public class LocationDimension {
     public LocationDimension() {
     }
 
+    public LocationDimension(String locationId, String district, String block, String panchayat) {
+        this.locationId = locationId;
+        this.district = district;
+        this.block = block;
+        this.panchayat = panchayat;
+    }
+
     public Integer getId() {
         return this.id;
     }

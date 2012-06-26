@@ -18,6 +18,7 @@ public class SubscriptionRequestServiceTest {
         initMocks(this);
         subscriptionRequestService = new SubscriptionRequestService(subscriptionStatusMeasureService);
     }
+
     @Test
     public void shouldCreateSubscription(){
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();

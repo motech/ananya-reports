@@ -21,9 +21,11 @@ public class SubscriptionService {
     }
 
     public Subscription makeFor(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
-                        ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                        LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
-        return null;
+                                ChannelDimension channelDimension, OperatorDimension operatorDimension,
+                                LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
+        Subscription subscription = allSubscriptions.save(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
+                locationDimension, timeDimension, subscriptionId);
+        return subscription;
 
     }
 }

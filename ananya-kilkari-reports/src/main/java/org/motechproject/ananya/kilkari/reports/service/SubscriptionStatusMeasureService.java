@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SubscriptionStatusMeasureService {
-    
+
     private AllSubscriptionStatusMeasure allSubscriptionStatusMeasure;
     private AllChannelDimensions allChannelDimensions;
     private AllOperatorDimensions allOperatorDimensions;
@@ -39,25 +39,26 @@ public class SubscriptionStatusMeasureService {
 
     public void createFor(SubscriptionRequest subscriptionRequest) {
         String subscriptionId = subscriptionRequest.getSubscriptionId();
-        if(subscriptionService.exists(subscriptionId))
+        String msisdn = subscriptionRequest.getMsisdn();
+        if (subscriptionService.exists(subscriptionId)) {
             return;
+        }
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionRequest.getChannel());
         OperatorDimension operatorDimension = allOperatorDimensions.fetchFor(subscriptionRequest.getOperator());
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionRequest.getPack());
-        TimeDimension timeDimension = allTimeDimension.makeFor(DateTime.now());
+        TimeDimension timeDimension = allTimeDimension.fetchFor(DateTime.now());
 
-        String msisdn = subscriptionRequest.getMsisdn();
-        Subscriber subscriber = allSubscribers.getOrMakeFor(msisdn, null, 0, null, null, channelDimension, null,
+
+        Subscriber subscriber = allSubscribers.save(msisdn, null, 0, null, null, channelDimension, null,
                 timeDimension, operatorDimension);
 
-        Subscription subscription = subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension, operatorDimension, null,
-                timeDimension, subscriptionId);
+        Subscription subscription = subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
+                operatorDimension, null, timeDimension, subscriptionId);
 
-        SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(
-                subscription, "PENDING", subscriptionRequest.getSubscriptionWeekNumber(),
-                channelDimension, operatorDimension, subscriptionPackDimension, timeDimension );
+        SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, "PENDING",
+                subscriptionRequest.getSubscriptionWeekNumber(),channelDimension, operatorDimension,
+                subscriptionPackDimension, timeDimension);
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
-
     }
 }
