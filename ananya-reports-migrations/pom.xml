@@ -10,6 +10,6 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ananya-reports-migrations</artifactId>
     <name>Ananya Reports Migration</name>
+    <artifactId>ananya-reports-migrations</artifactId>
 </project>
