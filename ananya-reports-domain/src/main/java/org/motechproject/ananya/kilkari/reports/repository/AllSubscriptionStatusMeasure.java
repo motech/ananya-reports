@@ -11,7 +11,7 @@ public class AllSubscriptionStatusMeasure {
     @Autowired
     private DataAccessTemplate template;
 
-    public void add(Object subscriptionStatusMeasure) {
+    public void add(SubscriptionStatusMeasure subscriptionStatusMeasure) {
         template.saveOrUpdate(subscriptionStatusMeasure);
     }
 }

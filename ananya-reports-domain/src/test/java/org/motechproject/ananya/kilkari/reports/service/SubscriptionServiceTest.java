@@ -56,4 +56,13 @@ public class SubscriptionServiceTest {
                 operatorDimension, locationDimension, timeDimension, subscriptionId);
         
     }
+
+    @Test
+    public void shouldFetchASubscriptionByID() {
+        String subscriptionId = "abcd1234";
+
+        subscriptionService.fetchFor(subscriptionId);
+
+        verify(allSubscriptions).findBySubscriptionId(subscriptionId);
+    }
 }

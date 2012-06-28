@@ -3,6 +3,8 @@ package org.motechproject.ananya.kilkari.internal;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 public class SubscriptionRequest {
 
     private String subscriptionId;
@@ -17,6 +19,10 @@ public class SubscriptionRequest {
 
     private int ageOfBeneficiary;
 
+    private DateTime createdAt;
+
+    private String subscriptionStatus;
+
     @JsonProperty("edd")
     private DateTime estimatedDateOfDelivery;
 
@@ -24,9 +30,6 @@ public class SubscriptionRequest {
     private DateTime dateOfBirth;
 
     private SubscriberLocation location;
-
-    @JsonProperty("weekNo")
-    private int subscriptionWeekNumber;
 
     private String operator;
 
@@ -36,14 +39,6 @@ public class SubscriptionRequest {
 
     public void setOperator(String operator) {
         this.operator = operator;
-    }
-
-    public int getSubscriptionWeekNumber() {
-        return subscriptionWeekNumber;
-    }
-
-    public void setSubscriptionWeekNumber(int subscriptionWeekNumber) {
-        this.subscriptionWeekNumber = subscriptionWeekNumber;
     }
 
     public String getSubscriptionId() {
@@ -80,6 +75,22 @@ public class SubscriptionRequest {
 
     public SubscriberLocation getLocation() {
         return location;
+    }
+
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(String subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
+    }
+
+    public void setCreatedAt(DateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setSubscriptionId(String subscriptionId) {

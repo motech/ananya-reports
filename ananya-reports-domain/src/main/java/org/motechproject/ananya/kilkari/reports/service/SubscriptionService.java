@@ -28,4 +28,8 @@ public class SubscriptionService {
         return subscription;
 
     }
+
+    public Subscription fetchFor(String subscriptionId) {
+        return allSubscriptions.findBySubscriptionId(subscriptionId);
+    }
 }

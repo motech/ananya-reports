@@ -2,11 +2,15 @@ package org.motechproject.ananya.kilkari.reports.service;
 
 import org.joda.time.DateTime;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
+import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.reports.domain.WeekNumber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.kilkari.reports.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class SubscriptionStatusMeasureService {
@@ -47,7 +51,7 @@ public class SubscriptionStatusMeasureService {
         ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionRequest.getChannel());
         OperatorDimension operatorDimension = allOperatorDimensions.fetchFor(subscriptionRequest.getOperator());
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionRequest.getPack());
-        TimeDimension timeDimension = allTimeDimension.fetchFor(DateTime.now());
+        TimeDimension timeDimension = allTimeDimension.fetchFor(subscriptionRequest.getCreatedAt());
 
 
         Subscriber subscriber = allSubscribers.save(msisdn, null, 0, null, null, channelDimension, null,
@@ -56,9 +60,25 @@ public class SubscriptionStatusMeasureService {
         Subscription subscription = subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
                 operatorDimension, null, timeDimension, subscriptionId);
 
-        SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, "PENDING",
-                subscriptionRequest.getSubscriptionWeekNumber(),channelDimension, operatorDimension,
+        int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
+        SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionRequest.getSubscriptionStatus(),
+                startingWeekNumber,channelDimension, operatorDimension,
                 subscriptionPackDimension, timeDimension);
+        allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
+    }
+
+    public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
+        Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
+        String subscriptionStatus = subscriptionStateChangeRequest.getSubscriptionStatus();
+        DateTime subscriptionRequestedDate = new DateTime(subscription.getTimeDimension().getDate());
+        String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
+
+        int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, subscriptionStateChangeRequest.getCreatedAt(), subscriptionPack);
+        TimeDimension timeDimension = allTimeDimension.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
+        SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,
+                subscriptionWeekNumber,subscription.getChannelDimension(), subscription.getOperatorDimension(),
+                subscription.getSubscriptionPackDimension(), timeDimension);
+
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
 }
