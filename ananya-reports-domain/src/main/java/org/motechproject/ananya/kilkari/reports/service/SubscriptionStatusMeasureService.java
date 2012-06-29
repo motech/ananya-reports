@@ -9,6 +9,7 @@ import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatu
 import org.motechproject.ananya.kilkari.reports.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -23,6 +24,9 @@ public class SubscriptionStatusMeasureService {
     private AllSubscriptions allSubscriptions;
     private SubscriptionService subscriptionService;
     private AllSubscribers allSubscribers;
+
+    public SubscriptionStatusMeasureService() {
+    }
 
     @Autowired
     public SubscriptionStatusMeasureService(AllSubscriptionStatusMeasure allSubscriptionStatusMeasure,
@@ -41,6 +45,7 @@ public class SubscriptionStatusMeasureService {
         this.allTimeDimension = allTimeDimension;
     }
 
+    @Transactional
     public void createFor(SubscriptionRequest subscriptionRequest) {
         String subscriptionId = subscriptionRequest.getSubscriptionId();
         String msisdn = subscriptionRequest.getMsisdn();
@@ -67,6 +72,7 @@ public class SubscriptionStatusMeasureService {
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
 
+    @Transactional
     public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
         Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
         String subscriptionStatus = subscriptionStateChangeRequest.getSubscriptionStatus();

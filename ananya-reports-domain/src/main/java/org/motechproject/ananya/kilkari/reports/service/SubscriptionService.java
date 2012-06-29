@@ -4,11 +4,15 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.repository.AllSubscriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SubscriptionService {
 
     private AllSubscriptions allSubscriptions;
+
+    public SubscriptionService() {
+    }
 
     @Autowired
     public SubscriptionService(AllSubscriptions allSubscriptions) {
@@ -20,6 +24,7 @@ public class SubscriptionService {
         return bySubscriptionId != null;
     }
 
+    @Transactional
     public Subscription makeFor(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                                 ChannelDimension channelDimension, OperatorDimension operatorDimension,
                                 LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
