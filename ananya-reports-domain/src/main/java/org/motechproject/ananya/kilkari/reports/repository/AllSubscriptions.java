@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Repository
 public class AllSubscriptions {
 
@@ -14,7 +13,7 @@ public class AllSubscriptions {
 
     public Subscription findBySubscriptionId(String subscriptionId) {
         return (Subscription) template.getUniqueResult(Subscription.FIND_BY_SUBSCRIPTION_ID,
-                new String[]{"subscriptionId"}, new Object[]{subscriptionId});
+                new String[]{"subscription_id"}, new Object[]{subscriptionId});
     }
 
     public Subscription save(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,

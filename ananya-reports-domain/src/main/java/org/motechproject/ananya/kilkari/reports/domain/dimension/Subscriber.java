@@ -42,7 +42,7 @@ public class Subscriber {
     private TimeDimension timeDimension;
 
     @ManyToOne
-    @JoinColumn(name = "operator_id", nullable = false)
+    @JoinColumn(name = "operator_id")
     private OperatorDimension operatorDimension;
 
     public Subscriber() {
@@ -54,8 +54,8 @@ public class Subscriber {
         this.msisdn = msisdn;
         this.name = name;
         this.ageOfBeneficiary = ageOfBeneficiary;
-        this.estimatedDateOfDelivery = new Date(estimatedDateOfDelivery.toDate().getTime());
-        this.dateOfBirth = new Date(dateOfBirth.toDate().getTime());
+        this.estimatedDateOfDelivery = estimatedDateOfDelivery != null ? new Date(estimatedDateOfDelivery.toDate().getTime()) : null;
+        this.dateOfBirth = dateOfBirth != null ? new Date(dateOfBirth.toDate().getTime()) : null;
         this.channelDimension = channelDimension;
         this.locationDimension = locationDimension;
         this.timeDimension = timeDimension;

@@ -57,7 +57,7 @@ public class SubscriptionControllerTest {
                 "}";
 
         MockMvcBuilders.standaloneSetup(subscriptionController).build()
-                .perform(post("/subscription/")
+                .perform(post("/subscription")
                         .body(subscriptionRequestJson.getBytes())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -80,7 +80,7 @@ public class SubscriptionControllerTest {
                 "}";
 
         MockMvcBuilders.standaloneSetup(subscriptionController).build()
-                .perform(put("/subscription/update/sid")
+                .perform(put("/updatesubscription/sid")
                         .body(subscriptionStateChangeRequestJson.getBytes())
                         .contentType(MediaType.APPLICATION_JSON)
                 )

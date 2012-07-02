@@ -34,7 +34,7 @@ public class SubscriberCallMeasure {
     private ChannelDimension channelDimension;
 
     @ManyToOne
-    @JoinColumn(name = "operator_id", nullable = false)
+    @JoinColumn(name = "operator_id")
     private OperatorDimension operatorDimension;
 
     @ManyToOne

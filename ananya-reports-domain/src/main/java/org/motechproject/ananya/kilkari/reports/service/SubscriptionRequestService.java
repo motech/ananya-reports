@@ -2,11 +2,13 @@ package org.motechproject.ananya.kilkari.reports.service;
 
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SubscriptionRequestService {
 
+    @Autowired
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
 
     public SubscriptionRequestService() {
