@@ -16,11 +16,11 @@ public class AllSubscriptionPackDimensionsTest extends SpringIntegrationTest{
     @After
     @Before
     public void After() {
-        template.deleteAll(template.loadAll(OperatorDimension.class));
+        template.deleteAll(template.loadAll(SubscriptionPackDimension.class));
     }
 
     @Test
-    public void shouldFetchByChannelName() {
+    public void shouldFetchByPackName() {
         String subscriptionPack = "PCK1";
         template.save(new SubscriptionPackDimension(subscriptionPack));
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
