@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ananya-reports</artifactId>
-        <groupId>org.motechproject.ananya-reports</groupId>
+        <groupId>org.motechproject.ananya.kilkari.reports</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -28,6 +28,11 @@
         <dependency>
             <groupId>org.motechproject.ananya-reports</groupId>
             <artifactId>ananya-reports-internal</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject.ananya-reports</groupId>
+            <artifactId>ananya-reports-migrations</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Hibernate -->
@@ -72,5 +77,40 @@
             <artifactId>aspectjrt</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.googlecode.flyway</groupId>
+                        <artifactId>flyway-ant</artifactId>
+                        <version>1.6.1</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>Clean databases</id>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <target>
+                                <property name="runtime-classpath" refid="maven.test.classpath"/>
+                                <echo message="Cleaning existing Database : START"/>
+                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="clean.existing.database"/>
+                                <echo message="Cleaning existing Database : STOP"/>
+                                <echo message="Migrating existing Database : START"/>
+                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="migrate.db"/>
+                                <echo message="Migrating existing Database : STOP"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

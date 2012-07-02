@@ -8,9 +8,9 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-public class AllSubscriptionsTest extends SpringIntegrationTest{
+public class AllSubscriptionsIT extends SpringIntegrationTest {
+
     @Autowired
     private AllSubscriptions allSubscriptions;
     @Autowired

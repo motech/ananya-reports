@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <groupId>org.motechproject.ananya-reports</groupId>
+        <groupId>org.motechproject.ananya.kilkari.reports</groupId>
         <artifactId>ananya-reports</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -33,6 +33,7 @@
         <dependency>
             <groupId>com.googlecode.flyway</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>postgresql</groupId>
@@ -138,7 +139,6 @@
 
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.googlecode.flyway</groupId>
@@ -153,8 +153,9 @@
                         <configuration>
                             <target>
                                 <property name="runtime-classpath" refid="maven.test.classpath"/>
-                                <ant antfile="${project.basedir}/build/build.xml" target="clean.existing.database"/>
-                                <ant antfile="${project.basedir}/build/build.xml" target="migrate.db"/>
+                                <echo message="Cleaning existing Database : START"/>
+                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="clean.existing.database"/>
+                                <echo message="Cleaning existing Database : STOP"/>
                             </target>
                         </configuration>
                         <goals>

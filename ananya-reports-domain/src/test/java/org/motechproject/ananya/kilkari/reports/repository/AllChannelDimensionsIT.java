@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 
-public class AllChannelDimensionsTest extends SpringIntegrationTest {
+public class AllChannelDimensionsIT extends SpringIntegrationTest {
     @Autowired
     private AllChannelDimensions allChannelDimensions;
 

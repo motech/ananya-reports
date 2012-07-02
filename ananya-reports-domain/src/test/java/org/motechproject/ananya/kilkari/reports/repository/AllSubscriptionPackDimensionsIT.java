@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 
-public class AllSubscriptionPackDimensionsTest extends SpringIntegrationTest{
+public class AllSubscriptionPackDimensionsIT extends SpringIntegrationTest{
     @Autowired
     private AllSubscriptionPackDimensions allSubscriptionPackDimensions;
 
