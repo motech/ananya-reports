@@ -12,4 +12,11 @@
 
     <name>Ananya Reports Migration</name>
     <artifactId>ananya-reports-migrations</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.flyway</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>
