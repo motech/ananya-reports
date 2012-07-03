@@ -97,10 +97,12 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest();
         String subscriptionId = "sub123";
         String subscriptionStatus = "ACTIVE";
+        String reason = "my own reason";
         DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
         subscriptionStateChangeRequest.setSubscriptionId(subscriptionId);
         subscriptionStateChangeRequest.setSubscriptionStatus(subscriptionStatus);
         subscriptionStateChangeRequest.setCreatedAt(createdAt);
+        subscriptionStateChangeRequest.setReason(reason);
 
         ChannelDimension channelDimension = new ChannelDimension();
         OperatorDimension operatorDimension = new OperatorDimension();
@@ -129,6 +131,7 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(17, subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
+        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
         assertEquals(subscriptionPackDimension, subscriptionStatusMeasure.getSubscriptionPackDimension());
         assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getTimeDimension().getDate().getTime()));
         assertEquals(subscriptionId, subscription.getSubscriptionId());

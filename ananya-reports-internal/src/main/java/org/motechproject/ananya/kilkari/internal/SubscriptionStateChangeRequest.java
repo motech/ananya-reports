@@ -10,6 +10,8 @@ public class SubscriptionStateChangeRequest {
 
     private String subscriptionStatus;
 
+    private String reason;
+
     private DateTime createdAt;
 
     public String getSubscriptionId() {
@@ -34,5 +36,13 @@ public class SubscriptionStateChangeRequest {
 
     public void setSubscriptionStatus(String subscriptionStatus) {
         this.subscriptionStatus = subscriptionStatus;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

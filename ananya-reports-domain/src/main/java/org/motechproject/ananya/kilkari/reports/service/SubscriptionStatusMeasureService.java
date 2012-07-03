@@ -67,7 +67,7 @@ public class SubscriptionStatusMeasureService {
 
         int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionRequest.getSubscriptionStatus(),
-                startingWeekNumber,channelDimension, operatorDimension,
+                startingWeekNumber, null, channelDimension, operatorDimension,
                 subscriptionPackDimension, timeDimension);
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
@@ -82,7 +82,7 @@ public class SubscriptionStatusMeasureService {
         int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, subscriptionStateChangeRequest.getCreatedAt(), subscriptionPack);
         TimeDimension timeDimension = allTimeDimension.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,
-                subscriptionWeekNumber,subscription.getChannelDimension(), subscription.getOperatorDimension(),
+                subscriptionWeekNumber, subscriptionStateChangeRequest.getReason(), subscription.getChannelDimension(), subscription.getOperatorDimension(),
                 subscription.getSubscriptionPackDimension(), timeDimension);
 
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
