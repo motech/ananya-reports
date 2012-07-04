@@ -163,7 +163,7 @@
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
-                        <contextPath>/ananyakilkarireports</contextPath>
+                        <contextPath>/ananya-reports</contextPath>
                     </webAppConfig>
                     <stopKey>secret</stopKey>
                     <stopPort>6679</stopPort>
