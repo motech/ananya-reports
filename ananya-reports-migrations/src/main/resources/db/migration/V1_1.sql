@@ -6,7 +6,6 @@ CREATE TABLE kilkari.channel_dimension(
 
 CREATE TABLE kilkari.location_dimension(
     id serial NOT NULL,
-    location_id varchar(255) NOT NULL,
     district varchar(255),
     block varchar(255),
     panchayat varchar(255),
