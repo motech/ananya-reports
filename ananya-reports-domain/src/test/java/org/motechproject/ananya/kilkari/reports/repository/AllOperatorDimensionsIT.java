@@ -20,10 +20,10 @@ public class AllOperatorDimensionsIT extends SpringIntegrationTest{
     }
 
     @Test
-    public void shouldFetchByChannelName() {
+    public void shouldFetchByOperatorName() {
         String operator = "Airtel";
         template.save(new OperatorDimension(operator));
-        OperatorDimension operatorDimension = allOperatorDimensions.fetchFor(operator);
+        OperatorDimension operatorDimension = allOperatorDimensions.fetchFor("airTel");
         assertEquals(operator,operatorDimension.getOperator());
     }
 }

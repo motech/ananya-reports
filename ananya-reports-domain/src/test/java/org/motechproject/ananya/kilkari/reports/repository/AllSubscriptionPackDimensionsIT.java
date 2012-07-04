@@ -22,7 +22,7 @@ public class AllSubscriptionPackDimensionsIT extends SpringIntegrationTest{
     public void shouldFetchByPackName() {
         String subscriptionPack = "PCK1";
         template.save(new SubscriptionPackDimension(subscriptionPack));
-        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
+        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor("pcK1");
         assertEquals(subscriptionPack,subscriptionPackDimension.getSubscriptionPack());
     }
 

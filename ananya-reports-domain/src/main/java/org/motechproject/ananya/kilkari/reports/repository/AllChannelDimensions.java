@@ -17,6 +17,6 @@ public class AllChannelDimensions {
 
     public ChannelDimension fetchFor(String channel) {
         return (ChannelDimension) template.getUniqueResult(ChannelDimension.FIND_BY_CHANNEL,
-                new String[]{"channel"}, new Object[]{channel});
+                new String[]{"channel"}, new Object[]{channel.toUpperCase()});
     }
 }

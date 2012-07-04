@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "location_dimension")
-@NamedQuery(name = LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT, query = "select l from LocationDimension l where l.district=:district and l.block=:block and l.panchayat=:panchayat")
+@NamedQuery(name = LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT, query = "select l from LocationDimension l where UPPER(l.district)=:district and UPPER(l.block)=:block and UPPER(l.panchayat)=:panchayat")
 public class LocationDimension {
 
     public static final String FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT = "find.by.district.block.and.panchayat";

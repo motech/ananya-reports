@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "subscription_pack_dimension")
-@NamedQuery(name = SubscriptionPackDimension.FIND_BY_PACK_NAME, query = "select s from SubscriptionPackDimension s where s.subscriptionPack=:subscriptionPack")
+@NamedQuery(name = SubscriptionPackDimension.FIND_BY_PACK_NAME, query = "select s from SubscriptionPackDimension s where UPPER(s.subscriptionPack)=:subscriptionPack")
 public class SubscriptionPackDimension {
 
     @Id

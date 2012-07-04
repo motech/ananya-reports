@@ -16,7 +16,7 @@ public class AllLocationDimensions {
     }
 
     public LocationDimension fetchFor(String district, String block, String panchayat) {
-        return (LocationDimension) template.getUniqueResult(LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT,new String[] {"district","block","panchayat"},new String[] {district,block,panchayat});
+        return (LocationDimension) template.getUniqueResult(LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT,new String[] {"district","block","panchayat"},new String[] {district.toUpperCase(),block.toUpperCase(),panchayat.toUpperCase()});
     }
 
 }

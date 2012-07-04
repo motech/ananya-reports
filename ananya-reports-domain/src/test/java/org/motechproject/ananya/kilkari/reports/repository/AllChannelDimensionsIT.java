@@ -21,7 +21,7 @@ public class AllChannelDimensionsIT extends SpringIntegrationTest {
     public void shouldFetchByChannelName() {
         String channel = "IVR";
         template.save(new ChannelDimension(channel));
-        ChannelDimension channelDimension = allChannelDimensions.fetchFor(channel);
+        ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVr");
         assertEquals(channel,channelDimension.getChannel());
     }
 }

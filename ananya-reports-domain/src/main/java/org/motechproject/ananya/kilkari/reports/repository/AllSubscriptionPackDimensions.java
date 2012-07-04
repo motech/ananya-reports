@@ -16,6 +16,6 @@ public class AllSubscriptionPackDimensions {
 
     public SubscriptionPackDimension fetchFor(String subscriptionPack) {
         return (SubscriptionPackDimension) template.getUniqueResult(SubscriptionPackDimension.FIND_BY_PACK_NAME,
-                new String[]{"subscriptionPack"}, new Object[]{subscriptionPack});
+                new String[]{"subscriptionPack"}, new Object[]{subscriptionPack.toUpperCase()});
     }
 }
