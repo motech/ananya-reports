@@ -11,7 +11,7 @@
     <artifactId>ananya-reports-web</artifactId>
 
     <properties>
-        <jetty.port>9979</jetty.port>
+        <jetty.port>9999</jetty.port>
     </properties>
 
     <dependencies>
@@ -26,11 +26,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.motechproject.ananya.reports</groupId>
-            <artifactId>ananya-reports-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.googlecode.flyway</groupId>
             <artifactId>flyway-core</artifactId>
             <version>1.6.1</version>
@@ -38,18 +33,6 @@
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -62,34 +45,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
         </dependency>
         <dependency>
             <groupId>org.motechproject.ananya.reports</groupId>
@@ -155,6 +110,7 @@
                                 <property name="runtime-classpath" refid="maven.test.classpath"/>
                                 <echo message="Cleaning existing Database : START"/>
                                 <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="clean.existing.database"/>
+                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="migrate.db"/>
                                 <echo message="Cleaning existing Database : STOP"/>
                             </target>
                         </configuration>
@@ -180,7 +136,7 @@
                         <contextPath>/ananyakilkarireports</contextPath>
                     </webAppConfig>
                     <stopKey>secret</stopKey>
-                    <stopPort>6669</stopPort>
+                    <stopPort>6679</stopPort>
                 </configuration>
             </plugin>
         </plugins>
