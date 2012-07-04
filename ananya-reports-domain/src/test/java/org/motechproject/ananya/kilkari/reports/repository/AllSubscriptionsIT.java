@@ -38,7 +38,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         template.save(channelDimension);
         OperatorDimension operatorDimension = new OperatorDimension("airtel");
         template.save(operatorDimension);
-        LocationDimension locationDimension = new LocationDimension("locId", "district", "block", "panchayat");
+        LocationDimension locationDimension = new LocationDimension("district", "block", "panchayat");
         template.save(locationDimension);
         TimeDimension timeDimension = new TimeDimension(now);
         template.save(timeDimension);
@@ -67,7 +67,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         ChannelDimension channelDimension = new ChannelDimension("IVR");
         template.save(channelDimension);
         template.save(operatorDimension);
-        LocationDimension locationDimension = new LocationDimension("locId", "district", "block", "panchayat");
+        LocationDimension locationDimension = new LocationDimension("district", "block", "panchayat");
         template.save(locationDimension);
         TimeDimension timeDimension = new TimeDimension(now);
         template.save(timeDimension);

@@ -1,6 +1,5 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -9,14 +8,11 @@ import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionRequestService;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.server.setup.MockMvcBuilders;
-
-import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.motechproject.ananya.kilkari.reports.web.util.MVCTestUtils.mockMvc;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
@@ -56,7 +52,7 @@ public class SubscriptionControllerTest {
                 "\"subscriptionStatus\":\"NEW\"\n" +
                 "}";
 
-        MockMvcBuilders.standaloneSetup(subscriptionController).build()
+        mockMvc(subscriptionController)
                 .perform(post("/subscription")
                         .body(subscriptionRequestJson.getBytes())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +75,7 @@ public class SubscriptionControllerTest {
                 "\"createdAt\":\"2010-05-05\"\n" +
                 "}";
 
-        MockMvcBuilders.standaloneSetup(subscriptionController).build()
+        mockMvc(subscriptionController)
                 .perform(put("/updatesubscription/sid")
                         .body(subscriptionStateChangeRequestJson.getBytes())
                         .contentType(MediaType.APPLICATION_JSON)

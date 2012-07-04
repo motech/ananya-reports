@@ -3,7 +3,6 @@ package org.motechproject.ananya.kilkari.reports.repository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.ananya.kilkari.reports.domain.dimension.OperatorDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 

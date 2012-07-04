@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationKilkariReportsContext.xml")
@@ -16,4 +18,14 @@ public abstract class SpringIntegrationTest {
     @Autowired
     @Qualifier("testDataAccessTemplate")
     protected TestDataAccessTemplate template;
+
+    private List<Object> toDelete = new ArrayList<Object>();
+
+    protected void markForDeletion(Object entity) {
+        toDelete.add(entity);
+    }
+
+    protected void tearDown() {
+        template.deleteAll(toDelete);
+    }
 }
