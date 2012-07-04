@@ -14,6 +14,23 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.motechproject.ananya.reports</groupId>
+            <artifactId>ananya-reports-internal</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject.ananya.reports</groupId>
+            <artifactId>ananya-reports-migrations</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.motechproject.ananya.reports</groupId>
+            <artifactId>ananya-reports-config</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
@@ -24,16 +41,6 @@
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject.ananya.reports</groupId>
-            <artifactId>ananya-reports-internal</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.motechproject.ananya.reports</groupId>
-            <artifactId>ananya-reports-migrations</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <!-- Hibernate -->
         <dependency>
@@ -98,10 +105,10 @@
                                 <property name="runtime-classpath" refid="maven.test.classpath"/>
                                 <echo message="Cleaning existing Database : START"/>
                                 <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="clean.existing.database"/>
-                                <echo message="Cleaning existing Database : STOP"/>
+                                <echo message="Cleaning existing Database : FINISHED"/>
                                 <echo message="Migrating existing Database : START"/>
                                 <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="migrate.db"/>
-                                <echo message="Migrating existing Database : STOP"/>
+                                <echo message="Migrating existing Database : FINISHED"/>
                             </target>
                         </configuration>
                         <goals>
