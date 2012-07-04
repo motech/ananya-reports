@@ -1,6 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.repository;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.ChannelDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,6 @@ public class AllChannelDimensions {
 
     public ChannelDimension fetchFor(String channel) {
         return (ChannelDimension) template.getUniqueResult(ChannelDimension.FIND_BY_CHANNEL,
-                new String[]{"channel"}, new Object[]{channel.toUpperCase()});
+                new String[]{"channel"}, new Object[]{StringUtils.upperCase(channel)});
     }
 }

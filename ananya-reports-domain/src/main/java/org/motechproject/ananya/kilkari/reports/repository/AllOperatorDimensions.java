@@ -1,11 +1,9 @@
 package org.motechproject.ananya.kilkari.reports.repository;
 
-import org.motechproject.ananya.kilkari.reports.domain.dimension.ChannelDimension;
+import org.apache.commons.lang.StringUtils;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.OperatorDimension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.OpDivide;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class AllOperatorDimensions {
@@ -17,6 +15,6 @@ public class AllOperatorDimensions {
 
     public OperatorDimension fetchFor(String operator) {
         return (OperatorDimension) template.getUniqueResult(OperatorDimension.FIND_BY_OPERATOR_NAME,
-                new String[]{"operator"}, new Object[]{operator.toUpperCase()});
+                new String[]{"operator"}, new Object[]{StringUtils.upperCase(operator)});
     }
 }
