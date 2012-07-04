@@ -54,20 +54,19 @@ public class SubscriptionStatusMeasureService {
         }
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionRequest.getChannel());
-        OperatorDimension operatorDimension = allOperatorDimensions.fetchFor(subscriptionRequest.getOperator());
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionRequest.getPack());
         TimeDimension timeDimension = allTimeDimension.fetchFor(subscriptionRequest.getCreatedAt());
 
 
         Subscriber subscriber = allSubscribers.save(msisdn, null, 0, null, null, channelDimension, null,
-                timeDimension, operatorDimension);
+                timeDimension, null);
 
         Subscription subscription = subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, null, timeDimension, subscriptionId);
+                null, null, timeDimension, subscriptionId);
 
         int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionRequest.getSubscriptionStatus(),
-                startingWeekNumber, null, channelDimension, operatorDimension,
+                startingWeekNumber, null, channelDimension, null,
                 subscriptionPackDimension, timeDimension);
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
@@ -81,8 +80,13 @@ public class SubscriptionStatusMeasureService {
 
         int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, subscriptionStateChangeRequest.getCreatedAt(), subscriptionPack);
         TimeDimension timeDimension = allTimeDimension.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
+        OperatorDimension operatorDimension = allOperatorDimensions.fetchFor(subscriptionStateChangeRequest.getOperator());
+        subscription.getSubscriber().setOperatorDimension(operatorDimension);
+        subscription.setOperatorDimension(operatorDimension);
+        allSubscriptions.update(subscription);
+
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,
-                subscriptionWeekNumber, subscriptionStateChangeRequest.getReason(), subscription.getChannelDimension(), subscription.getOperatorDimension(),
+                subscriptionWeekNumber, subscriptionStateChangeRequest.getReason(), subscription.getChannelDimension(), operatorDimension,
                 subscription.getSubscriptionPackDimension(), timeDimension);
 
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);

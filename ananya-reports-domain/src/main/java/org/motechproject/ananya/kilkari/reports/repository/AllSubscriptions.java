@@ -24,4 +24,8 @@ public class AllSubscriptions {
         template.save(subscription);
         return subscription;
     }
+
+    public void update(Subscription subscription) {
+        template.update(subscription);
+    }
 }

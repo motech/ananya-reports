@@ -14,6 +14,8 @@ public class SubscriptionStateChangeRequest {
 
     private DateTime createdAt;
 
+    private String operator;
+
     public String getSubscriptionId() {
         return subscriptionId;
     }
@@ -44,5 +46,13 @@ public class SubscriptionStateChangeRequest {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
     }
 }
