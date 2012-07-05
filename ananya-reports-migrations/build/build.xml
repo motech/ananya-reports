@@ -7,8 +7,22 @@
                       url="jdbc:postgresql://localhost/ananya/"
                       user="postgres"
                       password="password"
-                      schemas="kilkari"
+                      schemas="report"
                       classpath="${runtime-classpath}"/>
+
+        <exec executable="psql">
+            <arg line="ananya"/>
+            <redirector input="${basedir}/../ananya-reports-migrations/src/main/resources/db/setup/base_setup.sql"></redirector>
+        </exec>
+
+        <flyway:init driver="org.postgresql.Driver"
+                     url="jdbc:postgresql://localhost/ananya/"
+                     user="postgres"
+                     password="password"
+                     schemas="report"
+                     classpath="${runtime-classpath}"
+                     initialVersion="0"
+                     initialDescription="Base setup" />
     </target>
 
     <target name="migrate.db">
@@ -17,7 +31,7 @@
                             url="jdbc:postgresql://localhost/ananya/"
                             user="postgres"
                             password="password"
-                            schemas="kilkari"
+                            schemas="report"
                             baseDir="/db/migration"
                             classpath="${runtime-classpath}"/>
     </target>

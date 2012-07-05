@@ -8,10 +8,10 @@ public class V1_5__TimeDimensionSeedMigration implements JavaMigration {
 
     @Override
     public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
-        LocalDate startDate = new LocalDate(2012, 1, 1);
-        LocalDate endDate = new LocalDate(2014, 1, 1);
+        LocalDate startDate = new LocalDate(2014, 1, 2);
+        LocalDate endDate = new LocalDate(2016, 1, 1);
         while (isOnOrBefore(startDate, endDate)) {
-            jdbcTemplate.update("insert into kilkari.time_dimension (day, week, month, year, date) values (?, ?, ?, ?, ?)", new Object[] {startDate.getDayOfYear(), startDate.getWeekOfWeekyear(), startDate.getMonthOfYear(), startDate.getYear(), startDate.toDate()});
+            jdbcTemplate.update("insert into report.time_dimension (day, week, month, year, date) values (?, ?, ?, ?, ?)", new Object[] {startDate.getDayOfYear(), startDate.getWeekOfWeekyear(), startDate.getMonthOfYear(), startDate.getYear(), startDate.toDate()});
             startDate = startDate.plusDays(1);
         }
     }
