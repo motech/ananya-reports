@@ -11,8 +11,7 @@
                       classpath="${runtime-classpath}"/>
 
         <exec executable="psql">
-            <arg line="ananya"/>
-            <redirector input="${basedir}/../ananya-reports-migrations/src/main/resources/db/setup/base_setup.sql"></redirector>
+            <arg line="ananya -U postgres -f ${basedir}/../ananya-reports-migrations/src/main/resources/db/setup/base_setup.sql"/>
         </exec>
 
         <flyway:init driver="org.postgresql.Driver"
