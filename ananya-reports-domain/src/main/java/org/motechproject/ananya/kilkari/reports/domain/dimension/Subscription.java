@@ -54,6 +54,7 @@ public class Subscription {
         this.locationDimension = locationDimension;
         this.timeDimension = timeDimension;
         this.subscriptionId = subscriptionId;
+        this.locationDimension = locationDimension;
     }
 
     public Integer getId() {
@@ -112,4 +113,11 @@ public class Subscription {
         this.timeDimension = timeDimension;
     }
 
+    public LocationDimension getLocationDimension() {
+        return locationDimension;
+    }
+
+    public void setLocationDimension(LocationDimension locationDimension) {
+        this.locationDimension = locationDimension;
+    }
 }

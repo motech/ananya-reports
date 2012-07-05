@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class AllSubscribers {

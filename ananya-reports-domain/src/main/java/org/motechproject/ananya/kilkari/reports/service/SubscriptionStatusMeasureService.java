@@ -1,6 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
 import org.joda.time.DateTime;
+import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.WeekNumber;
@@ -10,8 +11,6 @@ import org.motechproject.ananya.kilkari.reports.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @Service
 public class SubscriptionStatusMeasureService {
@@ -24,6 +23,7 @@ public class SubscriptionStatusMeasureService {
     private AllSubscriptions allSubscriptions;
     private SubscriptionService subscriptionService;
     private AllSubscribers allSubscribers;
+    private AllLocationDimensions allLocationDimensions;
 
     public SubscriptionStatusMeasureService() {
     }
@@ -34,7 +34,7 @@ public class SubscriptionStatusMeasureService {
                                             AllSubscriptionPackDimensions allSubscriptionPackDimensions,
                                             AllOperatorDimensions allOperatorDimensions, AllSubscribers allSubscribers,
                                             SubscriptionService subscriptionService, AllSubscriptions allSubscriptions,
-                                            AllTimeDimension allTimeDimension) {
+                                            AllTimeDimension allTimeDimension, AllLocationDimensions allLocationDimensions) {
         this.allSubscriptionStatusMeasure = allSubscriptionStatusMeasure;
         this.allChannelDimensions = allChannelDimensions;
         this.allSubscriptionPackDimensions = allSubscriptionPackDimensions;
@@ -43,6 +43,7 @@ public class SubscriptionStatusMeasureService {
         this.subscriptionService = subscriptionService;
         this.allSubscriptions = allSubscriptions;
         this.allTimeDimension = allTimeDimension;
+        this.allLocationDimensions = allLocationDimensions;
     }
 
     @Transactional
@@ -56,13 +57,14 @@ public class SubscriptionStatusMeasureService {
         ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionRequest.getChannel());
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionRequest.getPack());
         TimeDimension timeDimension = allTimeDimension.fetchFor(subscriptionRequest.getCreatedAt());
+        SubscriberLocation location = subscriptionRequest.getLocation();
+        LocationDimension locationDimension = location==null?null :allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
 
-
-        Subscriber subscriber = allSubscribers.save(msisdn, null, 0, null, null, channelDimension, null,
-                timeDimension, null);
+        Subscriber subscriber = allSubscribers.save(msisdn, subscriptionRequest.getName(), subscriptionRequest.getAgeOfBeneficiary(), subscriptionRequest.getEstimatedDateOfDelivery(),
+                subscriptionRequest.getDateOfBirth(), channelDimension, locationDimension, timeDimension, null);
 
         Subscription subscription = subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                null, null, timeDimension, subscriptionId);
+                null, locationDimension, timeDimension, subscriptionId);
 
         int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionRequest.getSubscriptionStatus(),

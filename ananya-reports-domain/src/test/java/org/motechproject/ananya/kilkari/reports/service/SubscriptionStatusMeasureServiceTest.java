@@ -5,20 +5,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.kilkari.reports.repository.*;
 
-import java.util.Date;
-
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class SubscriptionStatusMeasureServiceTest {
@@ -39,13 +35,15 @@ public class SubscriptionStatusMeasureServiceTest {
     private AllSubscriptions allSubscriptions;
     @Mock
     private AllTimeDimension allTimeDimension;
+    @Mock
+    private AllLocationDimensions allLocationDimensions;
 
     @Before
     public void setup(){
         initMocks(this);
         subscriptionStatusMeasureService= new SubscriptionStatusMeasureService(allSubscriptionStatusMeasure,
                 allChannelDimensions, allSubscriptionPackDimensions, allOperatorDimensions, allSubscribers,
-                subscriptionService, allSubscriptions, allTimeDimension);
+                subscriptionService, allSubscriptions, allTimeDimension, allLocationDimensions);
 
     }
 
@@ -53,9 +51,17 @@ public class SubscriptionStatusMeasureServiceTest {
     public void shouldCreateSubscriptionStatusMeasure(){
         String msisdn = "998";
         String channel = "IVR";
+        String name = "name";
+        int age = 42;
         String subscriptionId = "sub112";
         String operator = "airtel";
         String subscriptionPack = "TWELVE_MONTHS";
+        DateTime edd = DateTime.now().minusMonths(4);
+        DateTime dob = DateTime.now().minusMonths(8);
+        String district = "district";
+        String block = "block";
+        String panchayat = "panchayat";
+
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
         subscriptionRequest.setMsisdn(msisdn);
         subscriptionRequest.setChannel(channel);
@@ -63,9 +69,17 @@ public class SubscriptionStatusMeasureServiceTest {
         subscriptionRequest.setOperator(operator);
         subscriptionRequest.setPack(subscriptionPack);
         subscriptionRequest.setCreatedAt(new DateTime(2012, 01, 01, 10, 10));
+        subscriptionRequest.setEstimatedDateOfDelivery(edd);
+        subscriptionRequest.setDateOfBirth(dob);
+        subscriptionRequest.setName(name);
+        subscriptionRequest.setAgeOfBeneficiary(age);
+        subscriptionRequest.setLocation(new SubscriberLocation(district, block, panchayat));
+        subscriptionRequest.setSubscriptionStatus("subscriptionstatus");
 
         ChannelDimension channelDimension = new ChannelDimension();
         TimeDimension timeDimension = new TimeDimension();
+        LocationDimension locationDimension = new LocationDimension();
+
         Subscriber subscriber = new Subscriber();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
         Subscription subscription = new Subscription();
@@ -75,10 +89,11 @@ public class SubscriptionStatusMeasureServiceTest {
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
         when(allTimeDimension.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(timeDimension);
-        when(allSubscribers.save(msisdn, null, 0, null, null, channelDimension, null,
+        when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
+        when(allSubscribers.save(msisdn, name, age, edd, dob, channelDimension, locationDimension,
                 timeDimension, null)).thenReturn(subscriber);
         when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                null, null, timeDimension, subscriptionId)).thenReturn(subscription);
+                null, locationDimension, timeDimension, subscriptionId)).thenReturn(subscription);
         
         subscriptionStatusMeasureService.createFor(subscriptionRequest);
         
