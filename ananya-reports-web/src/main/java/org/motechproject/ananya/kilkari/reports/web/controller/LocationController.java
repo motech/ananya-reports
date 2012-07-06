@@ -22,7 +22,7 @@ public class LocationController {
 
     @RequestMapping(value = "/location", method = RequestMethod.GET)
     @ResponseBody
-    public LocationResponse getSubscriptions(@RequestParam String district, @RequestParam String block, @RequestParam String panchayat) {
+    public LocationResponse getLocation(@RequestParam(required = false) String district, @RequestParam(required = false) String block, @RequestParam(required = false) String panchayat) {
         LocationDimension locationDimension = locationService.fetchFor(district, block, panchayat);
         if(locationDimension == null) {
             throw new NotFoundException("location not found");

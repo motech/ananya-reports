@@ -46,6 +46,21 @@ public class LocationControllerTest {
     }
 
     @Test
+    public void shouldReturn404IfNoneOfTheLocationParametersArePresent() throws Exception {
+        String district = "mydistrict";
+        String block="myblock";
+        String panchayat="mypanchayat";
+
+        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat));
+        mockMvc(locationController)
+                .perform(get("/location"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().type(HttpConstants.JSON_CONTENT_TYPE))
+                .andExpect(content().string(new Contains("\"status\":\"ERROR\"")))
+                .andExpect(content().string(new Contains("\"description\":\"location not found\"")));
+    }
+
+    @Test
     public void shouldReturn404ResponseIfLocationNotFound() throws Exception {
         String district = "mydistrict";
         String block="myblock";
