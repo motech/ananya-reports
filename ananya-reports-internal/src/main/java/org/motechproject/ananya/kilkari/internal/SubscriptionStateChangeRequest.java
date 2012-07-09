@@ -16,6 +16,16 @@ public class SubscriptionStateChangeRequest {
 
     private String operator;
 
+    private int graceCount;
+
+    public int getGraceCount() {
+        return graceCount;
+    }
+
+    public void setGraceCount(int graceCount) {
+        this.graceCount = graceCount;
+    }
+
     public String getSubscriptionId() {
         return subscriptionId;
     }
