@@ -49,7 +49,7 @@ public class SubscriptionStatusMeasureService {
     @Transactional
     public void createFor(SubscriptionRequest subscriptionRequest) {
         String subscriptionId = subscriptionRequest.getSubscriptionId();
-        String msisdn = subscriptionRequest.getMsisdn();
+        Long msisdn = subscriptionRequest.getMsisdn();
         if (subscriptionService.exists(subscriptionId)) {
             return;
         }

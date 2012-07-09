@@ -3,15 +3,13 @@ package org.motechproject.ananya.kilkari.internal;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-import java.util.Date;
-
 public class SubscriptionRequest {
 
     private String subscriptionId;
 
     private String channel;
 
-    private String msisdn;
+    private Long msisdn;
 
     private String pack;
 
@@ -49,7 +47,7 @@ public class SubscriptionRequest {
         return channel;
     }
 
-    public String getMsisdn() {
+    public long getMsisdn() {
         return msisdn;
     }
 
@@ -101,7 +99,7 @@ public class SubscriptionRequest {
         this.channel = channel;
     }
 
-    public void setMsisdn(String msisdn) {
+    public void setMsisdn(Long msisdn) {
         this.msisdn = msisdn;
     }
 

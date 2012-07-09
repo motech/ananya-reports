@@ -13,7 +13,7 @@ public class TestCallCenterSubscriptionRequestBuilder implements SubscriptionReq
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
         subscriptionRequest.setSubscriptionId("subscriptionId");
         subscriptionRequest.setChannel("callcenter");
-        subscriptionRequest.setMsisdn("9090909090");
+        subscriptionRequest.setMsisdn(9090909090L);
         subscriptionRequest.setPack("PCK1");
         subscriptionRequest.setAgeOfBeneficiary(24);
         subscriptionRequest.setEstimatedDateOfDelivery(DateTime.now());

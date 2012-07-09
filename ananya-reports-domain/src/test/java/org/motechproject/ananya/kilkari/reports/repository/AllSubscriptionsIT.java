@@ -42,7 +42,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         template.save(locationDimension);
         TimeDimension timeDimension = new TimeDimension(now);
         template.save(timeDimension);
-        Subscriber subscriber = new Subscriber("998","",0, now, now, channelDimension,
+        Subscriber subscriber = new Subscriber(998L,"",0, now, now, channelDimension,
                 locationDimension, timeDimension, operatorDimension);
         template.save(subscriber);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("PCK1");
@@ -71,7 +71,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         template.save(locationDimension);
         TimeDimension timeDimension = new TimeDimension(now);
         template.save(timeDimension);
-        Subscriber subscriber = new Subscriber("998","",0, now, now, channelDimension,
+        Subscriber subscriber = new Subscriber(998L,"",0, now, now, channelDimension,
                 locationDimension, timeDimension, operatorDimension);
         template.save(subscriber);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("PCK1");

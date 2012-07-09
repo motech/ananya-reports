@@ -11,7 +11,7 @@ public class AllSubscribers {
     @Autowired
     private DataAccessTemplate template;
 
-    public Subscriber save(String msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
+    public Subscriber save(Long msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                            DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
                            TimeDimension timeDimension, OperatorDimension operatorDimension) {
 

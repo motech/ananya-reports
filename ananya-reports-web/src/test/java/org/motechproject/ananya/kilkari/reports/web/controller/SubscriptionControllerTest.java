@@ -62,7 +62,7 @@ public class SubscriptionControllerTest {
         verify(subscriptionRequestService).createSubscription(subscriptionRequestArgumentCaptor.capture());
 
         SubscriptionRequest subscriptionRequest = subscriptionRequestArgumentCaptor.getValue();
-        assertEquals("9740123123", subscriptionRequest.getMsisdn());
+        assertEquals(9740123123L, subscriptionRequest.getMsisdn());
         assertEquals("sid", subscriptionRequest.getSubscriptionId());
     }
 

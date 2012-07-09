@@ -15,7 +15,7 @@ public class Subscriber {
     private Integer id;
 
     @Column(name = "msisdn")
-    private String msisdn;
+    private long msisdn;
 
     @Column(name = "name")
     private String name;
@@ -48,7 +48,7 @@ public class Subscriber {
     public Subscriber() {
     }
 
-    public Subscriber(String msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
+    public Subscriber(Long msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                       DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
                       TimeDimension timeDimension, OperatorDimension operatorDimension) {
         this.msisdn = msisdn;
@@ -70,11 +70,11 @@ public class Subscriber {
         this.id = id;
     }
 
-    public String getMsisdn() {
+    public Long getMsisdn() {
         return msisdn;
     }
 
-    public void setMsisdn(String msisdn) {
+    public void setMsisdn(Long msisdn) {
         this.msisdn = msisdn;
     }
 

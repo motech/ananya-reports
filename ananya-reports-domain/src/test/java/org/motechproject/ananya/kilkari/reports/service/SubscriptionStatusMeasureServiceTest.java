@@ -49,7 +49,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
     @Test
     public void shouldCreateSubscriptionStatusMeasure(){
-        String msisdn = "998";
+        long msisdn = 998L;
         String channel = "IVR";
         String name = "name";
         int age = 42;

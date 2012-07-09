@@ -12,7 +12,7 @@ public class TestIVRSubscriptionRequestBuilder implements SubscriptionRequestBui
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
         subscriptionRequest.setSubscriptionId("subscriptionId");
         subscriptionRequest.setChannel("IVR");
-        subscriptionRequest.setMsisdn("9090909090");
+        subscriptionRequest.setMsisdn(9090909090L);
         subscriptionRequest.setPack("PCK1");
         return subscriptionRequest;
     }
