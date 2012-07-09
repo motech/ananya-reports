@@ -72,7 +72,8 @@ public class SubscriptionControllerTest {
         String subscriptionStateChangeRequestJson = "{\n" +
                 "\"subscriptionId\":\"sid\",\n" +
                 "\"subscriptionStatus\":\"ACTIVE\",\n" +
-                "\"createdAt\":\"2010-05-05\"\n" +
+                "\"createdAt\":\"2010-05-05\",\n" +
+                "\"graceCount\":7\n" +
                 "}";
 
         mockMvc(subscriptionController)
@@ -87,6 +88,6 @@ public class SubscriptionControllerTest {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = subscriptionStateChangeRequestArgumentCaptor.getValue();
         assertEquals("sid", subscriptionStateChangeRequest.getSubscriptionId());
         assertEquals("ACTIVE", subscriptionStateChangeRequest.getSubscriptionStatus());
-
+        assertEquals(7, subscriptionStateChangeRequest.getGraceCount());
     }
 }

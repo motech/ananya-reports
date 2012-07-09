@@ -26,6 +26,9 @@ public class SubscriptionStatusMeasure {
     @Column(name = "remarks")
     private String remarks;
 
+    @Column(name = "grace_count")
+    private Integer graceCount;
+
     @ManyToOne
     @JoinColumn(name = "channel_id", nullable = false)
     private ChannelDimension channelDimension;
@@ -46,12 +49,13 @@ public class SubscriptionStatusMeasure {
     }
 
     public SubscriptionStatusMeasure(Subscription subscription, String status, int weekNumber, String remarks,
-                                     ChannelDimension channelDimension, OperatorDimension operatorDimension,
+                                     Integer graceCount, ChannelDimension channelDimension, OperatorDimension operatorDimension,
                                      SubscriptionPackDimension subscriptionPackDimension, TimeDimension timeDimension) {
         this.subscription = subscription;
         this.status = status;
         this.weekNumber = weekNumber;
         this.remarks = remarks;
+        this.graceCount = graceCount;
         this.channelDimension = channelDimension;
         this.operatorDimension = operatorDimension;
         this.subscriptionPackDimension = subscriptionPackDimension;
@@ -128,5 +132,13 @@ public class SubscriptionStatusMeasure {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Integer getGraceCount() {
+        return graceCount;
+    }
+
+    public void setGraceCount(Integer graceCount) {
+        this.graceCount = graceCount;
     }
 }

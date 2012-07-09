@@ -112,12 +112,14 @@ public class SubscriptionStatusMeasureServiceTest {
         String subscriptionStatus = "ACTIVE";
         String reason = "my own reason";
         String operator = "airtel";
+        Integer graceCount = 4;
         DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
         subscriptionStateChangeRequest.setSubscriptionId(subscriptionId);
         subscriptionStateChangeRequest.setSubscriptionStatus(subscriptionStatus);
         subscriptionStateChangeRequest.setCreatedAt(createdAt);
         subscriptionStateChangeRequest.setReason(reason);
         subscriptionStateChangeRequest.setOperator(operator);
+        subscriptionStateChangeRequest.setGraceCount(graceCount);
 
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("TWELVE_MONTHS");
@@ -154,5 +156,6 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(subscriptionPackDimension, subscriptionStatusMeasure.getSubscriptionPackDimension());
         assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getTimeDimension().getDate().getTime()));
         assertEquals(subscriptionId, subscription.getSubscriptionId());
+        assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
     }
 }
