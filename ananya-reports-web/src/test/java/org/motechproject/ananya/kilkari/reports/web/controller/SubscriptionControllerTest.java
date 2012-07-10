@@ -88,6 +88,6 @@ public class SubscriptionControllerTest {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = subscriptionStateChangeRequestArgumentCaptor.getValue();
         assertEquals("sid", subscriptionStateChangeRequest.getSubscriptionId());
         assertEquals("ACTIVE", subscriptionStateChangeRequest.getSubscriptionStatus());
-        assertEquals(7, subscriptionStateChangeRequest.getGraceCount());
+        assertEquals((Integer) 7, subscriptionStateChangeRequest.getGraceCount());
     }
 }

@@ -2,8 +2,6 @@ package org.motechproject.ananya.kilkari.internal;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
-
 public class SubscriptionStateChangeRequest {
 
     private String subscriptionId;
@@ -16,13 +14,13 @@ public class SubscriptionStateChangeRequest {
 
     private String operator;
 
-    private int graceCount;
+    private Integer graceCount;
 
-    public int getGraceCount() {
+    public Integer getGraceCount() {
         return graceCount;
     }
 
-    public void setGraceCount(int graceCount) {
+    public void setGraceCount(Integer graceCount) {
         this.graceCount = graceCount;
     }
 

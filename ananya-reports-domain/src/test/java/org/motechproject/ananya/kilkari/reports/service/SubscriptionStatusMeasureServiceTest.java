@@ -39,16 +39,16 @@ public class SubscriptionStatusMeasureServiceTest {
     private AllLocationDimensions allLocationDimensions;
 
     @Before
-    public void setup(){
+    public void setup() {
         initMocks(this);
-        subscriptionStatusMeasureService= new SubscriptionStatusMeasureService(allSubscriptionStatusMeasure,
+        subscriptionStatusMeasureService = new SubscriptionStatusMeasureService(allSubscriptionStatusMeasure,
                 allChannelDimensions, allSubscriptionPackDimensions, allOperatorDimensions, allSubscribers,
                 subscriptionService, allSubscriptions, allTimeDimension, allLocationDimensions);
 
     }
 
     @Test
-    public void shouldCreateSubscriptionStatusMeasure(){
+    public void shouldCreateSubscriptionStatusMeasure() {
         long msisdn = 998L;
         String channel = "IVR";
         String name = "name";
@@ -94,9 +94,9 @@ public class SubscriptionStatusMeasureServiceTest {
                 timeDimension, null)).thenReturn(subscriber);
         when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
                 null, locationDimension, timeDimension, subscriptionId)).thenReturn(subscription);
-        
+
         subscriptionStatusMeasureService.createFor(subscriptionRequest);
-        
+
         ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         verify(allSubscriptionStatusMeasure).add(captor.capture());
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
@@ -157,5 +157,52 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getTimeDimension().getDate().getTime()));
         assertEquals(subscriptionId, subscription.getSubscriptionId());
         assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
+    }
+
+    @Test
+    public void shouldRetainOperatorIfOperatorInRequestIsNullDuringUpdate() {
+        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest();
+        String subscriptionId = "sub123";
+        String subscriptionStatus = "ACTIVE";
+        String reason = "my own reason";
+        String operator = "airtel";
+        Integer graceCount = 4;
+        DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
+        subscriptionStateChangeRequest.setSubscriptionId(subscriptionId);
+        subscriptionStateChangeRequest.setSubscriptionStatus(subscriptionStatus);
+        subscriptionStateChangeRequest.setCreatedAt(createdAt);
+        subscriptionStateChangeRequest.setReason(reason);
+        subscriptionStateChangeRequest.setOperator(null);
+        subscriptionStateChangeRequest.setGraceCount(graceCount);
+
+        ChannelDimension channelDimension = new ChannelDimension();
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("TWELVE_MONTHS");
+        TimeDimension mockedTimeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
+        OperatorDimension operatorDimension = new OperatorDimension(operator);
+
+        Subscription mockedSubscription = mock(Subscription.class);
+        when(mockedSubscription.getChannelDimension()).thenReturn(channelDimension);
+        when(mockedSubscription.getSubscriptionPackDimension()).thenReturn(subscriptionPackDimension);
+        when(mockedSubscription.getTimeDimension()).thenReturn(mockedTimeDimension);
+        when(mockedSubscription.getOperatorDimension()).thenReturn(operatorDimension);
+        when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
+        Subscriber mockedSubscriber = mock(Subscriber.class);
+        when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
+
+        when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
+        TimeDimension timeDimension = new TimeDimension(createdAt);
+        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
+        when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
+
+        subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
+
+        verify(mockedSubscriber).setOperatorDimension(operatorDimension);
+        verify(mockedSubscription).setOperatorDimension(operatorDimension);
+
+        ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
+        verify(allSubscriptionStatusMeasure).add(subscriptionStatusMeasureArgumentCaptor.capture());
+        SubscriptionStatusMeasure subscriptionStatusMeasure = subscriptionStatusMeasureArgumentCaptor.getValue();
+
+        assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
     }
 }
