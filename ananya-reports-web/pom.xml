@@ -91,7 +91,7 @@
                             <target>
                                 <copy todir="${project.build.outputDirectory}">
                                     <fileset dir="${project.basedir}/../ananya-reports-config/src/main/resources">
-                                        <include name="*.properties" />
+                                        <include name="*.properties"/>
                                     </fileset>
                                 </copy>
                             </target>
@@ -139,8 +139,10 @@
                             <target>
                                 <property name="runtime-classpath" refid="maven.test.classpath"/>
                                 <echo message="Cleaning existing Database : START"/>
-                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="clean.existing.database"/>
-                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml" target="migrate.db"/>
+                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml"
+                                     target="clean.existing.database"/>
+                                <ant antfile="${project.basedir}/../ananya-reports-migrations/build/build.xml"
+                                     target="migrate.db"/>
                                 <echo message="Cleaning existing Database : STOP"/>
                             </target>
                         </configuration>
