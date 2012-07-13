@@ -3,7 +3,6 @@ package org.motechproject.ananya.kilkari.reports.repository;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class AllSubscriptions {
@@ -18,9 +17,9 @@ public class AllSubscriptions {
 
     public Subscription save(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                              ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                             LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
+                             LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId) {
         Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                locationDimension, timeDimension, subscriptionId);
+                locationDimension, dateDimension, subscriptionId);
         template.save(subscription);
         return subscription;
     }

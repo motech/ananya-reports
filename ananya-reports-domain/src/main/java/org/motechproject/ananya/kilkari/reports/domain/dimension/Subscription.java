@@ -34,7 +34,7 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "time_id", nullable = false)
-    private TimeDimension timeDimension;
+    private DateDimension dateDimension;
 
     @Column(name = "subscription_id")
     private String subscriptionId;
@@ -46,13 +46,13 @@ public class Subscription {
 
     public Subscription(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                        LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
+                        LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId) {
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
         this.channelDimension = channelDimension;
         this.operatorDimension = operatorDimension;
         this.locationDimension = locationDimension;
-        this.timeDimension = timeDimension;
+        this.dateDimension = dateDimension;
         this.subscriptionId = subscriptionId;
         this.locationDimension = locationDimension;
     }
@@ -105,12 +105,12 @@ public class Subscription {
         this.operatorDimension = operatorDimension;
     }
 
-    public TimeDimension getTimeDimension() {
-        return timeDimension;
+    public DateDimension getDateDimension() {
+        return dateDimension;
     }
 
-    public void setTimeDimension(TimeDimension timeDimension) {
-        this.timeDimension = timeDimension;
+    public void setDateDimension(DateDimension dateDimension) {
+        this.dateDimension = dateDimension;
     }
 
     public LocationDimension getLocationDimension() {

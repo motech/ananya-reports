@@ -43,14 +43,14 @@ public class SubscriptionStatusMeasure {
 
     @ManyToOne
     @JoinColumn(name = "time_id", nullable = false)
-    private TimeDimension timeDimension;
+    private DateDimension dateDimension;
 
     public SubscriptionStatusMeasure() {
     }
 
     public SubscriptionStatusMeasure(Subscription subscription, String status, int weekNumber, String remarks,
                                      Integer graceCount, ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                                     SubscriptionPackDimension subscriptionPackDimension, TimeDimension timeDimension) {
+                                     SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension) {
         this.subscription = subscription;
         this.status = status;
         this.weekNumber = weekNumber;
@@ -59,7 +59,7 @@ public class SubscriptionStatusMeasure {
         this.channelDimension = channelDimension;
         this.operatorDimension = operatorDimension;
         this.subscriptionPackDimension = subscriptionPackDimension;
-        this.timeDimension = timeDimension;
+        this.dateDimension = dateDimension;
     }
 
     public Integer getId() {
@@ -118,12 +118,12 @@ public class SubscriptionStatusMeasure {
         this.subscriptionPackDimension = subscriptionPackDimension;
     }
 
-    public TimeDimension getTimeDimension() {
-        return timeDimension;
+    public DateDimension getDateDimension() {
+        return dateDimension;
     }
 
-    public void setTimeDimension(TimeDimension timeDimension) {
-        this.timeDimension = timeDimension;
+    public void setDateDimension(DateDimension dateDimension) {
+        this.dateDimension = dateDimension;
     }
 
     public String getRemarks() {

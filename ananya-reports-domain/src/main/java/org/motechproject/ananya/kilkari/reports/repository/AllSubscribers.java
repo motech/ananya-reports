@@ -13,10 +13,10 @@ public class AllSubscribers {
 
     public Subscriber save(Long msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                            DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
-                           TimeDimension timeDimension, OperatorDimension operatorDimension) {
+                           DateDimension dateDimension, OperatorDimension operatorDimension) {
 
         Subscriber subscriber = new Subscriber(msisdn, name, ageOfBeneficiary, estimatedDateOfDelivery, dateOfBirth,
-                channelDimension, locationDimension, timeDimension, operatorDimension);
+                channelDimension, locationDimension, dateDimension, operatorDimension);
         template.saveOrUpdate(subscriber);
         return subscriber;
     }

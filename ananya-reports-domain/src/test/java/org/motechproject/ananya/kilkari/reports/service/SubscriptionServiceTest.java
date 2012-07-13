@@ -45,15 +45,15 @@ public class SubscriptionServiceTest {
         Subscriber subscriber = new Subscriber();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension();
         ChannelDimension channelDimension = new ChannelDimension();
-        TimeDimension timeDimension = new TimeDimension();
+        DateDimension dateDimension = new DateDimension();
         OperatorDimension operatorDimension = new OperatorDimension();
         LocationDimension locationDimension = new LocationDimension();
         String subscriptionId = "sub11";
         subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, locationDimension, timeDimension, subscriptionId);
+                operatorDimension, locationDimension, dateDimension, subscriptionId);
         
         verify(allSubscriptions).save(subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, locationDimension, timeDimension, subscriptionId);
+                operatorDimension, locationDimension, dateDimension, subscriptionId);
         
     }
 

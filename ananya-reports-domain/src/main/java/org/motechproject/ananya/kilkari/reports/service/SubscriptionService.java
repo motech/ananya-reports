@@ -27,9 +27,9 @@ public class SubscriptionService {
     @Transactional
     public Subscription makeFor(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                                 ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                                LocationDimension locationDimension, TimeDimension timeDimension, String subscriptionId) {
+                                LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId) {
         Subscription subscription = allSubscriptions.save(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                locationDimension, timeDimension, subscriptionId);
+                locationDimension, dateDimension, subscriptionId);
         return subscription;
 
     }

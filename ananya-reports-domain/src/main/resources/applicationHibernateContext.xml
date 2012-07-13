@@ -23,7 +23,9 @@
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension</value>
+                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.DateDimension</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.dimension.TimeDimension</value>
+                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.CampaignDimension</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure</value>
                 <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure</value>
             </list>

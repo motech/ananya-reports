@@ -21,17 +21,10 @@ public class SubscriberCallMeasure {
     private String callStatus;
 
     @Column(name = "retry_count")
-    private int retryCount;
+    private Integer retryCount;
 
     @Column(name = "duration")
-    private int duration;
-
-    @Column(name = "ring_duration")
-    private int ringDuration;
-
-    @ManyToOne
-    @JoinColumn(name = "channel_id", nullable = false)
-    private ChannelDimension channelDimension;
+    private Integer duration;
 
     @ManyToOne
     @JoinColumn(name = "operator_id")
@@ -41,11 +34,50 @@ public class SubscriberCallMeasure {
     @JoinColumn(name = "subscription_pack_id", nullable = false)
     private SubscriptionPackDimension subscriptionPackDimension;
 
+    @Column(name = "service_option")
+    private String serviceOption;
+
+    @Column(name = "percentage_listened")
+    private Integer percentageListened;
+
     @ManyToOne
-    @JoinColumn(name = "time_id", nullable = false)
-    private TimeDimension timeDimension;
+    @JoinColumn(name = "campaign_id", nullable = false)
+    private CampaignDimension campaignDimension;
+
+    @ManyToOne
+    @JoinColumn(name = "start_date", nullable = false)
+    private DateDimension startDate;
+
+    @ManyToOne
+    @JoinColumn(name = "start_time", nullable = false)
+    private TimeDimension startTime;
+
+    @ManyToOne
+    @JoinColumn(name = "end_date", nullable = false)
+    private DateDimension endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "end_time", nullable = false)
+    private TimeDimension endTime;
 
     public SubscriberCallMeasure() {
+    }
+
+    public SubscriberCallMeasure(String callStatus, Integer duration, Integer percentageListened, String serviceOption, Subscription subscription,
+                                 OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension, CampaignDimension campaignDimension,
+                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime) {
+        this.callStatus = callStatus;
+        this.duration = duration;
+        this.percentageListened = percentageListened;
+        this.serviceOption = serviceOption;
+        this.subscription = subscription;
+        this.operatorDimension = operatorDimension;
+        this.subscriptionPackDimension = subscriptionPackDimension;
+        this.campaignDimension = campaignDimension;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
     }
 
     public Integer getId() {
@@ -68,40 +100,20 @@ public class SubscriberCallMeasure {
         return callStatus;
     }
 
-    public void setCallStatus(String callStatus) {
-        this.callStatus = callStatus;
-    }
-
-    public int getRetryCount() {
+    public Integer getRetryCount() {
         return retryCount;
     }
 
-    public void setRetryCount(int retryCount) {
+    public void setRetryCount(Integer retryCount) {
         this.retryCount = retryCount;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
-    }
-
-    public int getRingDuration() {
-        return ringDuration;
-    }
-
-    public void setRingDuration(int ringDuration) {
-        this.ringDuration = ringDuration;
-    }
-
-    public ChannelDimension getChannelDimension() {
-        return channelDimension;
-    }
-
-    public void setChannelDimension(ChannelDimension channelDimension) {
-        this.channelDimension = channelDimension;
     }
 
     public OperatorDimension getOperatorDimension() {
@@ -120,11 +132,31 @@ public class SubscriberCallMeasure {
         this.subscriptionPackDimension = subscriptionPackDimension;
     }
 
-    public TimeDimension getTimeDimension() {
-        return timeDimension;
+    public String getServiceOption() {
+        return serviceOption;
     }
 
-    public void setTimeDimension(TimeDimension timeDimension) {
-        this.timeDimension = timeDimension;
+    public CampaignDimension getCampaignDimension() {
+        return campaignDimension;
+    }
+
+    public DateDimension getStartDate() {
+        return startDate;
+    }
+
+    public TimeDimension getStartTime() {
+        return startTime;
+    }
+
+    public DateDimension getEndDate() {
+        return endDate;
+    }
+
+    public TimeDimension getEndTime() {
+        return endTime;
+    }
+
+    public Integer getPercentageListened() {
+        return percentageListened;
     }
 }

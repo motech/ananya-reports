@@ -34,7 +34,7 @@ public class SubscriptionStatusMeasureServiceTest {
     @Mock
     private AllSubscriptions allSubscriptions;
     @Mock
-    private AllTimeDimension allTimeDimension;
+    private AllDateDimensions allTimeDimension;
     @Mock
     private AllLocationDimensions allLocationDimensions;
 
@@ -77,7 +77,7 @@ public class SubscriptionStatusMeasureServiceTest {
         subscriptionRequest.setSubscriptionStatus("subscriptionstatus");
 
         ChannelDimension channelDimension = new ChannelDimension();
-        TimeDimension timeDimension = new TimeDimension();
+        DateDimension dateDimension = new DateDimension();
         LocationDimension locationDimension = new LocationDimension();
 
         Subscriber subscriber = new Subscriber();
@@ -88,12 +88,12 @@ public class SubscriptionStatusMeasureServiceTest {
         when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
-        when(allTimeDimension.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(timeDimension);
+        when(allTimeDimension.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(dateDimension);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
         when(allSubscribers.save(msisdn, name, age, edd, dob, channelDimension, locationDimension,
-                timeDimension, null)).thenReturn(subscriber);
+                dateDimension, null)).thenReturn(subscriber);
         when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                null, locationDimension, timeDimension, subscriptionId)).thenReturn(subscription);
+                null, locationDimension, dateDimension, subscriptionId)).thenReturn(subscription);
 
         subscriptionStatusMeasureService.createFor(subscriptionRequest);
 
@@ -101,7 +101,7 @@ public class SubscriptionStatusMeasureServiceTest {
         verify(allSubscriptionStatusMeasure).add(captor.capture());
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
-        assertEquals(timeDimension, subscriptionStatusMeasure.getTimeDimension());
+        assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
         assertEquals(13, subscriptionStatusMeasure.getWeekNumber());
     }
 
@@ -123,19 +123,19 @@ public class SubscriptionStatusMeasureServiceTest {
 
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("TWELVE_MONTHS");
-        TimeDimension mockedTimeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
+        DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
 
         Subscription mockedSubscription = mock(Subscription.class);
         when(mockedSubscription.getChannelDimension()).thenReturn(channelDimension);
         when(mockedSubscription.getSubscriptionPackDimension()).thenReturn(subscriptionPackDimension);
-        when(mockedSubscription.getTimeDimension()).thenReturn(mockedTimeDimension);
+        when(mockedSubscription.getDateDimension()).thenReturn(mockedDateDimension);
         when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
         Subscriber mockedSubscriber = mock(Subscriber.class);
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
-        TimeDimension timeDimension = new TimeDimension(createdAt);
-        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
+        DateDimension dateDimension = new DateDimension(createdAt);
+        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
         OperatorDimension operatorDimension = new OperatorDimension(operator);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
 
@@ -154,7 +154,7 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
         assertEquals(subscriptionPackDimension, subscriptionStatusMeasure.getSubscriptionPackDimension());
-        assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getTimeDimension().getDate().getTime()));
+        assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getDateDimension().getDate().getTime()));
         assertEquals(subscriptionId, subscription.getSubscriptionId());
         assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
     }
@@ -177,21 +177,21 @@ public class SubscriptionStatusMeasureServiceTest {
 
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("TWELVE_MONTHS");
-        TimeDimension mockedTimeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
+        DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
         OperatorDimension operatorDimension = new OperatorDimension(operator);
 
         Subscription mockedSubscription = mock(Subscription.class);
         when(mockedSubscription.getChannelDimension()).thenReturn(channelDimension);
         when(mockedSubscription.getSubscriptionPackDimension()).thenReturn(subscriptionPackDimension);
-        when(mockedSubscription.getTimeDimension()).thenReturn(mockedTimeDimension);
+        when(mockedSubscription.getDateDimension()).thenReturn(mockedDateDimension);
         when(mockedSubscription.getOperatorDimension()).thenReturn(operatorDimension);
         when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
         Subscriber mockedSubscriber = mock(Subscriber.class);
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
-        TimeDimension timeDimension = new TimeDimension(createdAt);
-        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
+        DateDimension dateDimension = new DateDimension(createdAt);
+        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);

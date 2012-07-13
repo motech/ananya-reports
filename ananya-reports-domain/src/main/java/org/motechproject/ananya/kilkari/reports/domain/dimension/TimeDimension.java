@@ -3,102 +3,41 @@ package org.motechproject.ananya.kilkari.reports.domain.dimension;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-@Table(name = "time_dimension")
-@NamedQuery(name = TimeDimension.FIND_BY_DAY_MONTH_YEAR, query = "select t from TimeDimension t where t.year=:year and t.month=:month and t.day=:day")
+@Table(name = "hour_dimension")
+@NamedQuery(name = TimeDimension.FIND_BY_HOUR_AND_MINUTE, query = "select t from TimeDimension t where t.hourOfDay=:hour_of_day and t.minuteOfHour=:minute_of_hour ")
 public class TimeDimension {
-
-    public static final String FIND_BY_DAY_MONTH_YEAR = "find.by.day.month.year";
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "day")
-    private Integer day;
+    @Column(name = "hour_of_day")
+    private Integer hourOfDay;
 
-    @Column(name = "week")
-    private Integer week;
+    @Column(name = "minute_of_hour")
+    private Integer minuteOfHour;
 
-    @Column(name = "month")
-    private Integer month;
-
-    @Column(name = "year")
-    private Integer year;
-
-    @Column(name = "date")
-    private Date date;
+    public static final String FIND_BY_HOUR_AND_MINUTE = "find.by.hour.and.minute";
 
     public TimeDimension() {
     }
 
-    public TimeDimension(DateTime time) {
-        this(time.getDayOfYear(), time.getWeekOfWeekyear(), time.getMonthOfYear(), time.getYear(), time.toDate());
-    }
-
-    public TimeDimension(Integer day, Integer week, Integer month, Integer year, Date date) {
-        this.day = day;
-        this.week = week;
-        this.month = month;
-        this.year = year;
-        this.date = date;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public TimeDimension(DateTime dateTime) {
+        hourOfDay = dateTime.getHourOfDay();
+        minuteOfHour = dateTime.getMinuteOfHour();
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getHourOfDay() {
+        return hourOfDay;
     }
 
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    public Integer getWeek() {
-        return week;
-    }
-
-    public void setWeek(Integer week) {
-        this.week = week;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Boolean matches(DateTime time) {
-        return this.day.equals(time.getDayOfYear())
-                && this.week.equals(time.getWeekOfWeekyear())
-                && this.month.equals(time.getMonthOfYear())
-                && this.year.equals(time.getYear());
+    public Integer getMinuteOfHour() {
+        return minuteOfHour;
     }
 }
