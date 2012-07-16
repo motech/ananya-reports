@@ -50,6 +50,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         Integer percentageListened = 90;
         String serviceOption = "HELP";
         String callStatus = "SUCCESS";
+        Integer retryCount = 2;
         String campaignId = "week1";
         DateTime subscriberCreatedDateTime = DateTime.now().minusMonths(1);
         DateTime callStartDateTime = DateTime.now();
@@ -84,7 +85,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 startDate,
                 startTime,
                 endDate,
-                endTime));
+                endTime,
+                retryCount));
 
         List<SubscriberCallMeasure> subscriberCallMeasures = template.loadAll(SubscriberCallMeasure.class);
         assertEquals(1, subscriberCallMeasures.size());
@@ -92,5 +94,6 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         assertEquals(subscription.getSubscriptionId(), actualSubscriberCallMeasure.getSubscription().getSubscriptionId());
         assertEquals(duration, actualSubscriberCallMeasure.getDuration());
         assertEquals(callStatus, actualSubscriberCallMeasure.getCallStatus());
+        assertEquals(retryCount,actualSubscriberCallMeasure.getRetryCount());
     }
 }

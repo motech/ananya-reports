@@ -48,7 +48,8 @@ public class SubscriberCallMeasureService {
                 allDateDimensions.fetchFor(obdRequest.getStartTime()),
                 allTimeDimensions.fetchFor(obdRequest.getStartTime()),
                 allDateDimensions.fetchFor(obdRequest.getEndTime()),
-                allTimeDimensions.fetchFor(obdRequest.getEndTime())));
+                allTimeDimensions.fetchFor(obdRequest.getEndTime()),
+                Integer.parseInt(obdRequest.getRetryCount())));
     }
 
     private Integer getPercentageListenedTo(Integer durationListenedTo, Integer messageDuration) {

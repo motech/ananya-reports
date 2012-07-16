@@ -65,7 +65,7 @@ public class SubscriberCallMeasure {
 
     public SubscriberCallMeasure(String callStatus, Integer duration, Integer percentageListened, String serviceOption, Subscription subscription,
                                  OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension, CampaignDimension campaignDimension,
-                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime) {
+                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime, Integer retryCount) {
         this.callStatus = callStatus;
         this.duration = duration;
         this.percentageListened = percentageListened;
@@ -78,6 +78,7 @@ public class SubscriberCallMeasure {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+        this.retryCount = retryCount;
     }
 
     public Integer getId() {
