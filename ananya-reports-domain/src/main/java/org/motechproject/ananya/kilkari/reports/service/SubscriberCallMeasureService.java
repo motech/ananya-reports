@@ -11,6 +11,7 @@ import org.motechproject.ananya.kilkari.reports.repository.AllTimeDimensions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SubscriberCallMeasureService {
@@ -23,6 +24,9 @@ public class SubscriberCallMeasureService {
     private AllTimeDimensions allTimeDimensions;
     private Integer welcomeMessageDuration;
 
+    public SubscriberCallMeasureService() {
+    }
+
     @Autowired
     public SubscriberCallMeasureService(AllSubscriberCallMeasures allSubscriberCallMeasures, SubscriptionService subscriptionService, AllCampaignDimensions allCampaignDimensions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions) {
         this.allSubscriberCallMeasures = allSubscriberCallMeasures;
@@ -32,6 +36,7 @@ public class SubscriberCallMeasureService {
         this.allTimeDimensions = allTimeDimensions;
     }
 
+    @Transactional
     public void createSubscriberCallDetails(OBDRequest obdRequest) {
         Subscription subscription = subscriptionService.fetchFor(obdRequest.getSubscriptionId());
 
