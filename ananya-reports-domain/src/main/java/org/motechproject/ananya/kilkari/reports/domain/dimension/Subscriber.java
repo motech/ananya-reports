@@ -95,7 +95,7 @@ public class Subscriber {
     }
 
     public DateTime getEstimatedDateOfDelivery() {
-        return new DateTime(estimatedDateOfDelivery);
+        return estimatedDateOfDelivery == null ? null : new DateTime(estimatedDateOfDelivery);
     }
 
     public void setEstimatedDateOfDelivery(DateTime estimatedDateOfDelivery) {
@@ -103,7 +103,7 @@ public class Subscriber {
     }
 
     public DateTime getDateOfBirth() {
-        return new DateTime(dateOfBirth);
+        return this.dateOfBirth == null ? null : new DateTime(dateOfBirth);
     }
 
     public void setDateOfBirth(DateTime dateOfBirth) {
