@@ -66,7 +66,7 @@ public class OBDRequest {
     }
 
     private DateTime parseDateTime(String dateTime) {
-        return DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").parseDateTime(dateTime);
+        return DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(dateTime);
     }
 
     @JsonIgnore

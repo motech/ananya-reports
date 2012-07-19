@@ -49,11 +49,11 @@ public class SubscriberCallMeasureServiceTest {
         String retryCount = "2";
         String serviceOption = "HELP";
         Integer percentageListened = 50;
-        String startTime = "01-01-2012 01:10:00";
-        String endTime = "01-01-2012 01:41:00";
         String status = "DNP";
-        DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy hh:mm:ss").parseDateTime(startTime);
-        DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy hh:mm:ss").parseDateTime(endTime);
+        String startTime = "01-01-2012 01-10-00";
+        String endTime = "01-01-2012 01-41-00";
+        DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
+        DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
         OBDRequest obdRequest = new OBDRequest(subscriptionId, msisdn, campaignId, serviceOption, startTime, endTime, retryCount, status);
 
         Subscription mockedSubscription = mock(Subscription.class);
