@@ -51,9 +51,10 @@ public class SubscriberCallMeasureServiceTest {
         Integer percentageListened = 50;
         String startTime = "01-01-2012 01:10:00";
         String endTime = "01-01-2012 01:41:00";
+        String status = "DNP";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy hh:mm:ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy hh:mm:ss").parseDateTime(endTime);
-        OBDRequest obdRequest = new OBDRequest(subscriptionId, msisdn, campaignId, serviceOption, startTime, endTime, retryCount);
+        OBDRequest obdRequest = new OBDRequest(subscriptionId, msisdn, campaignId, serviceOption, startTime, endTime, retryCount, status);
 
         Subscription mockedSubscription = mock(Subscription.class);
         OperatorDimension mockedOperatorDimension = mock(OperatorDimension.class);
@@ -99,7 +100,7 @@ public class SubscriberCallMeasureServiceTest {
         assertEquals(mockedEndDateDimension, subscriberCallMeasure.getEndDate());
         assertEquals(mockedEndTimeDimension, subscriberCallMeasure.getEndTime());
         assertEquals(percentageListened, subscriberCallMeasure.getPercentageListened());
-        assertEquals(SubscriberCallMeasureService.DEFAULT_CALL_STATUS, subscriberCallMeasure.getCallStatus());
+        assertEquals(obdRequest.getStatus(), subscriberCallMeasure.getCallStatus());
         assertEquals((Integer)2,subscriberCallMeasure.getRetryCount());
     }
 }

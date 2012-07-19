@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SubscriberCallMeasureService {
-    public static final String DEFAULT_CALL_STATUS = "SUCCESS";
-
     private AllSubscriberCallMeasures allSubscriberCallMeasures;
     private SubscriptionService subscriptionService;
     private AllCampaignDimensions allCampaignDimensions;
@@ -42,7 +40,7 @@ public class SubscriberCallMeasureService {
 
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(obdRequest.getCampaignId());
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
-                DEFAULT_CALL_STATUS,
+                obdRequest.getStatus(),
                 obdRequest.getDuration(),
                 getPercentageListenedTo(obdRequest.getDuration(), campaignDimension.getMessageDuration()),
                 obdRequest.getServiceOption(),

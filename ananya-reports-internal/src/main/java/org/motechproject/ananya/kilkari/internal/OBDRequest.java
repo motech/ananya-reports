@@ -17,15 +17,18 @@ public class OBDRequest {
     @JsonProperty
     private String retryCount;
     @JsonProperty
+    private String status;
+    @JsonProperty
     private CallDetailRecordRequest callDetailRecord;
 
 
-    public OBDRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String startTime, String endTime, String retryCount) {
+    public OBDRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String startTime, String endTime, String retryCount, String status) {
         this.subscriptionId = subscriptionId;
         this.msisdn = msisdn;
         this.campaignId = campaignId;
         this.serviceOption = serviceOption;
         this.retryCount = retryCount;
+        this.status = status;
         this.callDetailRecord = new CallDetailRecordRequest(startTime,endTime);
     }
 
@@ -74,6 +77,11 @@ public class OBDRequest {
     @JsonIgnore
     public String getRetryCount() {
         return retryCount;
+    }
+
+    @JsonIgnore
+    public String getStatus() {
+        return status;
     }
 
     public static class CallDetailRecordRequest {
