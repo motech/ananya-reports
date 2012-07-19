@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Service
 public class SubscriptionStatusMeasureService {
 
@@ -20,11 +22,12 @@ public class SubscriptionStatusMeasureService {
     private AllChannelDimensions allChannelDimensions;
     private AllOperatorDimensions allOperatorDimensions;
     private AllSubscriptionPackDimensions allSubscriptionPackDimensions;
-    private AllDateDimensions allTimeDimension;
+    private AllDateDimensions allDateDimensions;
     private AllSubscriptions allSubscriptions;
     private SubscriptionService subscriptionService;
     private AllSubscribers allSubscribers;
     private AllLocationDimensions allLocationDimensions;
+    private AllTimeDimensions allTimeDimensions;
 
     public SubscriptionStatusMeasureService() {
     }
@@ -35,7 +38,8 @@ public class SubscriptionStatusMeasureService {
                                             AllSubscriptionPackDimensions allSubscriptionPackDimensions,
                                             AllOperatorDimensions allOperatorDimensions, AllSubscribers allSubscribers,
                                             SubscriptionService subscriptionService, AllSubscriptions allSubscriptions,
-                                            AllDateDimensions allTimeDimension, AllLocationDimensions allLocationDimensions) {
+                                            AllDateDimensions allDateDimensions, AllLocationDimensions allLocationDimensions,
+                                            AllTimeDimensions allTimeDimensions) {
         this.allSubscriptionStatusMeasure = allSubscriptionStatusMeasure;
         this.allChannelDimensions = allChannelDimensions;
         this.allSubscriptionPackDimensions = allSubscriptionPackDimensions;
@@ -43,12 +47,13 @@ public class SubscriptionStatusMeasureService {
         this.allSubscribers = allSubscribers;
         this.subscriptionService = subscriptionService;
         this.allSubscriptions = allSubscriptions;
-        this.allTimeDimension = allTimeDimension;
+        this.allDateDimensions = allDateDimensions;
         this.allLocationDimensions = allLocationDimensions;
+        this.allTimeDimensions = allTimeDimensions;
     }
 
     @Transactional
-    public void createFor(SubscriptionRequest subscriptionRequest) {
+    public void create(SubscriptionRequest subscriptionRequest) {
         String subscriptionId = subscriptionRequest.getSubscriptionId();
         Long msisdn = subscriptionRequest.getMsisdn();
         if (subscriptionService.exists(subscriptionId)) {
@@ -57,7 +62,8 @@ public class SubscriptionStatusMeasureService {
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionRequest.getChannel());
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionRequest.getPack());
-        DateDimension dateDimension = allTimeDimension.fetchFor(subscriptionRequest.getCreatedAt());
+        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionRequest.getCreatedAt());
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionRequest.getCreatedAt());
         SubscriberLocation location = subscriptionRequest.getLocation();
         LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
 
@@ -70,7 +76,7 @@ public class SubscriptionStatusMeasureService {
         int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionRequest.getSubscriptionStatus(),
                 startingWeekNumber, null, null, channelDimension, null,
-                subscriptionPackDimension, dateDimension);
+                subscriptionPackDimension, dateDimension, timeDimension);
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
 
@@ -82,7 +88,8 @@ public class SubscriptionStatusMeasureService {
         String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
 
         int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, subscriptionStateChangeRequest.getCreatedAt(), subscriptionPack);
-        DateDimension dateDimension = allTimeDimension.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
+        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator()) ?
                 subscription.getOperatorDimension() : allOperatorDimensions.fetchFor(subscriptionStateChangeRequest.getOperator());
         subscription.getSubscriber().setOperatorDimension(operatorDimension);
@@ -91,8 +98,37 @@ public class SubscriptionStatusMeasureService {
 
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,
                 subscriptionWeekNumber, subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(),
-                subscription.getChannelDimension(), operatorDimension, subscription.getSubscriptionPackDimension(), dateDimension);
+                subscription.getChannelDimension(), operatorDimension, subscription.getSubscriptionPackDimension(), dateDimension, timeDimension);
 
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
+    }
+
+    public List<SubscriptionStatusMeasure> getSubscriptionsFor(String msisdn) {
+        Long parsedMsisdn = tryParse(msisdn);
+        if (StringUtils.isEmpty(msisdn))
+            return Collections.EMPTY_LIST;
+        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = allSubscriptionStatusMeasure.getFor(parsedMsisdn);
+
+        Map<SubscriptionPackDimension, SubscriptionStatusMeasure> statusMeasureHashMap = new HashMap<>();
+        for (SubscriptionStatusMeasure statusMeasure : subscriptionStatusMeasures) {
+            SubscriptionPackDimension key = statusMeasure.getSubscriptionPackDimension();
+            SubscriptionStatusMeasure statusMeasureInMap = statusMeasureHashMap.get(key);
+            if (statusMeasureHashMap.containsKey(key)) {
+                if (statusMeasureInMap.isCreatedBefore(statusMeasure))
+                    statusMeasureHashMap.put(key, statusMeasure);
+            } else
+                statusMeasureHashMap.put(key, statusMeasure);
+        }
+
+        return new ArrayList<>(statusMeasureHashMap.values());
+    }
+
+    private Long tryParse(String msisdn) {
+        Long parsedLong = null;
+        try {
+            parsedLong = Long.parseLong(msisdn);
+        } catch (Exception e) {
+        }
+        return parsedLong;
     }
 }

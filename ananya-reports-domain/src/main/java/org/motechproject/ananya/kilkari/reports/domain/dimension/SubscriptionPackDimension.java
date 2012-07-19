@@ -1,5 +1,8 @@
 package org.motechproject.ananya.kilkari.reports.domain.dimension;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 
 @Entity
@@ -27,15 +30,28 @@ public class SubscriptionPackDimension {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getSubscriptionPack() {
         return subscriptionPack;
     }
 
-    public void setSubscriptionPack(String subscriptionPack) {
-        this.subscriptionPack = subscriptionPack;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SubscriptionPackDimension)) return false;
+
+        SubscriptionPackDimension that = (SubscriptionPackDimension) o;
+
+        return new EqualsBuilder()
+                .append(this.id, that.id)
+                .append(this.subscriptionPack, that.subscriptionPack)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(this.id)
+                .append(this.subscriptionPack)
+                .hashCode();
     }
 }

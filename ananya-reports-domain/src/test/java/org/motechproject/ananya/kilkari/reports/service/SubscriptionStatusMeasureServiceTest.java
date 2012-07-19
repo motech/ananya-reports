@@ -12,7 +12,11 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.kilkari.reports.repository.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -34,7 +38,9 @@ public class SubscriptionStatusMeasureServiceTest {
     @Mock
     private AllSubscriptions allSubscriptions;
     @Mock
-    private AllDateDimensions allTimeDimension;
+    private AllDateDimensions allDateDimensions;
+    @Mock
+    private AllTimeDimensions allTimeDimensions;
     @Mock
     private AllLocationDimensions allLocationDimensions;
 
@@ -43,7 +49,7 @@ public class SubscriptionStatusMeasureServiceTest {
         initMocks(this);
         subscriptionStatusMeasureService = new SubscriptionStatusMeasureService(allSubscriptionStatusMeasure,
                 allChannelDimensions, allSubscriptionPackDimensions, allOperatorDimensions, allSubscribers,
-                subscriptionService, allSubscriptions, allTimeDimension, allLocationDimensions);
+                subscriptionService, allSubscriptions, allDateDimensions, allLocationDimensions, allTimeDimensions);
 
     }
 
@@ -88,14 +94,14 @@ public class SubscriptionStatusMeasureServiceTest {
         when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
-        when(allTimeDimension.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(dateDimension);
+        when(allDateDimensions.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(dateDimension);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
         when(allSubscribers.save(msisdn, name, age, edd, dob, channelDimension, locationDimension,
                 dateDimension, null)).thenReturn(subscriber);
         when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
                 null, locationDimension, dateDimension, subscriptionId)).thenReturn(subscription);
 
-        subscriptionStatusMeasureService.createFor(subscriptionRequest);
+        subscriptionStatusMeasureService.create(subscriptionRequest);
 
         ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         verify(allSubscriptionStatusMeasure).add(captor.capture());
@@ -124,6 +130,7 @@ public class SubscriptionStatusMeasureServiceTest {
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("TWELVE_MONTHS");
         DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
+        TimeDimension timeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
 
         Subscription mockedSubscription = mock(Subscription.class);
         when(mockedSubscription.getChannelDimension()).thenReturn(channelDimension);
@@ -135,7 +142,8 @@ public class SubscriptionStatusMeasureServiceTest {
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
         DateDimension dateDimension = new DateDimension(createdAt);
-        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
+        when(allDateDimensions.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
+        when(allTimeDimensions.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
         OperatorDimension operatorDimension = new OperatorDimension(operator);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
 
@@ -155,6 +163,8 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
         assertEquals(subscriptionPackDimension, subscriptionStatusMeasure.getSubscriptionPackDimension());
         assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getDateDimension().getDate().getTime()));
+        assertEquals(10, (int) subscriptionStatusMeasure.getTimeDimension().getHourOfDay());
+        assertEquals(10, (int) subscriptionStatusMeasure.getTimeDimension().getMinuteOfHour());
         assertEquals(subscriptionId, subscription.getSubscriptionId());
         assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
     }
@@ -191,7 +201,9 @@ public class SubscriptionStatusMeasureServiceTest {
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
         DateDimension dateDimension = new DateDimension(createdAt);
-        when(allTimeDimension.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
+        TimeDimension timeDimension = new TimeDimension(createdAt);
+        when(allDateDimensions.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
+        when(allTimeDimensions.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
@@ -204,5 +216,35 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = subscriptionStatusMeasureArgumentCaptor.getValue();
 
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
+    }
+
+    @Test
+    public void shouldGetSubscriptionStatusMeasureGivenAValidMsisdn() {
+        String msisdn = "1234567890";
+        DateTime createdNow = DateTime.now();
+        DateTime createdBefore = DateTime.now().minusHours(4);
+        ArrayList<SubscriptionStatusMeasure> expectedsubscriptionStatusMeasures = new ArrayList<SubscriptionStatusMeasure>();
+        SubscriptionStatusMeasure fifteenMonthsLatest = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("FIFTEEN_MONTHS"), new DateDimension(createdNow), new TimeDimension(createdNow));
+        SubscriptionStatusMeasure sevenMonthsLatest = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("SEVEN_MONTHS"), new DateDimension(createdBefore), new TimeDimension(createdBefore));
+        SubscriptionStatusMeasure fifteenMonthsOld = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("FIFTEEN_MONTHS"), new DateDimension(createdBefore), new TimeDimension(createdBefore));
+        expectedsubscriptionStatusMeasures.add(fifteenMonthsLatest);
+        expectedsubscriptionStatusMeasures.add(fifteenMonthsOld);
+        expectedsubscriptionStatusMeasures.add(sevenMonthsLatest);
+        when(allSubscriptionStatusMeasure.getFor(Long.parseLong(msisdn))).thenReturn(expectedsubscriptionStatusMeasures);
+
+        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = subscriptionStatusMeasureService.getSubscriptionsFor(msisdn);
+
+        assertEquals(2, subscriptionStatusMeasures.size());
+        assertTrue(subscriptionStatusMeasures.contains(fifteenMonthsLatest));
+        assertTrue(subscriptionStatusMeasures.contains(sevenMonthsLatest));
+    }
+
+    @Test
+    public void shouldReturnEmptyListGivenInvalidMsisdn() {
+        String msisdn = "invalidMsisdn";
+
+        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = subscriptionStatusMeasureService.getSubscriptionsFor(msisdn);
+
+        assertTrue(subscriptionStatusMeasures.isEmpty());
     }
 }

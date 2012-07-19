@@ -12,7 +12,6 @@ import java.util.Arrays;
 
 @Ignore
 public class MVCTestUtils {
-
     public static MockMvc mockMvc(Object controller) {
         StandaloneMockMvcBuilder mockMvcBuilder = MockMvcBuilders.standaloneSetup(controller)
                 .setViewResolvers(new ViewResolver());

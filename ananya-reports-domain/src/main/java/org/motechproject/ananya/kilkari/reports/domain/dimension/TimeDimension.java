@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "hour_dimension")
 @NamedQuery(name = TimeDimension.FIND_BY_HOUR_AND_MINUTE, query = "select t from TimeDimension t where t.hourOfDay=:hour_of_day and t.minuteOfHour=:minute_of_hour ")
-public class TimeDimension {
+public class TimeDimension implements  Comparable<TimeDimension>{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +39,12 @@ public class TimeDimension {
 
     public Integer getMinuteOfHour() {
         return minuteOfHour;
+    }
+
+    @Override
+    public int compareTo(TimeDimension that) {
+        DateTime thisDate = new DateTime(1, 1, 1, this.getHourOfDay(), this.getMinuteOfHour());
+        DateTime thatDate = new DateTime(1, 1, 1, that.getHourOfDay(), that.getMinuteOfHour());
+        return thisDate.compareTo(thatDate);
     }
 }

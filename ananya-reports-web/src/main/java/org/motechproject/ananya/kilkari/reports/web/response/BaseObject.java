@@ -1,4 +1,4 @@
-package org.motechproject.ananya.kilkari.reports.web.contracts.response;
+package org.motechproject.ananya.kilkari.reports.web.response;
 
 import com.google.gson.Gson;
 

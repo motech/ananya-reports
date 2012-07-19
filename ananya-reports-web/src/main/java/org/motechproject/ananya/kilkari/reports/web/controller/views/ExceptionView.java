@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.web.controller.views;
 
-import org.motechproject.ananya.kilkari.reports.web.contracts.response.BaseResponse;
+import org.motechproject.ananya.kilkari.reports.web.response.BaseResponse;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.AbstractView;
 

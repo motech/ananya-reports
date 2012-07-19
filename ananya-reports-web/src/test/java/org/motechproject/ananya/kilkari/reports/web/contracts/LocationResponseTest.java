@@ -2,7 +2,7 @@ package org.motechproject.ananya.kilkari.reports.web.contracts;
 
 import org.junit.Test;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
-import org.motechproject.ananya.kilkari.reports.web.contracts.response.LocationResponse;
+import org.motechproject.ananya.kilkari.reports.web.response.LocationResponse;
 
 import static org.junit.Assert.assertEquals;
 
