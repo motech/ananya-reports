@@ -86,7 +86,7 @@ public class SubscriptionStatusMeasureServiceTest {
         DateDimension dateDimension = new DateDimension();
         LocationDimension locationDimension = new LocationDimension();
 
-        Subscriber subscriber = new Subscriber();
+        Subscriber subscriber = new Subscriber(msisdn, name, age, edd, dob, channelDimension, locationDimension, dateDimension, null);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
         Subscription subscription = new Subscription();
         subscription.setSubscriptionId(subscriptionId);
@@ -96,8 +96,7 @@ public class SubscriptionStatusMeasureServiceTest {
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
         when(allDateDimensions.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(dateDimension);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
-        when(allSubscribers.save(msisdn, name, age, edd, dob, channelDimension, locationDimension,
-                dateDimension, null)).thenReturn(subscriber);
+        when(allSubscribers.save(any(Subscriber.class))).thenReturn(subscriber);
         when(subscriptionService.makeFor(any(Subscription.class))).thenReturn(subscription);
 
         subscriptionStatusMeasureService.create(subscriptionRequest);

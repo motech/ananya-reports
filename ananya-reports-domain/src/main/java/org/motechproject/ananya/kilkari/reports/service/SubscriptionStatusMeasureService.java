@@ -67,8 +67,9 @@ public class SubscriptionStatusMeasureService {
         SubscriberLocation location = subscriptionRequest.getLocation();
         LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
 
-        Subscriber subscriber = allSubscribers.save(msisdn, subscriptionRequest.getName(), subscriptionRequest.getAgeOfBeneficiary(), subscriptionRequest.getEstimatedDateOfDelivery(),
+        Subscriber subscriber = new Subscriber(msisdn, subscriptionRequest.getName(), subscriptionRequest.getAgeOfBeneficiary(), subscriptionRequest.getEstimatedDateOfDelivery(),
                 subscriptionRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
+        subscriber = allSubscribers.save(subscriber);
 
         Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, locationDimension, dateDimension, subscriptionId);
         subscription = subscriptionService.makeFor(subscription);
