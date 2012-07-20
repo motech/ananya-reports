@@ -4,10 +4,12 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.repository.AllSubscriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class SubscriptionService {
 
     private AllSubscriptions allSubscriptions;
