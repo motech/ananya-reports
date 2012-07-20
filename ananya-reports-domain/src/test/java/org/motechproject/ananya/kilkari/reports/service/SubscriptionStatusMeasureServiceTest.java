@@ -215,34 +215,4 @@ public class SubscriptionStatusMeasureServiceTest {
 
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
     }
-
-    @Test
-    public void shouldGetSubscriptionStatusMeasureGivenAValidMsisdn() {
-        String msisdn = "1234567890";
-        DateTime createdNow = DateTime.now();
-        DateTime createdBefore = DateTime.now().minusHours(4);
-        ArrayList<SubscriptionStatusMeasure> expectedsubscriptionStatusMeasures = new ArrayList<SubscriptionStatusMeasure>();
-        SubscriptionStatusMeasure fifteenMonthsLatest = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("FIFTEEN_MONTHS"), new DateDimension(createdNow), new TimeDimension(createdNow));
-        SubscriptionStatusMeasure sevenMonthsLatest = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("SEVEN_MONTHS"), new DateDimension(createdBefore), new TimeDimension(createdBefore));
-        SubscriptionStatusMeasure fifteenMonthsOld = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("FIFTEEN_MONTHS"), new DateDimension(createdBefore), new TimeDimension(createdBefore));
-        expectedsubscriptionStatusMeasures.add(fifteenMonthsLatest);
-        expectedsubscriptionStatusMeasures.add(fifteenMonthsOld);
-        expectedsubscriptionStatusMeasures.add(sevenMonthsLatest);
-        when(allSubscriptionStatusMeasure.getFor(Long.parseLong(msisdn))).thenReturn(expectedsubscriptionStatusMeasures);
-
-        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = subscriptionStatusMeasureService.getSubscriptionsFor(msisdn);
-
-        assertEquals(2, subscriptionStatusMeasures.size());
-        assertTrue(subscriptionStatusMeasures.contains(fifteenMonthsLatest));
-        assertTrue(subscriptionStatusMeasures.contains(sevenMonthsLatest));
-    }
-
-    @Test
-    public void shouldReturnEmptyListGivenInvalidMsisdn() {
-        String msisdn = "invalidMsisdn";
-
-        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = subscriptionStatusMeasureService.getSubscriptionsFor(msisdn);
-
-        assertTrue(subscriptionStatusMeasures.isEmpty());
-    }
 }

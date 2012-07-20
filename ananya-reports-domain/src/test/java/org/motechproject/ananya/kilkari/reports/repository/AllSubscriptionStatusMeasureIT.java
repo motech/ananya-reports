@@ -56,33 +56,4 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         assertEquals(1, subscriptionStatusMeasures.size());
         assertEquals(subscriptionFromDb, subscriptionStatusMeasures.get(0).getSubscription());
     }
-
-    @Test
-    public void shouldGetSubscriptionStatusMeasuresGivenAMsisdn() {
-        Long msisdn = 1234567890L;
-        String subscriptionPack = "TWELVE_MONTHS";
-        String subscriptionId = "subscriptionId";
-        DateTime createdAt = DateTime.now();
-
-        ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
-        DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
-        TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
-        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
-
-        Subscriber subscriber = new Subscriber(msisdn, "name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null);
-        template.save(subscriber);
-        Subscriber subscriberFromDb = template.loadAll(Subscriber.class).get(0);
-
-        Subscription subscription = new Subscription(subscriberFromDb, subscriptionPackDimension, channelDimension, null, null, dateDimension, subscriptionId);
-        template.save(subscription);
-        Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
-
-        template.save(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension));
-
-        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = allSubscriptionStatusMeasure.getFor(msisdn);
-
-        assertEquals(1, subscriptionStatusMeasures.size());
-        assertEquals(subscriptionFromDb, subscriptionStatusMeasures.get(0).getSubscription());
-        assertEquals(subscriberFromDb, subscriptionStatusMeasures.get(0).getSubscription().getSubscriber());
-    }
 }

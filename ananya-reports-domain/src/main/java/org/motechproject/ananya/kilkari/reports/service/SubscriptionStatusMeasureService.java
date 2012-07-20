@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-
 @Service
 public class SubscriptionStatusMeasureService {
 
@@ -102,34 +100,5 @@ public class SubscriptionStatusMeasureService {
                 subscription.getChannelDimension(), operatorDimension, subscription.getSubscriptionPackDimension(), dateDimension, timeDimension);
 
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
-    }
-
-    public List<SubscriptionStatusMeasure> getSubscriptionsFor(String msisdn) {
-        Long parsedMsisdn = tryParse(msisdn);
-        if (StringUtils.isEmpty(msisdn))
-            return Collections.EMPTY_LIST;
-        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = allSubscriptionStatusMeasure.getFor(parsedMsisdn);
-
-        Map<SubscriptionPackDimension, SubscriptionStatusMeasure> statusMeasureHashMap = new HashMap<>();
-        for (SubscriptionStatusMeasure statusMeasure : subscriptionStatusMeasures) {
-            SubscriptionPackDimension key = statusMeasure.getSubscriptionPackDimension();
-            SubscriptionStatusMeasure statusMeasureInMap = statusMeasureHashMap.get(key);
-            if (statusMeasureHashMap.containsKey(key)) {
-                if (statusMeasureInMap.isCreatedBefore(statusMeasure))
-                    statusMeasureHashMap.put(key, statusMeasure);
-            } else
-                statusMeasureHashMap.put(key, statusMeasure);
-        }
-
-        return new ArrayList<>(statusMeasureHashMap.values());
-    }
-
-    private Long tryParse(String msisdn) {
-        Long parsedLong = null;
-        try {
-            parsedLong = Long.parseLong(msisdn);
-        } catch (Exception e) {
-        }
-        return parsedLong;
     }
 }

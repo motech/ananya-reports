@@ -2,7 +2,6 @@ package org.motechproject.ananya.kilkari.reports.web.controller;
 
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
-import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionStatusMeasureMapper;
 import org.motechproject.ananya.kilkari.reports.web.response.SubscriptionResponse;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -39,11 +37,6 @@ public class SubscriptionController {
     @RequestMapping(method = RequestMethod.GET, value = "/subscription")
     @ResponseBody
     public List<SubscriptionResponse> getSubscriptions(@RequestParam String msisdn) {
-        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = subscriptionStatusMeasureService.getSubscriptionsFor(msisdn);
-        List<SubscriptionResponse> subscriptionResponseList = new ArrayList<>();
-        for (SubscriptionStatusMeasure statusMeasure : subscriptionStatusMeasures) {
-            subscriptionResponseList.add(subscriptionStatusMeasureMapper.mapFrom(statusMeasure));
-        }
-        return subscriptionResponseList;
+        return null;
     }
 }
