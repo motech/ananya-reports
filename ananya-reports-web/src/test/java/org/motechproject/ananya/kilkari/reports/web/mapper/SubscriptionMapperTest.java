@@ -6,13 +6,12 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimensi
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension;
-import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.kilkari.reports.web.response.SubscriptionResponse;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-public class SubscriptionStatusMeasureMapperTest {
+public class SubscriptionMapperTest {
     @Test
     public void shouldMapFromSubscriptionStatusMeasureToResponse() {
         DateTime edd = DateTime.now();
@@ -25,9 +24,9 @@ public class SubscriptionStatusMeasureMapperTest {
         String status = "ACTIVE";
         String pack = "FIFTEEN_MONTHS";
         Subscriber subscriber = new Subscriber(12349L, name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, null, null, null, null, null, subscriptionId);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), status, 13);
 
-        SubscriptionResponse subscriptionResponse = SubscriptionStatusMeasureMapper.mapFrom(new SubscriptionStatusMeasure(subscription, status, 12, null, null, null, null, new SubscriptionPackDimension(pack), null, null));
+        SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
         assertEquals(name, subscriptionResponse.getName());
@@ -47,9 +46,9 @@ public class SubscriptionStatusMeasureMapperTest {
         String status = "ACTIVE";
         String pack = "FIFTEEN_MONTHS";
         Subscriber subscriber = new Subscriber(12349L, name, 23, null, null, null, null, null, null);
-        Subscription subscription = new Subscription(subscriber, null, null, null, null, null, subscriptionId);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), status, 13);
 
-        SubscriptionResponse subscriptionResponse = SubscriptionStatusMeasureMapper.mapFrom(new SubscriptionStatusMeasure(subscription, status, 12, null, null, null, null, new SubscriptionPackDimension(pack), null, null));
+        SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
         assertEquals(name, subscriptionResponse.getName());

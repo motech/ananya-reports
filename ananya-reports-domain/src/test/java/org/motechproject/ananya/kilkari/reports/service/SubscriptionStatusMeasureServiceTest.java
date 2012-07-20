@@ -12,11 +12,9 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.kilkari.reports.repository.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -110,6 +108,68 @@ public class SubscriptionStatusMeasureServiceTest {
     }
 
     @Test
+    public void shouldUpdateSubscriptionStatusMeasureOnlyIfRecent() {
+        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest();
+        String subscriptionId = "sub123";
+        String subscriptionStatus = "ACTIVE";
+        String reason = "my own reason";
+        String operator = "airtel";
+        Integer graceCount = 4;
+        DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
+        subscriptionStateChangeRequest.setSubscriptionId(subscriptionId);
+        subscriptionStateChangeRequest.setSubscriptionStatus(subscriptionStatus);
+        subscriptionStateChangeRequest.setCreatedAt(createdAt);
+        subscriptionStateChangeRequest.setReason(reason);
+        subscriptionStateChangeRequest.setOperator(operator);
+        subscriptionStateChangeRequest.setGraceCount(graceCount);
+
+        ChannelDimension channelDimension = new ChannelDimension();
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("TWELVE_MONTHS");
+        DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
+        TimeDimension timeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
+
+        Subscription mockedSubscription = mock(Subscription.class);
+        when(mockedSubscription.getChannelDimension()).thenReturn(channelDimension);
+        when(mockedSubscription.getSubscriptionPackDimension()).thenReturn(subscriptionPackDimension);
+        when(mockedSubscription.getDateDimension()).thenReturn(mockedDateDimension);
+        when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
+        when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.plusDays(2).getMillis()));
+        when(mockedSubscription.getSubscriptionStatus()).thenReturn("NEW");
+        when(mockedSubscription.getWeekNumber()).thenReturn(17);
+        Subscriber mockedSubscriber = mock(Subscriber.class);
+        when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
+
+        when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
+        DateDimension dateDimension = new DateDimension(createdAt);
+        when(allDateDimensions.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
+        when(allTimeDimensions.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
+        OperatorDimension operatorDimension = new OperatorDimension(operator);
+        when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
+
+        subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
+
+        verify(mockedSubscription, never()).updateDetails(any(DateTime.class), anyString(), anyInt());
+        verify(allSubscriptions).update(mockedSubscription);
+
+        ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
+        verify(allSubscriptionStatusMeasure).add(subscriptionStatusMeasureArgumentCaptor.capture());
+        SubscriptionStatusMeasure subscriptionStatusMeasure = subscriptionStatusMeasureArgumentCaptor.getValue();
+        Subscription subscription = subscriptionStatusMeasure.getSubscription();
+
+        assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
+        assertEquals(17, subscriptionStatusMeasure.getWeekNumber());
+        assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
+        assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
+        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
+        assertEquals(subscriptionPackDimension, subscriptionStatusMeasure.getSubscriptionPackDimension());
+        assertEquals(createdAt, new DateTime(subscriptionStatusMeasure.getDateDimension().getDate().getTime()));
+        assertEquals(10, (int) subscriptionStatusMeasure.getTimeDimension().getHourOfDay());
+        assertEquals(10, (int) subscriptionStatusMeasure.getTimeDimension().getMinuteOfHour());
+        assertEquals(subscriptionId, subscription.getSubscriptionId());
+        assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
+    }
+
+    @Test
     public void shouldUpdateSubscriptionStatusMeasureOnSubscriptionStateChange() {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest();
         String subscriptionId = "sub123";
@@ -137,6 +197,9 @@ public class SubscriptionStatusMeasureServiceTest {
         when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
         Subscriber mockedSubscriber = mock(Subscriber.class);
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
+        when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.minusDays(2).getMillis()));
+        when(mockedSubscription.getSubscriptionStatus()).thenReturn("NEW");
+        when(mockedSubscription.getWeekNumber()).thenReturn(16);
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
         DateDimension dateDimension = new DateDimension(createdAt);
@@ -147,6 +210,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
 
+        verify(mockedSubscription).updateDetails(createdAt, subscriptionStatus, 17);
         verify(allSubscriptions).update(mockedSubscription);
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
@@ -194,6 +258,7 @@ public class SubscriptionStatusMeasureServiceTest {
         when(mockedSubscription.getDateDimension()).thenReturn(mockedDateDimension);
         when(mockedSubscription.getOperatorDimension()).thenReturn(operatorDimension);
         when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
+        when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.minusDays(4).getMillis()));
         Subscriber mockedSubscriber = mock(Subscriber.class);
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
 

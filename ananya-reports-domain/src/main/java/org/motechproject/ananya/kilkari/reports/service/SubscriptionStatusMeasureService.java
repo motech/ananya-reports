@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+
 @Service
 public class SubscriptionStatusMeasureService {
 
@@ -69,7 +71,7 @@ public class SubscriptionStatusMeasureService {
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionRequest.getOperator());
 
         Subscriber subscriber = saveSubscriber(subscriptionRequest, msisdn, channelDimension, dateDimension, locationDimension);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber);
+        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionRequest.getCreatedAt(), subscriptionStatus, startingWeekNumber);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, startingWeekNumber, dateDimension, timeDimension, operatorDimension, null, null);
     }
 
@@ -79,14 +81,17 @@ public class SubscriptionStatusMeasureService {
         String subscriptionStatus = subscriptionStateChangeRequest.getSubscriptionStatus();
         DateTime subscriptionRequestedDate = new DateTime(subscription.getDateDimension().getDate());
         String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
+        DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
 
-        int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, subscriptionStateChangeRequest.getCreatedAt(), subscriptionPack);
-        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
-        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionStateChangeRequest.getCreatedAt());
+        int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, createdAt, subscriptionPack);
+        DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator()) ?
                 subscription.getOperatorDimension() : allOperatorDimensions.fetchFor(subscriptionStateChangeRequest.getOperator());
         subscription.getSubscriber().setOperatorDimension(operatorDimension);
         subscription.setOperatorDimension(operatorDimension);
+        if (new Timestamp(createdAt.getMillis()).compareTo(subscription.getLastModifiedTime()) != -1)
+            subscription.updateDetails(createdAt, subscriptionStatus, subscriptionWeekNumber);
         allSubscriptions.update(subscription);
 
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionWeekNumber, dateDimension, timeDimension, operatorDimension,
@@ -102,8 +107,10 @@ public class SubscriptionStatusMeasureService {
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
 
-    private Subscription saveSubscription(String subscriptionId, ChannelDimension channelDimension, SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension, LocationDimension locationDimension, Subscriber subscriber) {
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, locationDimension, dateDimension, subscriptionId);
+    private Subscription saveSubscription(String subscriptionId, ChannelDimension channelDimension, SubscriptionPackDimension subscriptionPackDimension,
+                                          DateDimension dateDimension, LocationDimension locationDimension, Subscriber subscriber,
+                                          DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, locationDimension, dateDimension, subscriptionId, lastModifiedTime, subscriptionStatus, weekNumber);
         subscription = subscriptionService.makeFor(subscription);
         return subscription;
     }

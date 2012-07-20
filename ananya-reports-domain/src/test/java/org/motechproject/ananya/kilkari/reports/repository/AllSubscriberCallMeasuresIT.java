@@ -69,7 +69,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         TimeDimension endTime = allTimeDimensions.fetchFor(callEndDateTime);
         Subscriber subscriber = new Subscriber(99876543210L, null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator);
         subscriber = allSubscribers.save(subscriber);
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operator, location, subscriberCreatedDate, "123");
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operator, location, subscriberCreatedDate, "123", DateTime.now(), "NEW", 13);
         subscription = allSubscriptions.save(subscription);
 
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(

@@ -2,7 +2,7 @@ package org.motechproject.ananya.kilkari.reports.repository;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
+import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +20,13 @@ public class AllSubscriptions {
         List<Subscription> subscriptions = template.findByCriteria(criteria);
 
         return subscriptions.isEmpty() ? null : subscriptions.get(0);
+    }
+
+    public List<Subscription> findByMsisdn(Long msisdn) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Subscription.class);
+        criteria.createAlias("subscriber", "sb");
+        criteria.add(Restrictions.eq("sb.msisdn", msisdn));
+        return template.findByCriteria(criteria);
     }
 
     public Subscription save(Subscription subscription) {

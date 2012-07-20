@@ -2,24 +2,28 @@ package org.motechproject.ananya.kilkari.reports.web.controller;
 
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
+import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
-import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionStatusMeasureMapper;
+import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionMapper;
 import org.motechproject.ananya.kilkari.reports.web.response.SubscriptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class SubscriptionController {
 
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
-    private SubscriptionStatusMeasureMapper subscriptionStatusMeasureMapper;
+    private SubscriptionService subscriptionService;
 
     @Autowired
-    public SubscriptionController(SubscriptionStatusMeasureService subscriptionStatusMeasureService) {
+    public SubscriptionController(SubscriptionStatusMeasureService subscriptionStatusMeasureService, SubscriptionService subscriptionService) {
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
+        this.subscriptionService = subscriptionService;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription")
@@ -37,6 +41,11 @@ public class SubscriptionController {
     @RequestMapping(method = RequestMethod.GET, value = "/subscription")
     @ResponseBody
     public List<SubscriptionResponse> getSubscriptions(@RequestParam String msisdn) {
-        return null;
+        List<Subscription> subscriptionList = subscriptionService.findByMsisdn(msisdn);
+        List<SubscriptionResponse> subscriptionResponseList = new ArrayList<>();
+        for (Subscription subscription : subscriptionList) {
+            subscriptionResponseList.add(SubscriptionMapper.mapFrom(subscription));
+        }
+        return subscriptionResponseList;
     }
 }
