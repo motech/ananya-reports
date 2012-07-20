@@ -51,70 +51,45 @@ public class Subscription {
         this.locationDimension = locationDimension;
         this.dateDimension = dateDimension;
         this.subscriptionId = subscriptionId;
-        this.locationDimension = locationDimension;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Subscriber getSubscriber() {
         return subscriber;
-    }
-
-    public void setSubscriber(Subscriber subscriber) {
-        this.subscriber = subscriber;
     }
 
     public SubscriptionPackDimension getSubscriptionPackDimension() {
         return subscriptionPackDimension;
     }
 
-    public void setSubscriptionPackDimension(SubscriptionPackDimension subscriptionPackDimension) {
-        this.subscriptionPackDimension = subscriptionPackDimension;
-    }
-
     public ChannelDimension getChannelDimension() {
         return channelDimension;
-    }
-
-    public void setChannelDimension(ChannelDimension channelDimension) {
-        this.channelDimension = channelDimension;
     }
 
     public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
     public OperatorDimension getOperatorDimension() {
         return operatorDimension;
-    }
-
-    public void setOperatorDimension(OperatorDimension operatorDimension) {
-        this.operatorDimension = operatorDimension;
     }
 
     public DateDimension getDateDimension() {
         return dateDimension;
     }
 
-    public void setDateDimension(DateDimension dateDimension) {
-        this.dateDimension = dateDimension;
-    }
-
     public LocationDimension getLocationDimension() {
         return locationDimension;
     }
 
-    public void setLocationDimension(LocationDimension locationDimension) {
-        this.locationDimension = locationDimension;
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
+    public void setOperatorDimension(OperatorDimension operatorDimension) {
+        this.operatorDimension = operatorDimension;
     }
 }
