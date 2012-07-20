@@ -1,5 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.repository;
 
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +19,11 @@ public abstract class SpringIntegrationTest {
     @Autowired
     @Qualifier("testDataAccessTemplate")
     protected TestDataAccessTemplate template;
+
+    @Before
+    public void setUp() {
+        template.setAlwaysUseNewSession(true);
+    }
 
     private List<Object> toDelete = new ArrayList<Object>();
 

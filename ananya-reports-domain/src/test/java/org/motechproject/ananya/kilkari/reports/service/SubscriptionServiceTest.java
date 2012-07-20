@@ -18,7 +18,7 @@ public class SubscriptionServiceTest {
     private SubscriptionService subscriptionService;
 
     @Before
-    public void setup(){
+    public void setup() {
         initMocks(this);
         subscriptionService = new SubscriptionService(allSubscriptions);
     }
@@ -39,9 +39,9 @@ public class SubscriptionServiceTest {
 
         assertFalse(subscriptionService.exists(subscriptionId));
     }
-    
+
     @Test
-    public void shouldMakeASubscription(){
+    public void shouldMakeASubscription() {
         Subscriber subscriber = new Subscriber();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension();
         ChannelDimension channelDimension = new ChannelDimension();
@@ -49,12 +49,11 @@ public class SubscriptionServiceTest {
         OperatorDimension operatorDimension = new OperatorDimension();
         LocationDimension locationDimension = new LocationDimension();
         String subscriptionId = "sub11";
-        subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, locationDimension, dateDimension, subscriptionId);
-        
-        verify(allSubscriptions).save(subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, locationDimension, dateDimension, subscriptionId);
-        
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operatorDimension, locationDimension, dateDimension, subscriptionId);
+
+        subscriptionService.makeFor(subscription);
+
+        verify(allSubscriptions).save(subscription);
     }
 
     @Test

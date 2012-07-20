@@ -70,8 +70,8 @@ public class SubscriptionStatusMeasureService {
         Subscriber subscriber = allSubscribers.save(msisdn, subscriptionRequest.getName(), subscriptionRequest.getAgeOfBeneficiary(), subscriptionRequest.getEstimatedDateOfDelivery(),
                 subscriptionRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
 
-        Subscription subscription = subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                null, locationDimension, dateDimension, subscriptionId);
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, locationDimension, dateDimension, subscriptionId);
+        subscription = subscriptionService.makeFor(subscription);
 
         int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionRequest.getSubscriptionStatus(),

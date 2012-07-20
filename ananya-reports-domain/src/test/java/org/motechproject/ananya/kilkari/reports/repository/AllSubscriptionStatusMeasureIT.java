@@ -12,7 +12,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-public class AllSubscriptionStatusMeasureTest extends SpringIntegrationTest {
+public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
     @Autowired
     private AllSubscriptionStatusMeasure allSubscriptionStatusMeasure;
     @Autowired

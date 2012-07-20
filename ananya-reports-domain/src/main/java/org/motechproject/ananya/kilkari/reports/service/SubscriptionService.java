@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
-import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
+import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.repository.AllSubscriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +25,8 @@ public class SubscriptionService {
     }
 
     @Transactional
-    public Subscription makeFor(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
-                                ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                                LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId) {
-        Subscription subscription = allSubscriptions.save(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                locationDimension, dateDimension, subscriptionId);
-        return subscription;
-
+    public Subscription makeFor(Subscription subscription) {
+        return allSubscriptions.save(subscription);
     }
 
     public Subscription fetchFor(String subscriptionId) {

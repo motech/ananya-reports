@@ -70,8 +70,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
 
         Subscriber subscriber = allSubscribers.save(99876543210L, null, 25, null, null,
                 channelDimension, location, subscriberCreatedDate, operator);
-        Subscription subscription = allSubscriptions.save(subscriber, subscriptionPackDimension,
-                channelDimension, operator, location, subscriberCreatedDate, "123");
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operator, location, subscriberCreatedDate, "123");
+        subscription = allSubscriptions.save(subscription);
 
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
                 callStatus,
@@ -94,6 +94,6 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         assertEquals(subscription.getSubscriptionId(), actualSubscriberCallMeasure.getSubscription().getSubscriptionId());
         assertEquals(duration, actualSubscriberCallMeasure.getDuration());
         assertEquals(callStatus, actualSubscriberCallMeasure.getCallStatus());
-        assertEquals(retryCount,actualSubscriberCallMeasure.getRetryCount());
+        assertEquals(retryCount, actualSubscriberCallMeasure.getRetryCount());
     }
 }

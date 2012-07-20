@@ -98,8 +98,7 @@ public class SubscriptionStatusMeasureServiceTest {
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
         when(allSubscribers.save(msisdn, name, age, edd, dob, channelDimension, locationDimension,
                 dateDimension, null)).thenReturn(subscriber);
-        when(subscriptionService.makeFor(subscriber, subscriptionPackDimension, channelDimension,
-                null, locationDimension, dateDimension, subscriptionId)).thenReturn(subscription);
+        when(subscriptionService.makeFor(any(Subscription.class))).thenReturn(subscription);
 
         subscriptionStatusMeasureService.create(subscriptionRequest);
 
