@@ -24,7 +24,6 @@ public class SubscriptionService {
         return bySubscriptionId != null;
     }
 
-    @Transactional
     public Subscription makeFor(Subscription subscription) {
         return allSubscriptions.save(subscription);
     }
