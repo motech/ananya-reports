@@ -31,14 +31,14 @@ public class SubscriptionMapperTest {
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
-        assertEquals(name, subscriptionResponse.getName());
+        assertEquals(name, subscriptionResponse.getBeneficiaryName());
         assertEquals(status, subscriptionResponse.getSubscriptionStatus());
-        assertEquals(pack, subscriptionResponse.getSubscriptionPack());
-        assertEquals(expectedEdd, subscriptionResponse.getEstimatedDateOfDelivery());
+        assertEquals(pack, subscriptionResponse.getPack());
+        assertEquals(expectedEdd, subscriptionResponse.getExpectedDateOfDelivery());
         assertEquals(expectedDob, subscriptionResponse.getDateOfBirth());
-        assertEquals(district, subscriptionResponse.getLocationResponse().getDistrict());
-        assertEquals(block, subscriptionResponse.getLocationResponse().getBlock());
-        assertEquals(panchayat, subscriptionResponse.getLocationResponse().getPanchayat());
+        assertEquals(district, subscriptionResponse.getLocation().getDistrict());
+        assertEquals(block, subscriptionResponse.getLocation().getBlock());
+        assertEquals(panchayat, subscriptionResponse.getLocation().getPanchayat());
     }
 
     @Test
@@ -53,11 +53,11 @@ public class SubscriptionMapperTest {
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
-        assertEquals(name, subscriptionResponse.getName());
+        assertEquals(name, subscriptionResponse.getBeneficiaryName());
         assertEquals(status, subscriptionResponse.getSubscriptionStatus());
-        assertEquals(pack, subscriptionResponse.getSubscriptionPack());
-        assertNull(subscriptionResponse.getEstimatedDateOfDelivery());
+        assertEquals(pack, subscriptionResponse.getPack());
+        assertNull(subscriptionResponse.getExpectedDateOfDelivery());
         assertNull(subscriptionResponse.getDateOfBirth());
-        assertNull(subscriptionResponse.getLocationResponse());
+        assertNull(subscriptionResponse.getLocation());
     }
 }

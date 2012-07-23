@@ -7,68 +7,67 @@ public class SubscriptionResponse {
     @JsonProperty
     private String subscriptionId;
     @JsonProperty
-    private String subscriptionPack;
+    private String pack;
     @JsonProperty
-    private String name;
+    private String beneficiaryName;
     @JsonProperty
     private String subscriptionStatus;
     @JsonProperty
-    private String campaignId;
+    private String lastCampaignId;
     @JsonProperty
-    private String ageOfBeneficiary;
+    private String beneficiaryAge;
     @JsonProperty
-    private String estimatedDateOfDelivery;
+    private String expectedDateOfDelivery;
     @JsonProperty
     private String dateOfBirth;
     @JsonProperty
-    private LocationResponse locationResponse;
+    private LocationResponse location;
 
-    public SubscriptionResponse(String subscriptionId, String subscriptionPack, String name, String subscriptionStatus, String campaignId, String ageOfBeneficiary,
-                                String estimatedDateOfDelivery, String dateOfBirth, LocationResponse locationResponse) {
+    public SubscriptionResponse(String subscriptionId, String pack, String beneficiaryName, String subscriptionStatus, String lastCampaignId, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location) {
         this.subscriptionId = subscriptionId;
-        this.subscriptionPack = subscriptionPack;
-        this.name = name;
+        this.pack = pack;
+        this.beneficiaryName = beneficiaryName;
         this.subscriptionStatus = subscriptionStatus;
-        this.campaignId = campaignId;
-        this.ageOfBeneficiary = ageOfBeneficiary;
-        this.estimatedDateOfDelivery = estimatedDateOfDelivery;
+        this.lastCampaignId = lastCampaignId;
+        this.beneficiaryAge = beneficiaryAge;
+        this.expectedDateOfDelivery = expectedDateOfDelivery;
         this.dateOfBirth = dateOfBirth;
-        this.locationResponse = locationResponse;
+        this.location = location;
     }
 
     public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public String getSubscriptionPack() {
-        return subscriptionPack;
+    public String getPack() {
+        return pack;
     }
 
-    public String getName() {
-        return name;
+    public String getBeneficiaryName() {
+        return beneficiaryName;
     }
 
     public String getSubscriptionStatus() {
         return subscriptionStatus;
     }
 
-    public String getCampaignId() {
-        return campaignId;
+    public String getLastCampaignId() {
+        return lastCampaignId;
     }
 
-    public String getAgeOfBeneficiary() {
-        return ageOfBeneficiary;
+    public String getBeneficiaryAge() {
+        return beneficiaryAge;
     }
 
-    public String getEstimatedDateOfDelivery() {
-        return estimatedDateOfDelivery;
+    public String getExpectedDateOfDelivery() {
+        return expectedDateOfDelivery;
     }
 
     public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public LocationResponse getLocationResponse() {
-        return locationResponse;
+    public LocationResponse getLocation() {
+        return location;
     }
 }
