@@ -134,7 +134,7 @@ public class SubscriptionControllerTest {
         when(subscriptionService.findByMsisdn(msisdn)).thenReturn(subscriptions);
 
         mockMvc(subscriptionController)
-                .perform(get("/subscription").param("msisdn", msisdn)).andExpect(status().isOk())
+                .perform(get("/subscriber").param("msisdn", msisdn)).andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.RESPONSE_JSON))
                 .andExpect(content().string(assertSubscriptionResponse(expectedReponseList)));
     }

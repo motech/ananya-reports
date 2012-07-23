@@ -16,6 +16,8 @@ public class SubscriptionMapperTest {
     public void shouldMapFromSubscriptionStatusMeasureToResponse() {
         DateTime edd = DateTime.now();
         DateTime dob = DateTime.now().minusYears(23);
+        String expectedEdd = edd.toString("dd-MM-yyyy");
+        String expectedDob = dob.toString("dd-MM-yyyy");
         String subscriptionId = "subscriptionId";
         String name = "name";
         String district = "D1";
@@ -32,8 +34,8 @@ public class SubscriptionMapperTest {
         assertEquals(name, subscriptionResponse.getName());
         assertEquals(status, subscriptionResponse.getSubscriptionStatus());
         assertEquals(pack, subscriptionResponse.getSubscriptionPack());
-        assertEquals(edd.toString(), subscriptionResponse.getEstimatedDateOfDelivery());
-        assertEquals(dob.toString(), subscriptionResponse.getDateOfBirth());
+        assertEquals(expectedEdd, subscriptionResponse.getEstimatedDateOfDelivery());
+        assertEquals(expectedDob, subscriptionResponse.getDateOfBirth());
         assertEquals(district, subscriptionResponse.getLocationResponse().getDistrict());
         assertEquals(block, subscriptionResponse.getLocationResponse().getBlock());
         assertEquals(panchayat, subscriptionResponse.getLocationResponse().getPanchayat());

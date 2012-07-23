@@ -14,8 +14,8 @@ public class SubscriptionMapper {
                 subscription.getSubscriptionStatus(),
                 String.valueOf(subscription.getWeekNumber()),
                 String.valueOf(subscriber.getAgeOfBeneficiary()),
-                subscriber.getEstimatedDateOfDelivery() == null ? null : subscriber.getEstimatedDateOfDelivery().toString(),
-                subscriber.getDateOfBirth() == null ? null : subscriber.getDateOfBirth().toString(),
+                subscriber.getEstimatedDateOfDelivery() == null ? null : subscriber.getEstimatedDateOfDelivery().toString("dd-MM-yyyy"),
+                subscriber.getDateOfBirth() == null ? null : subscriber.getDateOfBirth().toString("dd-MM-yyyy"),
                 subscriber.getLocationDimension() == null ? null : new LocationResponse(subscriber.getLocationDimension())
         );
     }

@@ -38,7 +38,7 @@ public class SubscriptionController {
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/subscription")
+    @RequestMapping(method = RequestMethod.GET, value = "/subscriber")
     @ResponseBody
     public List<SubscriptionResponse> getSubscriptions(@RequestParam String msisdn) {
         List<Subscription> subscriptionList = subscriptionService.findByMsisdn(msisdn);
