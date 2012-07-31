@@ -1,6 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.domain.dimension;
 
 import org.joda.time.DateTime;
+import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -54,8 +55,8 @@ public class Subscriber {
         this.msisdn = msisdn;
         this.name = name;
         this.ageOfBeneficiary = ageOfBeneficiary;
-        this.estimatedDateOfDelivery = estimatedDateOfDelivery != null ? new Date(estimatedDateOfDelivery.toDate().getTime()) : null;
-        this.dateOfBirth = dateOfBirth != null ? new Date(dateOfBirth.toDate().getTime()) : null;
+        this.estimatedDateOfDelivery = convertToDate(estimatedDateOfDelivery);
+        this.dateOfBirth = convertToDate(dateOfBirth);
         this.channelDimension = channelDimension;
         this.locationDimension = locationDimension;
         this.dateDimension = dateDimension;
@@ -66,79 +67,47 @@ public class Subscriber {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Long getMsisdn() {
         return msisdn;
-    }
-
-    public void setMsisdn(Long msisdn) {
-        this.msisdn = msisdn;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAgeOfBeneficiary() {
         return ageOfBeneficiary;
     }
 
-    public void setAgeOfBeneficiary(int ageOfBeneficiary) {
-        this.ageOfBeneficiary = ageOfBeneficiary;
-    }
-
     public DateTime getEstimatedDateOfDelivery() {
-        return estimatedDateOfDelivery == null ? null : new DateTime(estimatedDateOfDelivery);
-    }
-
-    public void setEstimatedDateOfDelivery(DateTime estimatedDateOfDelivery) {
-        this.estimatedDateOfDelivery = new Date(estimatedDateOfDelivery.toDate().getTime());
+        return convertToDateTime(estimatedDateOfDelivery);
     }
 
     public DateTime getDateOfBirth() {
-        return this.dateOfBirth == null ? null : new DateTime(dateOfBirth);
-    }
-
-    public void setDateOfBirth(DateTime dateOfBirth) {
-        this.dateOfBirth = new Date(dateOfBirth.toDate().getTime());
-    }
-
-    public ChannelDimension getChannelDimension() {
-        return channelDimension;
-    }
-
-    public void setChannelDimension(ChannelDimension channelDimension) {
-        this.channelDimension = channelDimension;
+        return convertToDateTime(dateOfBirth);
     }
 
     public LocationDimension getLocationDimension() {
         return locationDimension;
     }
 
-    public void setLocationDimension(LocationDimension locationDimension) {
+    public void setOperatorDimension(OperatorDimension operatorDimension) {
+        this.operatorDimension = operatorDimension;
+    }
+
+    public void updateWith(SubscriberRequest subscriberRequest, LocationDimension locationDimension) {
+        ageOfBeneficiary = subscriberRequest.getBeneficiaryAge();
+        name = subscriberRequest.getBeneficiaryName();
+        estimatedDateOfDelivery = convertToDate(subscriberRequest.getExpectedDateOfDelivery());
+        dateOfBirth = convertToDate(subscriberRequest.getDateOfBirth());
         this.locationDimension = locationDimension;
     }
 
-    public DateDimension getDateDimension() {
-        return dateDimension;
+    private Date convertToDate(DateTime dateTime) {
+        return dateTime != null ? new Date(dateTime.toDate().getTime()) : null;
     }
 
-    public void setDateDimension(DateDimension dateDimension) {
-        this.dateDimension = dateDimension;
-    }
-
-    public OperatorDimension getOperatorDimension() {
-        return operatorDimension;
-    }
-
-    public void setOperatorDimension(OperatorDimension operatorDimension) {
-        this.operatorDimension = operatorDimension;
+    private DateTime convertToDateTime(Date date) {
+        return date != null ? new DateTime(date) : null;
     }
 }
