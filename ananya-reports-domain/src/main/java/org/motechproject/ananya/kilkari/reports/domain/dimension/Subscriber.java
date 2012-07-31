@@ -95,11 +95,16 @@ public class Subscriber {
         this.operatorDimension = operatorDimension;
     }
 
-    public void updateWith(SubscriberRequest subscriberRequest, LocationDimension locationDimension) {
+    public DateDimension getDateDimension() {
+        return dateDimension;
+    }
+
+    public void updateWith(SubscriberRequest subscriberRequest, LocationDimension locationDimension, DateDimension dateDimension) {
         ageOfBeneficiary = subscriberRequest.getBeneficiaryAge();
         name = subscriberRequest.getBeneficiaryName();
         estimatedDateOfDelivery = convertToDate(subscriberRequest.getExpectedDateOfDelivery());
         dateOfBirth = convertToDate(subscriberRequest.getDateOfBirth());
+        this.dateDimension = dateDimension;
         this.locationDimension = locationDimension;
     }
 

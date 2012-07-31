@@ -7,17 +7,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
 import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
+import org.motechproject.ananya.kilkari.reports.domain.dimension.DateDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
-import org.motechproject.ananya.kilkari.reports.repository.AllLocationDimensions;
-import org.motechproject.ananya.kilkari.reports.repository.AllSubscribers;
-import org.motechproject.ananya.kilkari.reports.repository.AllSubscriptions;
+import org.motechproject.ananya.kilkari.reports.repository.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class SubscriberServiceTest {
@@ -28,11 +25,13 @@ public class SubscriberServiceTest {
     private AllSubscribers allSubscribers;
     @Mock
     private AllLocationDimensions allLocationDimensions;
+    @Mock
+    private AllDateDimensions allDateDimensions;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriberService = new SubscriberService(allSubscriptions, allSubscribers, allLocationDimensions);
+        subscriberService = new SubscriberService(allSubscriptions, allSubscribers, allLocationDimensions, allDateDimensions);
     }
 
     @Test
@@ -49,13 +48,15 @@ public class SubscriberServiceTest {
         DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
         DateTime dateOfBirth = DateTime.now().minusYears(10);
         Subscriber subscriber = new Subscriber(msisdn, "oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2"), null, null);
+        DateDimension expectedDateDimension = new DateDimension();
         Subscription subscription = mock(Subscription.class);
 
         when(subscription.getSubscriber()).thenReturn(subscriber);
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat));
+        when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
-        subscriberService.update(new SubscriberRequest(subscriptionId, createdAt, beneficiaryName, beneficiaryAge, expectedDateOfDelivery, dateOfBirth, location));
+        subscriberService.update(new SubscriberRequest(createdAt, beneficiaryName, beneficiaryAge, expectedDateOfDelivery, dateOfBirth, location), subscriptionId);
 
         ArgumentCaptor<Subscriber> captor = ArgumentCaptor.forClass(Subscriber.class);
         verify(allSubscribers).save(captor.capture());
@@ -68,5 +69,6 @@ public class SubscriberServiceTest {
         assertEquals(district, actualSubscriber.getLocationDimension().getDistrict());
         assertEquals(block, actualSubscriber.getLocationDimension().getBlock());
         assertEquals(panchayat, actualSubscriber.getLocationDimension().getPanchayat());
+        assertEquals(expectedDateDimension, actualSubscriber.getDateDimension());
     }
 }

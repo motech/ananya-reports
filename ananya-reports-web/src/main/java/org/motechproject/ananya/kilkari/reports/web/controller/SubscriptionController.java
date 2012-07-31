@@ -1,8 +1,10 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
+import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
+import org.motechproject.ananya.kilkari.reports.service.SubscriberService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionMapper;
@@ -19,17 +21,25 @@ public class SubscriptionController {
 
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
     private SubscriptionService subscriptionService;
+    private SubscriberService subscriberService;
 
     @Autowired
-    public SubscriptionController(SubscriptionStatusMeasureService subscriptionStatusMeasureService, SubscriptionService subscriptionService) {
+    public SubscriptionController(SubscriptionStatusMeasureService subscriptionStatusMeasureService, SubscriptionService subscriptionService, SubscriberService subscriberService) {
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
         this.subscriptionService = subscriptionService;
+        this.subscriberService = subscriberService;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription")
     @ResponseBody
     public void createSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
         subscriptionStatusMeasureService.create(subscriptionRequest);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/updatesubscriber/{subscriptionId}")
+    @ResponseBody
+    public void updateSubscriber(@RequestBody SubscriberRequest subscriberRequest, @PathVariable String subscriptionId) {
+        subscriberService.update(subscriberRequest, subscriptionId);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/updatesubscription/{subscriptionId}")

@@ -7,12 +7,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
+import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension;
+import org.motechproject.ananya.kilkari.reports.service.SubscriberService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionMapper;
@@ -41,11 +44,13 @@ public class SubscriptionControllerTest {
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
     @Mock
     private SubscriptionService subscriptionService;
+    @Mock
+    private SubscriberService subscriberService;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService);
+        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService);
     }
 
     @Test
@@ -137,6 +142,38 @@ public class SubscriptionControllerTest {
                 .perform(get("/subscriber").param("msisdn", msisdn)).andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.RESPONSE_JSON))
                 .andExpect(content().string(assertSubscriptionResponse(expectedReponseList)));
+    }
+
+    @Test
+    public void shouldInvokeSubscriberServiceToUpdateSubscriberDetails() throws Exception {
+        String expectedSubscriptionId = "sid";
+        String district = "d1";
+        String block = "b1";
+        String panchayat = "p1";
+        SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
+        DateTime createdAt = DateTime.now();
+        String beneficiaryName = "name";
+        int beneficiaryAge = 24;
+        DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
+        DateTime dateOfBirth = DateTime.now().minusYears(10);
+        String subscriberRequestJson = TestUtils.toJson(new SubscriberRequest(createdAt, beneficiaryName, beneficiaryAge, expectedDateOfDelivery, dateOfBirth, location));
+        SubscriberRequest expectedSubscriberRequest = TestUtils.fromJson(subscriberRequestJson, SubscriberRequest.class);
+
+        mockMvc(subscriptionController)
+                .perform(put("/updatesubscriber/" + expectedSubscriptionId)
+                        .body(subscriberRequestJson.getBytes())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk());
+
+        ArgumentCaptor<SubscriberRequest> subscriberRequestArgumentCaptor = ArgumentCaptor.forClass(SubscriberRequest.class);
+        ArgumentCaptor<String> subscriptionIdArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(subscriberService).update(subscriberRequestArgumentCaptor.capture(), subscriptionIdArgumentCaptor.capture());
+        SubscriberRequest actualSubscriberRequest = subscriberRequestArgumentCaptor.getValue();
+        String actualSubscriptionId = subscriptionIdArgumentCaptor.getValue();
+
+        assertEquals(expectedSubscriptionId, actualSubscriptionId);
+        assertEquals(expectedSubscriberRequest, actualSubscriberRequest);
     }
 
     private BaseMatcher<String> assertSubscriptionResponse(final List<SubscriptionResponse> expectedReponseList) {
