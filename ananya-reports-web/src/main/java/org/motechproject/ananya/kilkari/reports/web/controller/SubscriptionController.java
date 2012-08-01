@@ -36,13 +36,13 @@ public class SubscriptionController {
         subscriptionStatusMeasureService.create(subscriptionRequest);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/updatesubscriber/{subscriptionId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/subscriber/{subscriptionId}")
     @ResponseBody
     public void updateSubscriber(@RequestBody SubscriberRequest subscriberRequest, @PathVariable String subscriptionId) {
         subscriberService.update(subscriberRequest, subscriptionId);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/updatesubscription/{subscriptionId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/subscription/{subscriptionId}")
     @ResponseBody
     public void updateSubscription(@RequestBody SubscriptionStateChangeRequest subscriptionStateChangeRequest, @PathVariable String subscriptionId) {
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);

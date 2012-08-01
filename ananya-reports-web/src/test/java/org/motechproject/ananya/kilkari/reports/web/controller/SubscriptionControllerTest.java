@@ -100,7 +100,7 @@ public class SubscriptionControllerTest {
                 "}";
 
         mockMvc(subscriptionController)
-                .perform(put("/updatesubscription/sid")
+                .perform(put("/subscription/sid")
                         .body(subscriptionStateChangeRequestJson.getBytes())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -160,7 +160,7 @@ public class SubscriptionControllerTest {
         SubscriberRequest expectedSubscriberRequest = TestUtils.fromJson(subscriberRequestJson, SubscriberRequest.class);
 
         mockMvc(subscriptionController)
-                .perform(put("/updatesubscriber/" + expectedSubscriptionId)
+                .perform(put("/subscriber/" + expectedSubscriptionId)
                         .body(subscriberRequestJson.getBytes())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
