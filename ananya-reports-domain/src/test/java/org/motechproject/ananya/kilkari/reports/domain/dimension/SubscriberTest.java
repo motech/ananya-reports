@@ -17,7 +17,7 @@ public class SubscriberTest {
         long msisdn = 1234567890L;
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
-        int beneficiaryAge = 24;
+        Integer beneficiaryAge = 24;
         DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
         DateTime dateOfBirth = DateTime.now().minusYears(10);
         Subscriber subscriber = new Subscriber(msisdn, "oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1"), null, null);
@@ -27,7 +27,7 @@ public class SubscriberTest {
         subscriber.updateWith(new SubscriberRequest(createdAt, beneficiaryName, beneficiaryAge,
                 expectedDateOfDelivery, dateOfBirth, location), expectedLocationDimension, expectedDateDimension);
 
-        assertEquals(beneficiaryAge, subscriber.getAgeOfBeneficiary());
+        assertEquals(Integer.valueOf(beneficiaryAge), subscriber.getAgeOfBeneficiary());
         assertEquals(beneficiaryName, subscriber.getName());
         assertEquals(dateOfBirth, subscriber.getDateOfBirth());
         assertEquals(expectedDateOfDelivery, subscriber.getEstimatedDateOfDelivery());

@@ -22,7 +22,7 @@ public class Subscriber {
     private String name;
 
     @Column(name = "age_of_beneficiary")
-    private int ageOfBeneficiary;
+    private Integer ageOfBeneficiary;
 
     @Column(name = "estimated_date_of_delivery")
     private Date estimatedDateOfDelivery;
@@ -49,7 +49,7 @@ public class Subscriber {
     public Subscriber() {
     }
 
-    public Subscriber(Long msisdn, String name, int ageOfBeneficiary, DateTime estimatedDateOfDelivery,
+    public Subscriber(Long msisdn, String name, Integer ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                       DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
                       DateDimension dateDimension, OperatorDimension operatorDimension) {
         this.msisdn = msisdn;
@@ -75,7 +75,7 @@ public class Subscriber {
         return name;
     }
 
-    public int getAgeOfBeneficiary() {
+    public Integer getAgeOfBeneficiary() {
         return ageOfBeneficiary;
     }
 

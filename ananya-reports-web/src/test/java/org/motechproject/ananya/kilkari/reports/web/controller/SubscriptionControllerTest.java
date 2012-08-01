@@ -153,7 +153,7 @@ public class SubscriptionControllerTest {
         SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
-        int beneficiaryAge = 24;
+        Integer beneficiaryAge = 24;
         DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
         DateTime dateOfBirth = DateTime.now().minusYears(10);
         String subscriberRequestJson = TestUtils.toJson(new SubscriberRequest(createdAt, beneficiaryName, beneficiaryAge, expectedDateOfDelivery, dateOfBirth, location));

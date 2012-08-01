@@ -15,7 +15,7 @@ public class SubscriptionRequest {
 
     private String name;
 
-    private int ageOfBeneficiary;
+    private Integer ageOfBeneficiary;
 
     private DateTime createdAt;
 
@@ -59,7 +59,7 @@ public class SubscriptionRequest {
         return name;
     }
 
-    public int getAgeOfBeneficiary() {
+    public Integer getAgeOfBeneficiary() {
         return ageOfBeneficiary;
     }
 
@@ -111,7 +111,7 @@ public class SubscriptionRequest {
         this.name = name;
     }
 
-    public void setAgeOfBeneficiary(int ageOfBeneficiary) {
+    public void setAgeOfBeneficiary(Integer ageOfBeneficiary) {
         this.ageOfBeneficiary = ageOfBeneficiary;
     }
 

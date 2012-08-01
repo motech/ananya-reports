@@ -44,7 +44,7 @@ public class SubscriberServiceTest {
         long msisdn = 1234567890L;
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
-        int beneficiaryAge = 24;
+        Integer beneficiaryAge = 24;
         DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
         DateTime dateOfBirth = DateTime.now().minusYears(10);
         Subscriber subscriber = new Subscriber(msisdn, "oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2"), null, null);
@@ -62,7 +62,7 @@ public class SubscriberServiceTest {
         verify(allSubscribers).save(captor.capture());
         Subscriber actualSubscriber = captor.getValue();
 
-        assertEquals(beneficiaryAge, actualSubscriber.getAgeOfBeneficiary());
+        assertEquals(Integer.valueOf(beneficiaryAge), actualSubscriber.getAgeOfBeneficiary());
         assertEquals(beneficiaryName, actualSubscriber.getName());
         assertEquals(expectedDateOfDelivery, actualSubscriber.getEstimatedDateOfDelivery());
         assertEquals(dateOfBirth, actualSubscriber.getDateOfBirth());

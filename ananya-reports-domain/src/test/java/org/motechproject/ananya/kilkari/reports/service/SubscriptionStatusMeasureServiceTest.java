@@ -56,7 +56,7 @@ public class SubscriptionStatusMeasureServiceTest {
         long msisdn = 998L;
         String channel = "IVR";
         String name = "name";
-        int age = 42;
+        Integer age = 42;
         String subscriptionId = "sub112";
         String operator = "airtel";
         String subscriptionPack = "TWELVE_MONTHS";
@@ -84,7 +84,7 @@ public class SubscriptionStatusMeasureServiceTest {
         DateDimension dateDimension = new DateDimension();
         LocationDimension locationDimension = new LocationDimension();
 
-        Subscriber subscriber = new Subscriber(msisdn, name, age, edd, dob, channelDimension, locationDimension, dateDimension, null);
+        Subscriber subscriber = new Subscriber(msisdn, name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
         Subscription subscription = new Subscription();
         subscription.setSubscriptionId(subscriptionId);

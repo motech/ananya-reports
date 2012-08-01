@@ -13,7 +13,7 @@ public class SubscriptionMapper {
                 subscriber.getName(),
                 subscription.getSubscriptionStatus(),
                 String.valueOf(subscription.getWeekNumber()),
-                String.valueOf(subscriber.getAgeOfBeneficiary()),
+                subscriber.getAgeOfBeneficiary() == null ? null : String.valueOf(subscriber.getAgeOfBeneficiary()),
                 subscriber.getEstimatedDateOfDelivery() == null ? null : subscriber.getEstimatedDateOfDelivery().toString("dd-MM-yyyy"),
                 subscriber.getDateOfBirth() == null ? null : subscriber.getDateOfBirth().toString("dd-MM-yyyy"),
                 subscriber.getLocationDimension() == null ? null : new LocationResponse(subscriber.getLocationDimension())
