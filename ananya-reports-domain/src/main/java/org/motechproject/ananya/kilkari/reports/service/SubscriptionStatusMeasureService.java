@@ -71,7 +71,7 @@ public class SubscriptionStatusMeasureService {
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionRequest.getOperator());
 
         Subscriber subscriber = saveSubscriber(subscriptionRequest, msisdn, channelDimension, dateDimension, locationDimension);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionRequest.getCreatedAt(), subscriptionStatus, startingWeekNumber);
+        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionRequest.getStartDate(), subscriptionRequest.getCreatedAt(), subscriptionStatus, startingWeekNumber);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, startingWeekNumber, dateDimension, timeDimension, operatorDimension, null, null);
     }
 
@@ -102,15 +102,16 @@ public class SubscriptionStatusMeasureService {
                                                DateDimension dateDimension, TimeDimension timeDimension, OperatorDimension operatorDimension,
                                                String reason, Integer graceCount) {
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,
-                subscriptionWeekNumber, reason, graceCount,
-                subscription.getChannelDimension(), operatorDimension, subscription.getSubscriptionPackDimension(), dateDimension, timeDimension);
+                subscriptionWeekNumber, reason, graceCount, subscription.getChannelDimension(), operatorDimension,
+                subscription.getSubscriptionPackDimension(), dateDimension, timeDimension);
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
 
     private Subscription saveSubscription(String subscriptionId, ChannelDimension channelDimension, SubscriptionPackDimension subscriptionPackDimension,
                                           DateDimension dateDimension, LocationDimension locationDimension, Subscriber subscriber,
-                                          DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, locationDimension, dateDimension, subscriptionId, lastModifiedTime, subscriptionStatus, weekNumber);
+                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null,
+                locationDimension, dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, weekNumber);
         subscription = subscriptionService.makeFor(subscription);
         return subscription;
     }

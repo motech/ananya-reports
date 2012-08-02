@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
 import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
 import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
@@ -65,6 +67,7 @@ public class SubscriptionStatusMeasureServiceTest {
         String district = "district";
         String block = "block";
         String panchayat = "panchayat";
+        DateTime startDate = DateTime.now();
 
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
         subscriptionRequest.setMsisdn(msisdn);
@@ -73,6 +76,7 @@ public class SubscriptionStatusMeasureServiceTest {
         subscriptionRequest.setOperator(operator);
         subscriptionRequest.setPack(subscriptionPack);
         subscriptionRequest.setCreatedAt(new DateTime(2012, 01, 01, 10, 10));
+        subscriptionRequest.setStartDate(startDate);
         subscriptionRequest.setEstimatedDateOfDelivery(edd);
         subscriptionRequest.setDateOfBirth(dob);
         subscriptionRequest.setName(name);
@@ -86,8 +90,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         Subscriber subscriber = new Subscriber(msisdn, name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
-        Subscription subscription = new Subscription();
-        subscription.setSubscriptionId(subscriptionId);
+        final Subscription[] subscriptionCapture = new Subscription[1];
 
         when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
@@ -95,7 +98,14 @@ public class SubscriptionStatusMeasureServiceTest {
         when(allDateDimensions.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(dateDimension);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
         when(allSubscribers.save(any(Subscriber.class))).thenReturn(subscriber);
-        when(subscriptionService.makeFor(any(Subscription.class))).thenReturn(subscription);
+        when(subscriptionService.makeFor(any(Subscription.class))).thenAnswer(new Answer<Subscription>() {
+            @Override
+            public Subscription answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                subscriptionCapture[0] = (Subscription) args[0];
+                return subscriptionCapture[0];
+            }
+        });
 
         subscriptionStatusMeasureService.create(subscriptionRequest);
 
@@ -105,6 +115,10 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
         assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
         assertEquals(13, subscriptionStatusMeasure.getWeekNumber());
+
+        Subscription subscription = subscriptionCapture[0];
+        assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
+        assertEquals(subscriptionId, subscription.getSubscriptionId());
     }
 
     @Test

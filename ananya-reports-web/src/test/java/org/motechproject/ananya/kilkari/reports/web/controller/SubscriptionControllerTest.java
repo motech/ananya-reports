@@ -128,7 +128,7 @@ public class SubscriptionControllerTest {
         String pack = "FIFTEEN_MONTHS";
         int weekNumber = 13;
         Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), status, weekNumber);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber);
 
         final SubscriptionResponse expectedResponse = SubscriptionMapper.mapFrom(subscription);
         List<SubscriptionResponse> expectedReponseList = new ArrayList<SubscriptionResponse>() {{

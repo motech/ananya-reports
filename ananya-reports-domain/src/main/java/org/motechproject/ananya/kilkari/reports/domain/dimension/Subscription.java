@@ -43,6 +43,9 @@ public class Subscription {
     @Column(name = "last_modified_time")
     private Timestamp lastModifiedTime;
 
+    @Column(name = "start_date")
+    private Timestamp startDate;
+
     @Column(name = "subscription_status")
     private String subscriptionStatus;
 
@@ -55,7 +58,7 @@ public class Subscription {
     public Subscription(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
                         LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId,
-                        DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {
+                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, int weekNumber) {
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
         this.channelDimension = channelDimension;
@@ -63,6 +66,7 @@ public class Subscription {
         this.locationDimension = locationDimension;
         this.dateDimension = dateDimension;
         this.subscriptionId = subscriptionId;
+        this.startDate = new Timestamp(startDate.getMillis());
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
         this.weekNumber = weekNumber;
@@ -118,6 +122,14 @@ public class Subscription {
 
     public int getWeekNumber() {
         return weekNumber;
+    }
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
     }
 
     public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {

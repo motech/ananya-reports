@@ -26,7 +26,7 @@ public class SubscriptionMapperTest {
         String status = "ACTIVE";
         String pack = "FIFTEEN_MONTHS";
         Subscriber subscriber = new Subscriber(12349L, name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), status, 13);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, 13);
 
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
@@ -48,7 +48,7 @@ public class SubscriptionMapperTest {
         String status = "ACTIVE";
         String pack = "FIFTEEN_MONTHS";
         Subscriber subscriber = new Subscriber(12349L, name, 23, null, null, null, null, null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), status, 13);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, 13);
 
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 

@@ -31,6 +31,8 @@ public class SubscriptionRequest {
 
     private String operator;
 
+    private DateTime startDate;
+
     public String getOperator() {
         return operator;
     }
@@ -125,5 +127,13 @@ public class SubscriptionRequest {
 
     public void setLocation(SubscriberLocation location) {
         this.location = location;
+    }
+
+    public DateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(DateTime startDate) {
+        this.startDate = startDate;
     }
 }
