@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-public class OBDRequest {
+public class CallDetailsRequest {
     @JsonProperty
     private String subscriptionId;
     @JsonProperty
@@ -20,19 +20,22 @@ public class OBDRequest {
     private String status;
     @JsonProperty
     private CallDetailRecordRequest callDetailRecord;
+    @JsonProperty
+    private String callSource;
 
 
-    public OBDRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String startTime, String endTime, String retryCount, String status) {
+    public CallDetailsRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String startTime, String endTime, String retryCount, String status, String callSource) {
         this.subscriptionId = subscriptionId;
         this.msisdn = msisdn;
         this.campaignId = campaignId;
         this.serviceOption = serviceOption;
         this.retryCount = retryCount;
         this.status = status;
+        this.callSource = callSource;
         this.callDetailRecord = new CallDetailRecordRequest(startTime,endTime);
     }
 
-    public OBDRequest() {
+    public CallDetailsRequest() {
     }
 
     @JsonIgnore
@@ -82,6 +85,10 @@ public class OBDRequest {
     @JsonIgnore
     public String getStatus() {
         return status;
+    }
+
+    public String getCallSource() {
+        return callSource;
     }
 
     public static class CallDetailRecordRequest {

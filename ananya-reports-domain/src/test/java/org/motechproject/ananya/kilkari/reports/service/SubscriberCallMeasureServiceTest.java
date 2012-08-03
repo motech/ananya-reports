@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.motechproject.ananya.kilkari.internal.OBDRequest;
+import org.motechproject.ananya.kilkari.internal.CallDetailsRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure;
 import org.motechproject.ananya.kilkari.reports.repository.AllCampaignDimensions;
@@ -54,7 +54,7 @@ public class SubscriberCallMeasureServiceTest {
         String endTime = "01-01-2012 01-41-00";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
-        OBDRequest obdRequest = new OBDRequest(subscriptionId, msisdn, campaignId, serviceOption, startTime, endTime, retryCount, status);
+        CallDetailsRequest callDetailsRequest = new CallDetailsRequest(subscriptionId, msisdn, campaignId, serviceOption, startTime, endTime, retryCount, status, "OBD");
 
         Subscription mockedSubscription = mock(Subscription.class);
         OperatorDimension mockedOperatorDimension = mock(OperatorDimension.class);
@@ -76,7 +76,7 @@ public class SubscriberCallMeasureServiceTest {
         when(mockedCampaignDimension.getMessageDuration()).thenReturn(3600);
 
         //When
-        subscriberCallMeasureService.createSubscriberCallDetails(obdRequest);
+        subscriberCallMeasureService.createSubscriberCallDetails(callDetailsRequest);
 
         //Expected
         verify(subscriptionService).fetchFor(subscriptionId);
@@ -90,8 +90,8 @@ public class SubscriberCallMeasureServiceTest {
         ArgumentCaptor<SubscriberCallMeasure> subscriberCallMeasureCaptor = ArgumentCaptor.forClass(SubscriberCallMeasure.class);
         verify(allSubscriberCallMeasures).createFor(subscriberCallMeasureCaptor.capture());
         SubscriberCallMeasure subscriberCallMeasure = subscriberCallMeasureCaptor.getValue();
-        assertEquals(obdRequest.getDuration(), subscriberCallMeasure.getDuration());
-        assertEquals(obdRequest.getServiceOption(), subscriberCallMeasure.getServiceOption());
+        assertEquals(callDetailsRequest.getDuration(), subscriberCallMeasure.getDuration());
+        assertEquals(callDetailsRequest.getServiceOption(), subscriberCallMeasure.getServiceOption());
         assertEquals(mockedSubscription, subscriberCallMeasure.getSubscription());
         assertEquals(mockedOperatorDimension, subscriberCallMeasure.getOperatorDimension());
         assertEquals(mockedSubscriptionPackDimension, subscriberCallMeasure.getSubscriptionPackDimension());
@@ -100,7 +100,8 @@ public class SubscriberCallMeasureServiceTest {
         assertEquals(mockedEndDateDimension, subscriberCallMeasure.getEndDate());
         assertEquals(mockedEndTimeDimension, subscriberCallMeasure.getEndTime());
         assertEquals(percentageListened, subscriberCallMeasure.getPercentageListened());
-        assertEquals(obdRequest.getStatus(), subscriberCallMeasure.getCallStatus());
+        assertEquals(callDetailsRequest.getStatus(), subscriberCallMeasure.getCallStatus());
         assertEquals((Integer)2,subscriberCallMeasure.getRetryCount());
+        assertEquals("OBD", subscriberCallMeasure.getCallSource());
     }
 }

@@ -55,6 +55,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         DateTime subscriberCreatedDateTime = DateTime.now().minusMonths(1);
         DateTime callStartDateTime = DateTime.now();
         DateTime callEndDateTime = callStartDateTime.plusMinutes(10);
+        String callSource = "OBD";
         markForDeletion(template.save(new CampaignDimension(campaignId, 3600)));
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
@@ -86,7 +87,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 startTime,
                 endDate,
                 endTime,
-                retryCount));
+                retryCount,
+                callSource));
 
         List<SubscriberCallMeasure> subscriberCallMeasures = template.loadAll(SubscriberCallMeasure.class);
         assertEquals(1, subscriberCallMeasures.size());
@@ -95,5 +97,6 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         assertEquals(duration, actualSubscriberCallMeasure.getDuration());
         assertEquals(callStatus, actualSubscriberCallMeasure.getCallStatus());
         assertEquals(retryCount, actualSubscriberCallMeasure.getRetryCount());
+        assertEquals(callSource, actualSubscriberCallMeasure.getCallSource());
     }
 }

@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
-import org.motechproject.ananya.kilkari.internal.OBDRequest;
+import org.motechproject.ananya.kilkari.internal.CallDetailsRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.CampaignDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure;
@@ -35,24 +35,25 @@ public class SubscriberCallMeasureService {
     }
 
     @Transactional
-    public void createSubscriberCallDetails(OBDRequest obdRequest) {
-        Subscription subscription = subscriptionService.fetchFor(obdRequest.getSubscriptionId());
+    public void createSubscriberCallDetails(CallDetailsRequest callDetailsRequest) {
+        Subscription subscription = subscriptionService.fetchFor(callDetailsRequest.getSubscriptionId());
 
-        CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(obdRequest.getCampaignId());
+        CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(callDetailsRequest.getCampaignId());
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
-                obdRequest.getStatus(),
-                obdRequest.getDuration(),
-                getPercentageListenedTo(obdRequest.getDuration(), campaignDimension.getMessageDuration()),
-                obdRequest.getServiceOption(),
+                callDetailsRequest.getStatus(),
+                callDetailsRequest.getDuration(),
+                getPercentageListenedTo(callDetailsRequest.getDuration(), campaignDimension.getMessageDuration()),
+                callDetailsRequest.getServiceOption(),
                 subscription,
                 subscription.getOperatorDimension(),
                 subscription.getSubscriptionPackDimension(),
                 campaignDimension,
-                allDateDimensions.fetchFor(obdRequest.getStartTime()),
-                allTimeDimensions.fetchFor(obdRequest.getStartTime()),
-                allDateDimensions.fetchFor(obdRequest.getEndTime()),
-                allTimeDimensions.fetchFor(obdRequest.getEndTime()),
-                Integer.parseInt(obdRequest.getRetryCount())));
+                allDateDimensions.fetchFor(callDetailsRequest.getStartTime()),
+                allTimeDimensions.fetchFor(callDetailsRequest.getStartTime()),
+                allDateDimensions.fetchFor(callDetailsRequest.getEndTime()),
+                allTimeDimensions.fetchFor(callDetailsRequest.getEndTime()),
+                Integer.parseInt(callDetailsRequest.getRetryCount()),
+                callDetailsRequest.getCallSource()));
     }
 
     private Integer getPercentageListenedTo(Integer durationListenedTo, Integer messageDuration) {
