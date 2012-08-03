@@ -24,7 +24,7 @@ public class CallDetailsRequest {
     private String callSource;
 
 
-    public CallDetailsRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String startTime, String endTime, String retryCount, String status, String callSource) {
+    public CallDetailsRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, DateTime startTime, DateTime endTime, String retryCount, String status, String callSource) {
         this.subscriptionId = subscriptionId;
         this.msisdn = msisdn;
         this.campaignId = campaignId;
@@ -60,16 +60,12 @@ public class CallDetailsRequest {
 
     @JsonIgnore
     public DateTime getStartTime() {
-        return parseDateTime(callDetailRecord.startTime);
+        return callDetailRecord.getStartTime();
     }
 
     @JsonIgnore
     public DateTime getEndTime() {
-        return parseDateTime(callDetailRecord.endTime);
-    }
-
-    private DateTime parseDateTime(String dateTime) {
-        return DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(dateTime);
+        return callDetailRecord.getEndTime();
     }
 
     @JsonIgnore
@@ -90,19 +86,5 @@ public class CallDetailsRequest {
     public String getCallSource() {
         return callSource;
     }
-
-    public static class CallDetailRecordRequest {
-        public CallDetailRecordRequest(String startTime, String endTime) {
-            this.startTime = startTime;
-            this.endTime = endTime;
-        }
-
-        public CallDetailRecordRequest() {
-        }
-
-        @JsonProperty
-        String startTime;
-        @JsonProperty
-        String endTime;
-    }
 }
+

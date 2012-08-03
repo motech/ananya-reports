@@ -54,7 +54,7 @@ public class SubscriberCallMeasureServiceTest {
         String endTime = "01-01-2012 01-41-00";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
-        CallDetailsRequest callDetailsRequest = new CallDetailsRequest(subscriptionId, msisdn, campaignId, serviceOption, startTime, endTime, retryCount, status, "OBD");
+        CallDetailsRequest callDetailsRequest = new CallDetailsRequest(subscriptionId, msisdn, campaignId, serviceOption, startDateTime, endDateTime, retryCount, status, "OBD");
 
         Subscription mockedSubscription = mock(Subscription.class);
         OperatorDimension mockedOperatorDimension = mock(OperatorDimension.class);
