@@ -13,6 +13,9 @@ public class LocationResponse {
     @JsonProperty
     private String district;
 
+    public LocationResponse() {
+    }
+
     public LocationResponse(String district, String block, String panchayat) {
         this.district = district;
         this.block = block;
