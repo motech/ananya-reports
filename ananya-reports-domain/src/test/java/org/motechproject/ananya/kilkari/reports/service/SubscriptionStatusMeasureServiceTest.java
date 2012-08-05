@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.kilkari.contract.request.SubscriptionRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;
@@ -69,20 +69,20 @@ public class SubscriptionStatusMeasureServiceTest {
         String panchayat = "panchayat";
         DateTime startDate = DateTime.now();
 
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
-        subscriptionRequest.setMsisdn(msisdn);
-        subscriptionRequest.setChannel(channel);
-        subscriptionRequest.setSubscriptionId(subscriptionId);
-        subscriptionRequest.setOperator(operator);
-        subscriptionRequest.setPack(subscriptionPack);
-        subscriptionRequest.setCreatedAt(new DateTime(2012, 01, 01, 10, 10));
-        subscriptionRequest.setStartDate(startDate);
-        subscriptionRequest.setEstimatedDateOfDelivery(edd);
-        subscriptionRequest.setDateOfBirth(dob);
-        subscriptionRequest.setName(name);
-        subscriptionRequest.setAgeOfBeneficiary(age);
-        subscriptionRequest.setLocation(new SubscriberLocation(district, block, panchayat));
-        subscriptionRequest.setSubscriptionStatus("subscriptionstatus");
+        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest();
+        subscriptionReportRequest.setMsisdn(msisdn);
+        subscriptionReportRequest.setChannel(channel);
+        subscriptionReportRequest.setSubscriptionId(subscriptionId);
+        subscriptionReportRequest.setOperator(operator);
+        subscriptionReportRequest.setPack(subscriptionPack);
+        subscriptionReportRequest.setCreatedAt(new DateTime(2012, 01, 01, 10, 10));
+        subscriptionReportRequest.setStartDate(startDate);
+        subscriptionReportRequest.setEstimatedDateOfDelivery(edd);
+        subscriptionReportRequest.setDateOfBirth(dob);
+        subscriptionReportRequest.setName(name);
+        subscriptionReportRequest.setAgeOfBeneficiary(age);
+        subscriptionReportRequest.setLocation(new SubscriberLocation(district, block, panchayat));
+        subscriptionReportRequest.setSubscriptionStatus("subscriptionstatus");
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -95,7 +95,7 @@ public class SubscriptionStatusMeasureServiceTest {
         when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
-        when(allDateDimensions.fetchFor(new DateTime(subscriptionRequest.getCreatedAt()))).thenReturn(dateDimension);
+        when(allDateDimensions.fetchFor(new DateTime(subscriptionReportRequest.getCreatedAt()))).thenReturn(dateDimension);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
         when(allSubscribers.save(any(Subscriber.class))).thenReturn(subscriber);
         when(subscriptionService.makeFor(any(Subscription.class))).thenAnswer(new Answer<Subscription>() {
@@ -107,7 +107,7 @@ public class SubscriptionStatusMeasureServiceTest {
             }
         });
 
-        subscriptionStatusMeasureService.create(subscriptionRequest);
+        subscriptionStatusMeasureService.create(subscriptionReportRequest);
 
         ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         verify(allSubscriptionStatusMeasure).add(captor.capture());

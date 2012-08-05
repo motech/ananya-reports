@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.service;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.kilkari.contract.request.SubscriptionRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.WeekNumber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
@@ -53,25 +53,25 @@ public class SubscriptionStatusMeasureService {
     }
 
     @Transactional
-    public void create(SubscriptionRequest subscriptionRequest) {
-        Long msisdn = subscriptionRequest.getMsisdn();
-        String subscriptionId = subscriptionRequest.getSubscriptionId();
-        String subscriptionStatus = subscriptionRequest.getSubscriptionStatus();
+    public void create(SubscriptionReportRequest subscriptionReportRequest) {
+        Long msisdn = subscriptionReportRequest.getMsisdn();
+        String subscriptionId = subscriptionReportRequest.getSubscriptionId();
+        String subscriptionStatus = subscriptionReportRequest.getSubscriptionStatus();
         if (subscriptionService.exists(subscriptionId)) {
             return;
         }
 
-        ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionRequest.getChannel());
-        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionRequest.getPack());
-        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionRequest.getCreatedAt());
-        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionRequest.getCreatedAt());
-        SubscriberLocation location = subscriptionRequest.getLocation();
+        ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionReportRequest.getChannel());
+        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionReportRequest.getPack());
+        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
+        SubscriberLocation location = subscriptionReportRequest.getLocation();
         LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
-        int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionRequest.getPack());
-        OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionRequest.getOperator());
+        int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionReportRequest.getPack());
+        OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
 
-        Subscriber subscriber = saveSubscriber(subscriptionRequest, msisdn, channelDimension, dateDimension, locationDimension);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionRequest.getStartDate(), subscriptionRequest.getCreatedAt(), subscriptionStatus, startingWeekNumber);
+        Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
+        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, startingWeekNumber);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, startingWeekNumber, dateDimension, timeDimension, operatorDimension, null, null);
     }
 
@@ -116,9 +116,9 @@ public class SubscriptionStatusMeasureService {
         return subscription;
     }
 
-    private Subscriber saveSubscriber(SubscriptionRequest subscriptionRequest, Long msisdn, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
-        Subscriber subscriber = new Subscriber(msisdn, subscriptionRequest.getName(), subscriptionRequest.getAgeOfBeneficiary(), subscriptionRequest.getEstimatedDateOfDelivery(),
-                subscriptionRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
+    private Subscriber saveSubscriber(SubscriptionReportRequest subscriptionReportRequest, Long msisdn, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
+        Subscriber subscriber = new Subscriber(msisdn, subscriptionReportRequest.getName(), subscriptionReportRequest.getAgeOfBeneficiary(), subscriptionReportRequest.getEstimatedDateOfDelivery(),
+                subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
         subscriber = allSubscribers.save(subscriber);
         return subscriber;
     }

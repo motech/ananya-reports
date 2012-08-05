@@ -1,7 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
 import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.DateDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
@@ -33,13 +33,13 @@ public class SubscriberService {
         this.allDateDimensions = allDateDimensions;
     }
 
-    public void update(SubscriberRequest subscriberRequest, String subscriptionId) {
+    public void update(SubscriberReportRequest subscriberReportRequest, String subscriptionId) {
         Subscriber subscriber = allSubscriptions.findBySubscriptionId(subscriptionId).getSubscriber();
-        SubscriberLocation location = subscriberRequest.getLocation();
+        SubscriberLocation location = subscriberReportRequest.getLocation();
         LocationDimension locationDimension = allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
-        DateDimension dateDimension = allDateDimensions.fetchFor(subscriberRequest.getCreatedAt());
+        DateDimension dateDimension = allDateDimensions.fetchFor(subscriberReportRequest.getCreatedAt());
 
-        subscriber.updateWith(subscriberRequest, locationDimension, dateDimension);
+        subscriber.updateWith(subscriberReportRequest, locationDimension, dateDimension);
 
         allSubscribers.save(subscriber);
     }

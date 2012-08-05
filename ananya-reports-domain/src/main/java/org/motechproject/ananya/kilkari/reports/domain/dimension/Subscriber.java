@@ -1,7 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.domain.dimension;
 
 import org.joda.time.DateTime;
-import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -99,11 +99,11 @@ public class Subscriber {
         return dateDimension;
     }
 
-    public void updateWith(SubscriberRequest subscriberRequest, LocationDimension locationDimension, DateDimension dateDimension) {
-        ageOfBeneficiary = subscriberRequest.getBeneficiaryAge();
-        name = subscriberRequest.getBeneficiaryName();
-        estimatedDateOfDelivery = convertToDate(subscriberRequest.getExpectedDateOfDelivery());
-        dateOfBirth = convertToDate(subscriberRequest.getDateOfBirth());
+    public void updateWith(SubscriberReportRequest subscriberReportRequest, LocationDimension locationDimension, DateDimension dateDimension) {
+        ageOfBeneficiary = subscriberReportRequest.getBeneficiaryAge();
+        name = subscriberReportRequest.getBeneficiaryName();
+        estimatedDateOfDelivery = convertToDate(subscriberReportRequest.getExpectedDateOfDelivery());
+        dateOfBirth = convertToDate(subscriberReportRequest.getDateOfBirth());
         this.dateDimension = dateDimension;
         this.locationDimension = locationDimension;
     }

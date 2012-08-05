@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.domain.dimension;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,7 +24,7 @@ public class SubscriberTest {
         DateDimension expectedDateDimension = new DateDimension();
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat);
 
-        subscriber.updateWith(new SubscriberRequest(createdAt, beneficiaryName, beneficiaryAge,
+        subscriber.updateWith(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge,
                 expectedDateOfDelivery, dateOfBirth, location), expectedLocationDimension, expectedDateDimension);
 
         assertEquals(Integer.valueOf(beneficiaryAge), subscriber.getAgeOfBeneficiary());

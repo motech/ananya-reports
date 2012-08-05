@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-public class SubscriberRequest {
+public class SubscriberReportRequest {
     @JsonProperty
     private DateTime createdAt;
     @JsonProperty
@@ -20,12 +20,12 @@ public class SubscriberRequest {
     @JsonProperty
     private SubscriberLocation location;
 
-    public SubscriberRequest() {
+    public SubscriberReportRequest() {
     }
 
-    public SubscriberRequest(DateTime createdAt, String beneficiaryName,
-                             Integer beneficiaryAge, DateTime expectedDateOfDelivery,
-                             DateTime dateOfBirth, SubscriberLocation location) {
+    public SubscriberReportRequest(DateTime createdAt, String beneficiaryName,
+                                   Integer beneficiaryAge, DateTime expectedDateOfDelivery,
+                                   DateTime dateOfBirth, SubscriberLocation location) {
         this.createdAt = createdAt;
         this.beneficiaryName = beneficiaryName;
         this.beneficiaryAge = beneficiaryAge;
@@ -67,9 +67,9 @@ public class SubscriberRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SubscriberRequest)) return false;
+        if (!(o instanceof SubscriberReportRequest)) return false;
 
-        SubscriberRequest that = (SubscriberRequest) o;
+        SubscriberReportRequest that = (SubscriberReportRequest) o;
 
         return new EqualsBuilder()
                 .append(this.beneficiaryAge, that.beneficiaryAge)
