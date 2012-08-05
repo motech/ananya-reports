@@ -2,11 +2,11 @@ package org.motechproject.ananya.kilkari.reports.web.mapper;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension;
-import org.motechproject.ananya.kilkari.reports.web.response.SubscriptionResponse;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

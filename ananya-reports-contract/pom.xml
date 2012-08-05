@@ -7,10 +7,10 @@
         <groupId>org.motechproject.ananya.reports</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
-    <name>Ananya Reports Internal</name>
+    <name>Ananya Reports Contract</name>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ananya-reports-internal</artifactId>
+    <artifactId>ananya-reports-contract</artifactId>
 
     <dependencies>
         <dependency>

@@ -1,9 +1,8 @@
-package org.motechproject.ananya.kilkari.internal;
+package org.motechproject.ananya.kilkari.contract.request;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
 public class CallDetailsRequest {
     @JsonProperty

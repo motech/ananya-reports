@@ -1,4 +1,4 @@
-package org.motechproject.ananya.kilkari.internal;
+package org.motechproject.ananya.kilkari.contract.request;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;

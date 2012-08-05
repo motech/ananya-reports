@@ -1,7 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.domain.dimension;
 
 import org.joda.time.DateTime;
-import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
 
 import javax.persistence.*;
 import java.sql.Date;

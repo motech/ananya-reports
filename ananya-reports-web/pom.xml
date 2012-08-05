@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>org.motechproject.ananya.reports</groupId>
-            <artifactId>ananya-reports-internal</artifactId>
+            <artifactId>ananya-reports-contract</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

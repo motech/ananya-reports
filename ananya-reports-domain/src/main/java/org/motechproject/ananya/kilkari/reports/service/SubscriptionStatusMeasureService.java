@@ -2,9 +2,9 @@ package org.motechproject.ananya.kilkari.reports.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
-import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
-import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
-import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.WeekNumber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure;

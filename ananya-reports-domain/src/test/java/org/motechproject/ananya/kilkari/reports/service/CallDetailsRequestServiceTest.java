@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.ananya.kilkari.internal.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;

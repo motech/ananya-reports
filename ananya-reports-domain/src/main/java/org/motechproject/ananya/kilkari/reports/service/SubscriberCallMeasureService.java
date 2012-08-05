@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
-import org.motechproject.ananya.kilkari.internal.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.CampaignDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure;

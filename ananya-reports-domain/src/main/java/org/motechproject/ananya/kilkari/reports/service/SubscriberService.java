@@ -1,11 +1,14 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
-import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
-import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.DateDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
-import org.motechproject.ananya.kilkari.reports.repository.*;
+import org.motechproject.ananya.kilkari.reports.repository.AllDateDimensions;
+import org.motechproject.ananya.kilkari.reports.repository.AllLocationDimensions;
+import org.motechproject.ananya.kilkari.reports.repository.AllSubscribers;
+import org.motechproject.ananya.kilkari.reports.repository.AllSubscriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

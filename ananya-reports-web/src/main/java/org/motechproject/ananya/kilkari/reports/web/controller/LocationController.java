@@ -1,8 +1,8 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
+import org.motechproject.ananya.kilkari.contract.response.LocationResponse;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.service.LocationService;
-import org.motechproject.ananya.kilkari.reports.web.response.LocationResponse;
 import org.motechproject.ananya.kilkari.reports.web.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,6 @@ public class LocationController {
         if(locationDimension == null) {
             throw new NotFoundException("location not found");
         }
-        return new LocationResponse(locationDimension);
+        return new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat());
     }
 }

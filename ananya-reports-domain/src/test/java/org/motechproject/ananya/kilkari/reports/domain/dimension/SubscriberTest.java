@@ -2,8 +2,8 @@ package org.motechproject.ananya.kilkari.reports.domain.dimension;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.motechproject.ananya.kilkari.internal.SubscriberLocation;
-import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
 
 import static org.junit.Assert.assertEquals;
 

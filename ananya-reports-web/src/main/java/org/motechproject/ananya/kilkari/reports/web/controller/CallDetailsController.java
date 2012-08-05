@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
-import org.motechproject.ananya.kilkari.internal.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
 import org.motechproject.ananya.kilkari.reports.service.CallDetailsRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

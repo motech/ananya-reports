@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.motechproject.ananya.kilkari.internal.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure;
 import org.motechproject.ananya.kilkari.reports.repository.AllCampaignDimensions;
@@ -101,7 +101,7 @@ public class SubscriberCallMeasureServiceTest {
         assertEquals(mockedEndTimeDimension, subscriberCallMeasure.getEndTime());
         assertEquals(percentageListened, subscriberCallMeasure.getPercentageListened());
         assertEquals(callDetailsRequest.getStatus(), subscriberCallMeasure.getCallStatus());
-        assertEquals((Integer)2,subscriberCallMeasure.getRetryCount());
+        assertEquals((Integer) 2, subscriberCallMeasure.getRetryCount());
         assertEquals("OBD", subscriberCallMeasure.getCallSource());
     }
 }

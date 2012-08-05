@@ -1,14 +1,14 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
-import org.motechproject.ananya.kilkari.internal.SubscriberRequest;
-import org.motechproject.ananya.kilkari.internal.SubscriptionRequest;
-import org.motechproject.ananya.kilkari.internal.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.service.SubscriberService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionMapper;
-import org.motechproject.ananya.kilkari.reports.web.response.SubscriptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

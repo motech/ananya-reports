@@ -1,7 +1,6 @@
-package org.motechproject.ananya.kilkari.reports.web.response;
+package org.motechproject.ananya.kilkari.contract.response;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 
 public class LocationResponse {
 
@@ -14,10 +13,10 @@ public class LocationResponse {
     @JsonProperty
     private String district;
 
-    public LocationResponse(LocationDimension locationDimension) {
-        district = locationDimension.getDistrict();
-        block = locationDimension.getBlock();
-        panchayat = locationDimension.getPanchayat();
+    public LocationResponse(String district, String block, String panchayat) {
+        this.district = district;
+        this.block = block;
+        this.panchayat = panchayat;
     }
 
     public String getBlock() {

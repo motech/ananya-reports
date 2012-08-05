@@ -1,4 +1,4 @@
-package org.motechproject.ananya.kilkari.internal;
+package org.motechproject.ananya.kilkari.contract.request;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

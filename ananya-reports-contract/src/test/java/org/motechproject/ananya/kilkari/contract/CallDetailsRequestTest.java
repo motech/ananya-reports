@@ -1,7 +1,8 @@
-package org.motechproject.ananya.kilkari.internal;
+package org.motechproject.ananya.kilkari.contract;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
 
 import static junit.framework.Assert.assertEquals;
 

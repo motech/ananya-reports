@@ -1,4 +1,4 @@
-package org.motechproject.ananya.kilkari.internal;
+package org.motechproject.ananya.kilkari.contract.request;
 
 import org.joda.time.DateTime;
 
