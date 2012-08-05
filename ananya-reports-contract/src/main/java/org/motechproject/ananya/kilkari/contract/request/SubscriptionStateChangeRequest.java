@@ -1,26 +1,36 @@
 package org.motechproject.ananya.kilkari.contract.request;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
 public class SubscriptionStateChangeRequest {
-
+    @JsonProperty
     private String subscriptionId;
 
+    @JsonProperty
     private String subscriptionStatus;
 
+    @JsonProperty
     private String reason;
 
+    @JsonProperty
     private DateTime createdAt;
 
+    @JsonProperty
     private String operator;
 
+    @JsonProperty
     private Integer graceCount;
 
-    public Integer getGraceCount() {
-        return graceCount;
+    public SubscriptionStateChangeRequest() {
     }
 
-    public void setGraceCount(Integer graceCount) {
+    public SubscriptionStateChangeRequest(String subscriptionId, String subscriptionStatus, String reason, DateTime createdAt, String operator, Integer graceCount) {
+        this.subscriptionId = subscriptionId;
+        this.subscriptionStatus = subscriptionStatus;
+        this.reason = reason;
+        this.createdAt = createdAt;
+        this.operator = operator;
         this.graceCount = graceCount;
     }
 
@@ -28,39 +38,23 @@ public class SubscriptionStateChangeRequest {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
     public String getSubscriptionStatus() {
         return subscriptionStatus;
-    }
-
-    public DateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(DateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setSubscriptionStatus(String subscriptionStatus) {
-        this.subscriptionStatus = subscriptionStatus;
     }
 
     public String getReason() {
         return reason;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public DateTime getCreatedAt() {
+        return createdAt;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public Integer getGraceCount() {
+        return graceCount;
     }
 }
