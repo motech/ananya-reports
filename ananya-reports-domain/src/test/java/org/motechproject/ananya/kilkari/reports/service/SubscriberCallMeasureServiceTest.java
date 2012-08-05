@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailRecordRequest;
 import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure;
@@ -54,7 +55,7 @@ public class SubscriberCallMeasureServiceTest {
         String endTime = "01-01-2012 01-41-00";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
-        CallDetailsRequest callDetailsRequest = new CallDetailsRequest(subscriptionId, msisdn, campaignId, serviceOption, startDateTime, endDateTime, retryCount, status, "OBD");
+        CallDetailsRequest callDetailsRequest = new CallDetailsRequest(subscriptionId, msisdn, campaignId, serviceOption, retryCount, status, new CallDetailRecordRequest(startDateTime, endDateTime), "OBD");
 
         Subscription mockedSubscription = mock(Subscription.class);
         OperatorDimension mockedOperatorDimension = mock(OperatorDimension.class);

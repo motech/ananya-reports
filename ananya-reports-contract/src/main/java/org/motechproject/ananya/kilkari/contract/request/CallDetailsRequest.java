@@ -23,7 +23,7 @@ public class CallDetailsRequest {
     private String callSource;
 
 
-    public CallDetailsRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, DateTime startTime, DateTime endTime, String retryCount, String status, String callSource) {
+    public CallDetailsRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String retryCount, String status, CallDetailRecordRequest callDetailRecord, String callSource) {
         this.subscriptionId = subscriptionId;
         this.msisdn = msisdn;
         this.campaignId = campaignId;
@@ -31,7 +31,7 @@ public class CallDetailsRequest {
         this.retryCount = retryCount;
         this.status = status;
         this.callSource = callSource;
-        this.callDetailRecord = new CallDetailRecordRequest(startTime,endTime);
+        this.callDetailRecord = callDetailRecord;
     }
 
     public CallDetailsRequest() {
