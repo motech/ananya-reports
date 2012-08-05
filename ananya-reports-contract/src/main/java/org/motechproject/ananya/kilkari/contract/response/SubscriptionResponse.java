@@ -13,7 +13,7 @@ public class SubscriptionResponse {
     @JsonProperty
     private String subscriptionStatus;
     @JsonProperty
-    private String lastCampaignId;
+    private String weekNumber;
     @JsonProperty
     private String beneficiaryAge;
     @JsonProperty
@@ -23,12 +23,12 @@ public class SubscriptionResponse {
     @JsonProperty
     private LocationResponse location;
 
-    public SubscriptionResponse(String subscriptionId, String pack, String beneficiaryName, String subscriptionStatus, String lastCampaignId, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location) {
+    public SubscriptionResponse(String subscriptionId, String pack, String beneficiaryName, String subscriptionStatus, String weekNumber, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location) {
         this.subscriptionId = subscriptionId;
         this.pack = pack;
         this.beneficiaryName = beneficiaryName;
         this.subscriptionStatus = subscriptionStatus;
-        this.lastCampaignId = lastCampaignId;
+        this.weekNumber = weekNumber;
         this.beneficiaryAge = beneficiaryAge;
         this.expectedDateOfDelivery = expectedDateOfDelivery;
         this.dateOfBirth = dateOfBirth;
@@ -51,8 +51,8 @@ public class SubscriptionResponse {
         return subscriptionStatus;
     }
 
-    public String getLastCampaignId() {
-        return lastCampaignId;
+    public String getWeekNumber() {
+        return weekNumber;
     }
 
     public String getBeneficiaryAge() {
