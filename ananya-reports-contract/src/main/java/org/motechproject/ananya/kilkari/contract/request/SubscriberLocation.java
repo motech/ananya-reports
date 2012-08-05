@@ -5,7 +5,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class SubscriberLocation {
+import java.io.Serializable;
+
+public class SubscriberLocation implements Serializable {
     @JsonProperty
     private String district;
     @JsonProperty

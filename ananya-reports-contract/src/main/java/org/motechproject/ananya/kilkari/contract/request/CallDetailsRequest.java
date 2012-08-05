@@ -4,7 +4,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-public class CallDetailsRequest {
+import java.io.Serializable;
+
+public class CallDetailsRequest implements Serializable {
     @JsonProperty
     private String subscriptionId;
     @JsonProperty

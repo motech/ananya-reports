@@ -3,7 +3,9 @@ package org.motechproject.ananya.kilkari.contract.request;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-public class CallDetailRecordRequest {
+import java.io.Serializable;
+
+public class CallDetailRecordRequest implements Serializable {
 
     @JsonProperty
     private DateTime startTime;

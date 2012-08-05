@@ -6,7 +6,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-public class SubscriberReportRequest {
+import java.io.Serializable;
+
+public class SubscriberReportRequest implements Serializable {
     @JsonProperty
     private DateTime createdAt;
     @JsonProperty

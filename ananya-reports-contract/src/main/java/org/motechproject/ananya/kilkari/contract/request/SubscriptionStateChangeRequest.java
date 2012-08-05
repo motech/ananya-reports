@@ -3,7 +3,9 @@ package org.motechproject.ananya.kilkari.contract.request;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-public class SubscriptionStateChangeRequest {
+import java.io.Serializable;
+
+public class SubscriptionStateChangeRequest implements Serializable {
     @JsonProperty
     private String subscriptionId;
 
