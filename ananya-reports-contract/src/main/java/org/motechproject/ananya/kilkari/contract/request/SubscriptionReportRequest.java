@@ -49,7 +49,7 @@ public class SubscriptionReportRequest {
         return channel;
     }
 
-    public long getMsisdn() {
+    public Long getMsisdn() {
         return msisdn;
     }
 
