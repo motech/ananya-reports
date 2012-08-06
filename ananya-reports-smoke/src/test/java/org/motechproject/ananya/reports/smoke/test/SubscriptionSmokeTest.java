@@ -4,8 +4,8 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.motechproject.ananya.reports.smoke.repository.ReportingService;
 import org.motechproject.ananya.reports.smoke.contract.SubscriptionRequest;
+import org.motechproject.ananya.reports.smoke.repository.ReportingService;
 import org.motechproject.ananya.reports.smoke.repository.domain.SubscriptionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +23,7 @@ import static junit.framework.Assert.assertEquals;
 @ContextConfiguration("classpath:applicationReportsSmokeContext.xml")
 public class SubscriptionSmokeTest {
 
+    public static final String REPORTS_BASE_URL = "http://localhost:8080/ananya-reports";
     private RestTemplate restTemplate;
 
     @Autowired
@@ -46,7 +47,8 @@ public class SubscriptionSmokeTest {
         subscriptionRequest.setCreatedAt(DateTime.now());
         subscriptionRequest.setStartDate(DateTime.now());
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:9999/ananya-reports/subscription", subscriptionRequest, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(REPORTS_BASE_URL +
+                "/subscription", subscriptionRequest, String.class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
