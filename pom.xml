@@ -9,8 +9,9 @@
         <module>ananya-reports-config</module>
         <module>ananya-reports-domain</module>
         <module>ananya-reports-migrations</module>
-        <module>ananya-reports-web</module>
         <module>ananya-reports-contract</module>
+        <module>ananya-reports-web</module>
+        <module>ananya-reports-smoke</module>
     </modules>
     <groupId>org.motechproject.ananya.reports</groupId>
     <artifactId>ananya-reports</artifactId>
@@ -221,6 +222,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
