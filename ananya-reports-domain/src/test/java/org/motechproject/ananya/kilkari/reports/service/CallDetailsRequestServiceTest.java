@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsReportRequest;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -20,10 +20,10 @@ public class CallDetailsRequestServiceTest {
     }
     @Test
     public void shouldCreateSubscriberCallDetails() {
-        CallDetailsRequest callDetailsRequest = new CallDetailsRequest();
+        CallDetailsReportRequest callDetailsReportRequest = new CallDetailsReportRequest();
 
-        callDetailsRequestService.createSubscriberCallDetails(callDetailsRequest);
+        callDetailsRequestService.createSubscriberCallDetails(callDetailsReportRequest);
 
-        verify(subscriberCallMeasureService).createSubscriberCallDetails(callDetailsRequest);
+        verify(subscriberCallMeasureService).createSubscriberCallDetails(callDetailsReportRequest);
     }
 }

@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.web.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsReportRequest;
 import org.motechproject.ananya.kilkari.reports.service.CallDetailsRequestService;
 
 import static org.mockito.Mockito.verify;
@@ -23,10 +23,10 @@ public class CallDetailsControllerTest {
 
     @Test
     public void shouldCreateSubscriberCallDetails() throws Exception {
-        CallDetailsRequest callDetailsRequest = new CallDetailsRequest();
+        CallDetailsReportRequest callDetailsReportRequest = new CallDetailsReportRequest();
 
-        callDetailsController.createSubscriberCallDetails(callDetailsRequest);
+        callDetailsController.createSubscriberCallDetails(callDetailsReportRequest);
 
-        verify(callDetailsRequestService).createSubscriberCallDetails(callDetailsRequest);
+        verify(callDetailsRequestService).createSubscriberCallDetails(callDetailsReportRequest);
     }
 }

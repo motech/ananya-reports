@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
-public class CallDetailsRequest implements Serializable {
+public class CallDetailsReportRequest implements Serializable {
     @JsonProperty
     private String subscriptionId;
     @JsonProperty
@@ -25,7 +25,7 @@ public class CallDetailsRequest implements Serializable {
     private String callSource;
 
 
-    public CallDetailsRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String retryCount, String status, CallDetailRecordRequest callDetailRecord, String callSource) {
+    public CallDetailsReportRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String retryCount, String status, CallDetailRecordRequest callDetailRecord, String callSource) {
         this.subscriptionId = subscriptionId;
         this.msisdn = msisdn;
         this.campaignId = campaignId;
@@ -36,7 +36,7 @@ public class CallDetailsRequest implements Serializable {
         this.callDetailRecord = callDetailRecord;
     }
 
-    public CallDetailsRequest() {
+    public CallDetailsReportRequest() {
     }
 
     @JsonIgnore

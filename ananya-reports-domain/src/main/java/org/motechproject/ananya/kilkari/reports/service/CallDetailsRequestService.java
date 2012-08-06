@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.service;
 
-import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsReportRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class CallDetailsRequestService {
         this.subscriberCallMeasureService = subscriberCallMeasureService;
     }
 
-    public void createSubscriberCallDetails(CallDetailsRequest callDetailsRequest) {
-        subscriberCallMeasureService.createSubscriberCallDetails(callDetailsRequest);
+    public void createSubscriberCallDetails(CallDetailsReportRequest callDetailsReportRequest) {
+        subscriberCallMeasureService.createSubscriberCallDetails(callDetailsReportRequest);
     }
 }

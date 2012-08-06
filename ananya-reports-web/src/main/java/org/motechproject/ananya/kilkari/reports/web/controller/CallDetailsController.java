@@ -1,6 +1,6 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
-import org.motechproject.ananya.kilkari.contract.request.CallDetailsRequest;
+import org.motechproject.ananya.kilkari.contract.request.CallDetailsReportRequest;
 import org.motechproject.ananya.kilkari.reports.service.CallDetailsRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class CallDetailsController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/callDetails")
     @ResponseBody
-    public void createSubscriberCallDetails(@RequestBody CallDetailsRequest callDetailsRequest) {
-        callDetailsRequestService.createSubscriberCallDetails(callDetailsRequest);
+    public void createSubscriberCallDetails(@RequestBody CallDetailsReportRequest callDetailsReportRequest) {
+        callDetailsRequestService.createSubscriberCallDetails(callDetailsReportRequest);
     }
 }
