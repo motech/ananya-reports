@@ -33,7 +33,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
 
     @Test
     public void shouldAddNewSubscriptionStatusMeasure() {
-        String subscriptionPack = "TWELVE_MONTHS";
+        String subscriptionPack = "CHOTI_KILKARI";
         String subscriptionId = "subscriptionId";
         DateTime createdAt = DateTime.now();
 

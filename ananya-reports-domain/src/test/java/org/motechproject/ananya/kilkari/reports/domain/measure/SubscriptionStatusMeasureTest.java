@@ -14,8 +14,8 @@ public class SubscriptionStatusMeasureTest {
     public void shouldCompareTwoStatusMeasuresBasedOnDateTime() {
         DateTime createdNow =  DateTime.now();
         DateTime createdBefore =  DateTime.now().minusHours(4);
-        SubscriptionStatusMeasure newStatusMeasure = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("FIFTEEN_MONTHS"), new DateDimension(createdNow), new TimeDimension(createdNow));
-        SubscriptionStatusMeasure oldStatusMeasure = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("FIFTEEN_MONTHS"), new DateDimension(createdBefore), new TimeDimension(createdBefore));
+        SubscriptionStatusMeasure newStatusMeasure = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("BARI_KILKARI"), new DateDimension(createdNow), new TimeDimension(createdNow));
+        SubscriptionStatusMeasure oldStatusMeasure = new SubscriptionStatusMeasure(null, null, 3, null, null, null, null, new SubscriptionPackDimension("BARI_KILKARI"), new DateDimension(createdBefore), new TimeDimension(createdBefore));
 
         assertTrue(oldStatusMeasure.isCreatedBefore(newStatusMeasure));
         assertFalse(newStatusMeasure.isCreatedBefore(oldStatusMeasure));

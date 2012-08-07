@@ -125,7 +125,7 @@ public class SubscriptionControllerTest {
         String block = "B1";
         String panchayat = "P1";
         String status = "ACTIVE";
-        String pack = "FIFTEEN_MONTHS";
+        String pack = "BARI_KILKARI";
         int weekNumber = 13;
         Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
         Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber);

@@ -3,7 +3,7 @@ package org.motechproject.ananya.kilkari.reports.domain;
 import org.apache.commons.lang.StringUtils;
 
 public enum SubscriptionPack {
-    FIFTEEN_MONTHS(1), TWELVE_MONTHS(13), SEVEN_MONTHS(33);
+    BARI_KILKARI(1), CHOTI_KILKARI(13), NANHI_KILKARI(33);
 
     private int weekNumber;
 

@@ -44,9 +44,7 @@ public class BaseResponse extends BaseObject {
         BaseResponse that = (BaseResponse) o;
 
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-
-        return true;
+        return !(status != null ? !status.equals(that.status) : that.status != null);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class SubscriptionSmokeTest {
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
         subscriptionRequest.setMsisdn(Long.parseLong(msisdn));
         subscriptionRequest.setChannel("IVR");
-        subscriptionRequest.setPack("SEVEN_MONTHS");
+        subscriptionRequest.setPack("NANHI_KILKARI");
         subscriptionRequest.setSubscriptionStatus("NEW");
         subscriptionRequest.setCreatedAt(DateTime.now());
         subscriptionRequest.setStartDate(DateTime.now());

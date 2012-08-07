@@ -62,7 +62,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         OperatorDimension operator = allOperatorDimensions.fetchFor("AIRTEL");
         LocationDimension location = allLocationDimensions.fetchFor("C00", "C00", "");
         DateDimension subscriberCreatedDate = allDateDimensions.fetchFor(subscriberCreatedDateTime);
-        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor("fifteen_months");
+        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor("bari_kilkari");
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(campaignId);
         DateDimension dateDimension = allDateDimensions.fetchFor(callStartDateTime);
         TimeDimension startTime = allTimeDimensions.fetchFor(callStartDateTime);
