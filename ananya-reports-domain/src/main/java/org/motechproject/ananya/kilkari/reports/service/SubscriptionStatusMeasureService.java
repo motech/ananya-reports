@@ -67,12 +67,11 @@ public class SubscriptionStatusMeasureService {
         TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         SubscriberLocation location = subscriptionReportRequest.getLocation();
         LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
-        int startingWeekNumber = WeekNumber.getStartingWeekNumberFor(subscriptionReportRequest.getPack());
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
 
         Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, startingWeekNumber);
-        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, startingWeekNumber, dateDimension, timeDimension, operatorDimension, null, null);
+        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null);
+        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, null, null);
     }
 
     @Transactional
@@ -82,7 +81,8 @@ public class SubscriptionStatusMeasureService {
         String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
         DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
 
-        Integer subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscription.getStartDate(), createdAt, subscriptionPack);
+        DateTime startDate = new DateTime(subscription.getStartDate());
+        Integer subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(startDate, createdAt, subscriptionPack, subscriptionStateChangeRequest.getSubscriptionStatus());
         DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator()) ?
@@ -108,7 +108,7 @@ public class SubscriptionStatusMeasureService {
 
     private Subscription saveSubscription(String subscriptionId, ChannelDimension channelDimension, SubscriptionPackDimension subscriptionPackDimension,
                                           DateDimension dateDimension, LocationDimension locationDimension, Subscriber subscriber,
-                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {
+                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber) {
         Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null,
                 locationDimension, dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, weekNumber);
         subscription = subscriptionService.makeFor(subscription);

@@ -83,7 +83,7 @@ public class SubscriptionStatusMeasureServiceTest {
         subscriptionReportRequest.setName(name);
         subscriptionReportRequest.setAgeOfBeneficiary(age);
         subscriptionReportRequest.setLocation(new SubscriberLocation(district, block, panchayat));
-        subscriptionReportRequest.setSubscriptionStatus("subscriptionstatus");
+        subscriptionReportRequest.setSubscriptionStatus("NEW");
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -115,7 +115,6 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
         assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
-        assertEquals(Integer.valueOf(13), subscriptionStatusMeasure.getWeekNumber());
 
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
@@ -183,7 +182,7 @@ public class SubscriptionStatusMeasureServiceTest {
     @Test
     public void shouldUpdateSubscriptionStatusMeasureOnSubscriptionStateChange() {
         String subscriptionId = "sub123";
-        String subscriptionStatus = "ACTIVE";
+        String subscriptionStatus = "PENDING_ACTIVATION";
         String reason = "my own reason";
         String operator = "airtel";
         Integer graceCount = 4;

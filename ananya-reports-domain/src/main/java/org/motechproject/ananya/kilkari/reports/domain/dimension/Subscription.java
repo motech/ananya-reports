@@ -58,7 +58,7 @@ public class Subscription {
     public Subscription(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
                         LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId,
-                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, int weekNumber) {
+                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Integer weekNumber) {
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
         this.channelDimension = channelDimension;
