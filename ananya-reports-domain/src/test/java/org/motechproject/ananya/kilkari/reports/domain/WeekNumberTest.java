@@ -15,12 +15,6 @@ public class WeekNumberTest {
     }
 
     @Test
-    public void shouldGiveWeekNumberBasedOnPack() {
-        int subscriptionWeekNumber = WeekNumber.getStartingWeekNumberFor("CHOTI_KILKARI");
-        assertEquals(13, subscriptionWeekNumber);
-    }
-
-    @Test
     public void shouldReturnNullIfSubscriptionStatusIsPendingActivation() {
         assertNull(WeekNumber.getSubscriptionWeekNumber(DateTime.now(), DateTime.now().plusDays(2), SubscriptionPack.NANHI_KILKARI.name(), SubscriptionStatus.PENDING_ACTIVATION.name()));
     }
