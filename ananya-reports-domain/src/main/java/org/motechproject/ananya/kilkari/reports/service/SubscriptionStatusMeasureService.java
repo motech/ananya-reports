@@ -79,11 +79,10 @@ public class SubscriptionStatusMeasureService {
     public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
         Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
         String subscriptionStatus = subscriptionStateChangeRequest.getSubscriptionStatus();
-        DateTime subscriptionRequestedDate = new DateTime(subscription.getDateDimension().getDate());
         String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
         DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
 
-        Integer subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, createdAt, subscriptionPack);
+        Integer subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscription.getStartDate(), createdAt, subscriptionPack);
         DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator()) ?
@@ -98,7 +97,7 @@ public class SubscriptionStatusMeasureService {
                 subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount());
     }
 
-    private void saveSubscriptionStatusMeasure(Subscription subscription, String subscriptionStatus, int subscriptionWeekNumber,
+    private void saveSubscriptionStatusMeasure(Subscription subscription, String subscriptionStatus, Integer subscriptionWeekNumber,
                                                DateDimension dateDimension, TimeDimension timeDimension, OperatorDimension operatorDimension,
                                                String reason, Integer graceCount) {
         SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,

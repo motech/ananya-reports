@@ -17,6 +17,7 @@ import org.motechproject.ananya.kilkari.reports.repository.*;
 import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -128,7 +129,8 @@ public class SubscriptionStatusMeasureServiceTest {
         String reason = "my own reason";
         String operator = "airtel";
         Integer graceCount = 4;
-        DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
+        DateTime createdAt = new DateTime(2012, 01, 01, 10, 10);
+        Timestamp startDate = new Timestamp(createdAt.getMillis());
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
 
         ChannelDimension channelDimension = new ChannelDimension();
@@ -143,9 +145,10 @@ public class SubscriptionStatusMeasureServiceTest {
         when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
         when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.plusDays(2).getMillis()));
         when(mockedSubscription.getSubscriptionStatus()).thenReturn("NEW");
-        when(mockedSubscription.getWeekNumber()).thenReturn(17);
+        when(mockedSubscription.getWeekNumber()).thenReturn(13);
         Subscriber mockedSubscriber = mock(Subscriber.class);
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
+        when(mockedSubscription.getStartDate()).thenReturn(startDate);
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
         DateDimension dateDimension = new DateDimension(createdAt);
@@ -165,7 +168,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertEquals(Integer.valueOf(17), subscriptionStatusMeasure.getWeekNumber());
+        assertEquals(Integer.valueOf(13), subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
@@ -185,6 +188,8 @@ public class SubscriptionStatusMeasureServiceTest {
         String operator = "airtel";
         Integer graceCount = 4;
         DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
+        DateTime startDate = new DateTime(2012, 03, 01, 10, 10);
+        Timestamp startDateTimestamp = new Timestamp(startDate.getMillis());
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
 
         ChannelDimension channelDimension = new ChannelDimension();
@@ -201,7 +206,8 @@ public class SubscriptionStatusMeasureServiceTest {
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
         when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.minusDays(2).getMillis()));
         when(mockedSubscription.getSubscriptionStatus()).thenReturn("NEW");
-        when(mockedSubscription.getWeekNumber()).thenReturn(16);
+        when(mockedSubscription.getWeekNumber()).thenReturn(null);
+        when(mockedSubscription.getStartDate()).thenReturn(startDateTimestamp);
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
         DateDimension dateDimension = new DateDimension(createdAt);
@@ -212,7 +218,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
 
-        verify(mockedSubscription).updateDetails(createdAt, subscriptionStatus, 17);
+        verify(mockedSubscription).updateDetails(createdAt, subscriptionStatus, null);
         verify(allSubscriptions).update(mockedSubscription);
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
@@ -221,7 +227,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertEquals(Integer.valueOf(17), subscriptionStatusMeasure.getWeekNumber());
+        assertNull(subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
