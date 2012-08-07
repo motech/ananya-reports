@@ -54,7 +54,7 @@ public class SubscriptionServiceTest {
         OperatorDimension operatorDimension = new OperatorDimension();
         LocationDimension locationDimension = new LocationDimension();
         String subscriptionId = "sub11";
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operatorDimension, locationDimension, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13);
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operatorDimension, locationDimension, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13, null);
 
         subscriptionService.makeFor(subscription);
 

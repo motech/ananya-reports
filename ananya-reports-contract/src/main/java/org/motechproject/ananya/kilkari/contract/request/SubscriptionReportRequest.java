@@ -35,12 +35,14 @@ public class SubscriptionReportRequest implements Serializable {
 
     private DateTime startDate;
 
+    private String oldSubscriptionId;
+
     public SubscriptionReportRequest() {
     }
 
     public SubscriptionReportRequest(String subscriptionId, String channel, Long msisdn, String pack, String name, Integer ageOfBeneficiary,
                                      DateTime createdAt, String subscriptionStatus, DateTime estimatedDateOfDelivery, DateTime dateOfBirth,
-                                     SubscriberLocation location, String operator, DateTime startDate) {
+                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId) {
         this.subscriptionId = subscriptionId;
         this.channel = channel;
         this.msisdn = msisdn;
@@ -54,6 +56,7 @@ public class SubscriptionReportRequest implements Serializable {
         this.location = location;
         this.operator = operator;
         this.startDate = startDate;
+        this.oldSubscriptionId = oldSubscriptionId;
     }
 
     public String getOperator() {
@@ -106,6 +109,10 @@ public class SubscriptionReportRequest implements Serializable {
 
     public String getSubscriptionStatus() {
         return subscriptionStatus;
+    }
+
+    public String getOldSubscriptionId() {
+        return oldSubscriptionId;
     }
 
     public void setSubscriptionStatus(String subscriptionStatus) {

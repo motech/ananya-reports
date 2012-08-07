@@ -188,6 +188,7 @@ public class SubscriptionStatusMeasureServiceTest {
         order.verify(allSubscriptions).findBySubscriptionId(oldSubscriptionId);
         order.verify(oldSubscription).getLocationDimension();
         order.verify(oldSubscription).getOperatorDimension();
+        order.verify(allSubscriptions).findBySubscriptionId(oldSubscriptionId);
         ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         order.verify(allSubscriptionStatusMeasure).add(captor.capture());
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
@@ -197,6 +198,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
         assertEquals(subscriptionId, subscription.getSubscriptionId());
+        assertEquals(oldSubscription, subscription.getOldSubscription());
     }
 
     @Test

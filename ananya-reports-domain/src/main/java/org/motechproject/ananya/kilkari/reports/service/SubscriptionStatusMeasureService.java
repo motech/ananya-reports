@@ -69,9 +69,10 @@ public class SubscriptionStatusMeasureService {
         SubscriberLocation location = subscriptionReportRequest.getLocation();
         LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
+        Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
 
         Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null);
+        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, null, null);
     }
 
@@ -99,7 +100,8 @@ public class SubscriptionStatusMeasureService {
     }
 
     public void changePack(SubscriptionChangePackRequest request) {
-        Subscription oldSubscription = allSubscriptions.findBySubscriptionId(request.getOldSubscriptionId());
+        String oldSubscriptionId = request.getOldSubscriptionId();
+        Subscription oldSubscription = allSubscriptions.findBySubscriptionId(oldSubscriptionId);
         Subscriber oldSubscriber = oldSubscription.getSubscriber();
         LocationDimension oldLocationDimension = oldSubscription.getLocationDimension();
 
@@ -110,7 +112,7 @@ public class SubscriptionStatusMeasureService {
 
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(request.getSubscriptionId(), request.getChannel(),
                 request.getMsisdn(), request.getPack(), name, age, request.getCreatedAt(), request.getSubscriptionStatus(),
-                request.getExpectedDateOfDelivery(), request.getDateOfBirth(), location, operator, request.getStartDate());
+                request.getExpectedDateOfDelivery(), request.getDateOfBirth(), location, operator, request.getStartDate(), oldSubscriptionId);
 
         create(subscriptionReportRequest);
     }
@@ -126,9 +128,9 @@ public class SubscriptionStatusMeasureService {
 
     private Subscription saveSubscription(String subscriptionId, ChannelDimension channelDimension, SubscriptionPackDimension subscriptionPackDimension,
                                           DateDimension dateDimension, LocationDimension locationDimension, Subscriber subscriber,
-                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber) {
+                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber, Subscription oldSubscription) {
         Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null,
-                locationDimension, dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, weekNumber);
+                locationDimension, dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, weekNumber, oldSubscription);
         subscription = subscriptionService.makeFor(subscription);
         return subscription;
     }

@@ -46,7 +46,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         template.save(subscriber);
         Subscriber subscriberFromDb = template.loadAll(Subscriber.class).get(0);
 
-        Subscription subscription = new Subscription(subscriberFromDb, subscriptionPackDimension, channelDimension, null, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13);
+        Subscription subscription = new Subscription(subscriberFromDb, subscriptionPackDimension, channelDimension, null, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13, null);
         template.save(subscription);
         Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
 
