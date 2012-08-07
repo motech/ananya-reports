@@ -50,10 +50,10 @@ public class SubscriberCallMeasureServiceTest {
         String campaignId = "1";
         String retryCount = "2";
         String serviceOption = "HELP";
-        Integer percentageListened = 50;
+        Integer percentageListened = 250;
         String status = "DNP";
         String startTime = "01-01-2012 01-10-00";
-        String endTime = "01-01-2012 01-41-00";
+        String endTime = "01-01-2012 03-41-00";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
         CallDetailsReportRequest callDetailsReportRequest = new CallDetailsReportRequest(subscriptionId, msisdn, campaignId, serviceOption, retryCount, status, new CallDetailRecordRequest(startDateTime, endDateTime), "OBD");
@@ -159,6 +159,7 @@ public class SubscriberCallMeasureServiceTest {
         assertEquals(mockedStartTimeDimension, subscriberCallMeasure.getStartTime());
         assertEquals(mockedStartDateDimension, subscriberCallMeasure.getEndDate());
         assertEquals(mockedStartTimeDimension, subscriberCallMeasure.getEndTime());
+        assertEquals(percentageListened, subscriberCallMeasure.getPercentageListened());
         assertEquals((Integer)0, subscriberCallMeasure.getPercentageListened());
         assertEquals(callDetailsReportRequest.getStatus(), subscriberCallMeasure.getCallStatus());
         assertNull(subscriberCallMeasure.getRetryCount());

@@ -60,7 +60,7 @@ public class SubscriberCallMeasureService {
     private Integer getPercentageListenedTo(Integer durationListenedTo, Integer messageDuration) {
         Integer percentage = (durationListenedTo - welcomeMessageDuration) * 100 / messageDuration;
 
-        return (percentage < 0) ? 0 : (percentage > 100 ? 100 : percentage);
+        return percentage < 0 ? 0 : percentage;
     }
 
     @Value("#{campaignProperties['welcome.message.duration']}")
