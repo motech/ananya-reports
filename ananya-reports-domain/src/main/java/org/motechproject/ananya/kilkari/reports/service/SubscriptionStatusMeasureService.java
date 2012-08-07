@@ -83,7 +83,7 @@ public class SubscriptionStatusMeasureService {
         String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
         DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
 
-        int subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, createdAt, subscriptionPack);
+        Integer subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(subscriptionRequestedDate, createdAt, subscriptionPack);
         DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator()) ?

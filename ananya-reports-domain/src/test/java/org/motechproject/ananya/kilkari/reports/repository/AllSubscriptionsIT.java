@@ -72,7 +72,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         assertEquals("sub11", expectedSubscription.getSubscriptionId());
         assertEquals(new Timestamp(now.getMillis()), expectedSubscription.getLastModifiedTime());
         assertEquals(subscriptionStatus, expectedSubscription.getSubscriptionStatus());
-        assertEquals(weekNumber, expectedSubscription.getWeekNumber());
+        assertEquals(Integer.valueOf(weekNumber), expectedSubscription.getWeekNumber());
     }
 
     @Test

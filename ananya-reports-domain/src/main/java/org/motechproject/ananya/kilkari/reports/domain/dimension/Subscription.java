@@ -50,7 +50,7 @@ public class Subscription {
     private String subscriptionStatus;
 
     @Column(name = "week_number")
-    private int weekNumber;
+    private Integer weekNumber;
 
     public Subscription() {
     }
@@ -120,7 +120,7 @@ public class Subscription {
         return subscriptionStatus;
     }
 
-    public int getWeekNumber() {
+    public Integer getWeekNumber() {
         return weekNumber;
     }
 
@@ -132,7 +132,7 @@ public class Subscription {
         this.startDate = startDate;
     }
 
-    public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus, int weekNumber) {
+    public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
         this.weekNumber = weekNumber;

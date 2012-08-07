@@ -21,7 +21,7 @@ public class SubscriptionStatusMeasure {
     private String status;
 
     @Column(name = "week_number")
-    private int weekNumber;
+    private Integer weekNumber;
 
     @Column(name = "remarks")
     private String remarks;
@@ -52,7 +52,7 @@ public class SubscriptionStatusMeasure {
     public SubscriptionStatusMeasure() {
     }
 
-    public SubscriptionStatusMeasure(Subscription subscription, String status, int weekNumber, String remarks,
+    public SubscriptionStatusMeasure(Subscription subscription, String status, Integer weekNumber, String remarks,
                                      Integer graceCount, ChannelDimension channelDimension, OperatorDimension operatorDimension,
                                      SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension, TimeDimension timeDimension) {
         this.subscription = subscription;
@@ -79,7 +79,7 @@ public class SubscriptionStatusMeasure {
         return status;
     }
 
-    public int getWeekNumber() {
+    public Integer getWeekNumber() {
         return weekNumber;
     }
 

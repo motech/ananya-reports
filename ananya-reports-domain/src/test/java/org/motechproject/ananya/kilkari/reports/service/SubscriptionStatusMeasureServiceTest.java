@@ -114,7 +114,7 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
         assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
-        assertEquals(13, subscriptionStatusMeasure.getWeekNumber());
+        assertEquals(Integer.valueOf(13), subscriptionStatusMeasure.getWeekNumber());
 
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
@@ -165,7 +165,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertEquals(17, subscriptionStatusMeasure.getWeekNumber());
+        assertEquals(Integer.valueOf(17), subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
@@ -221,7 +221,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertEquals(17, subscriptionStatusMeasure.getWeekNumber());
+        assertEquals(Integer.valueOf(17), subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
