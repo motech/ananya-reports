@@ -7,10 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest;
-import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
-import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.contract.request.*;
 import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
@@ -28,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -174,6 +172,39 @@ public class SubscriptionControllerTest {
 
         assertEquals(expectedSubscriptionId, actualSubscriptionId);
         assertEquals(expectedSubscriberReportRequest, actualSubscriberReportRequest);
+    }
+
+    @Test
+    public void shouldInvokeSubscriberServiceToChangePack() throws Exception {
+        Long msisdn = 1234567890l;
+        String subscriptionId = "sid";
+        String oldSubscriptionId = "oldsid";
+        String pack = "PCK1";
+        String channel = "callcentre";
+        DateTime createdAt = DateTime.now();
+        DateTime dateOfBirth = DateTime.now().minusYears(10);
+        DateTime startDate = DateTime.now();
+        String status = "NEW";
+        String changePackRequestJson = TestUtils.toJson(new SubscriptionChangePackRequest(msisdn, subscriptionId, oldSubscriptionId, pack, channel, status, createdAt, null, dateOfBirth, startDate));
+
+        mockMvc(subscriptionController)
+                .perform(post("/subscription/changepack")
+                        .body(changePackRequestJson.getBytes())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk());
+
+        ArgumentCaptor<SubscriptionChangePackRequest> changePackRequestArgumentCaptor = ArgumentCaptor.forClass(SubscriptionChangePackRequest.class);
+        verify(subscriptionStatusMeasureService).changePack(changePackRequestArgumentCaptor.capture());
+        SubscriptionChangePackRequest actualChangePackRequest = changePackRequestArgumentCaptor.getValue();
+
+        assertEquals(subscriptionId, actualChangePackRequest.getSubscriptionId());
+        assertEquals(msisdn, actualChangePackRequest.getMsisdn());
+        assertEquals(pack, actualChangePackRequest.getPack());
+        assertEquals(channel, actualChangePackRequest.getChannel());
+        assertEquals(createdAt.toLocalDate(), actualChangePackRequest.getCreatedAt().toLocalDate());
+        assertNull(actualChangePackRequest.getExpectedDateOfDelivery());
+        assertEquals(dateOfBirth.toLocalDate(), actualChangePackRequest.getDateOfBirth().toLocalDate());
     }
 
     private BaseMatcher<String> assertSubscriptionResponse(final List<SubscriptionResponse> expectedReponseList) {

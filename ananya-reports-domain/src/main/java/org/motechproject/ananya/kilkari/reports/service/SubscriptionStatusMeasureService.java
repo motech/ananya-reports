@@ -3,6 +3,7 @@ package org.motechproject.ananya.kilkari.reports.service;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionChangePackRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.reports.domain.WeekNumber;
@@ -95,6 +96,23 @@ public class SubscriptionStatusMeasureService {
 
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionWeekNumber, dateDimension, timeDimension, operatorDimension,
                 subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount());
+    }
+
+    public void changePack(SubscriptionChangePackRequest request) {
+        Subscription oldSubscription = allSubscriptions.findBySubscriptionId(request.getOldSubscriptionId());
+        Subscriber oldSubscriber = oldSubscription.getSubscriber();
+        LocationDimension oldLocationDimension = oldSubscription.getLocationDimension();
+
+        String name = oldSubscriber.getName();
+        int age = oldSubscriber.getAgeOfBeneficiary();
+        String operator = oldSubscription.getOperatorDimension().getOperator();
+        SubscriberLocation location = new SubscriberLocation(oldLocationDimension.getDistrict(), oldLocationDimension.getBlock(), oldLocationDimension.getPanchayat());
+
+        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(request.getSubscriptionId(), request.getChannel(),
+                request.getMsisdn(), request.getPack(), name, age, request.getCreatedAt(), request.getSubscriptionStatus(),
+                request.getExpectedDateOfDelivery(), request.getDateOfBirth(), location, operator, request.getStartDate());
+
+        create(subscriptionReportRequest);
     }
 
     private void saveSubscriptionStatusMeasure(Subscription subscription, String subscriptionStatus, Integer subscriptionWeekNumber,

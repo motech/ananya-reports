@@ -35,6 +35,27 @@ public class SubscriptionReportRequest implements Serializable {
 
     private DateTime startDate;
 
+    public SubscriptionReportRequest() {
+    }
+
+    public SubscriptionReportRequest(String subscriptionId, String channel, Long msisdn, String pack, String name, Integer ageOfBeneficiary,
+                                     DateTime createdAt, String subscriptionStatus, DateTime estimatedDateOfDelivery, DateTime dateOfBirth,
+                                     SubscriberLocation location, String operator, DateTime startDate) {
+        this.subscriptionId = subscriptionId;
+        this.channel = channel;
+        this.msisdn = msisdn;
+        this.pack = pack;
+        this.name = name;
+        this.ageOfBeneficiary = ageOfBeneficiary;
+        this.createdAt = createdAt;
+        this.subscriptionStatus = subscriptionStatus;
+        this.estimatedDateOfDelivery = estimatedDateOfDelivery;
+        this.dateOfBirth = dateOfBirth;
+        this.location = location;
+        this.operator = operator;
+        this.startDate = startDate;
+    }
+
     public String getOperator() {
         return operator;
     }

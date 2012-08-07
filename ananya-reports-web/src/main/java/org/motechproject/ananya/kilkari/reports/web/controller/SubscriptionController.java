@@ -1,6 +1,7 @@
 package org.motechproject.ananya.kilkari.reports.web.controller;
 
 import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionChangePackRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
@@ -34,6 +35,12 @@ public class SubscriptionController {
     @ResponseBody
     public void createSubscription(@RequestBody SubscriptionReportRequest subscriptionReportRequest) {
         subscriptionStatusMeasureService.create(subscriptionReportRequest);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/subscription/changepack")
+    @ResponseBody
+    public void changePack(@RequestBody SubscriptionChangePackRequest subscriptionChangePackRequest) {
+        subscriptionStatusMeasureService.changePack(subscriptionChangePackRequest);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/subscriber/{subscriptionId}")
