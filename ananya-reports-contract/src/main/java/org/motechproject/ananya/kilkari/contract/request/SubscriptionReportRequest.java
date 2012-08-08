@@ -166,4 +166,8 @@ public class SubscriptionReportRequest implements Serializable {
     public void setStartDate(DateTime startDate) {
         this.startDate = startDate;
     }
+
+    public void setOldSubscriptionId(String oldSubscriptionId) {
+        this.oldSubscriptionId = oldSubscriptionId;
+    }
 }
