@@ -2,6 +2,7 @@ package org.motechproject.ananya.kilkari.reports.web.mapper;
 
 import org.motechproject.ananya.kilkari.contract.response.LocationResponse;
 import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
+import org.motechproject.ananya.kilkari.reports.domain.SubscriptionStatus;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
@@ -13,7 +14,7 @@ public class SubscriptionMapper {
         return new SubscriptionResponse(subscription.getSubscriptionId(),
                 subscription.getSubscriptionPackDimension().getSubscriptionPack(),
                 subscriber.getName(),
-                subscription.getSubscriptionStatus(),
+                SubscriptionStatus.from(subscription.getSubscriptionStatus()).getDisplayString(),
                 String.valueOf(subscription.getWeekNumber()),
                 subscriber.getAgeOfBeneficiary() == null ? null : String.valueOf(subscriber.getAgeOfBeneficiary()),
                 subscriber.getEstimatedDateOfDelivery() == null ? null : subscriber.getEstimatedDateOfDelivery().toString("dd-MM-yyyy"),
