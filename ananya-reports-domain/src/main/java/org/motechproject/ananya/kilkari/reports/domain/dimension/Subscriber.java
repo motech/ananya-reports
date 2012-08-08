@@ -115,4 +115,8 @@ public class Subscriber {
     private DateTime convertToDateTime(Date date) {
         return date != null ? new DateTime(date) : null;
     }
+
+    public void setMsisdn(long msisdn) {
+        this.msisdn = msisdn;
+    }
 }

@@ -146,4 +146,8 @@ public class Subscription {
     public Subscription getOldSubscription() {
         return oldSubscription;
     }
+
+    public void setSubscriber(Subscriber subscriber) {
+        this.subscriber = subscriber;
+    }
 }

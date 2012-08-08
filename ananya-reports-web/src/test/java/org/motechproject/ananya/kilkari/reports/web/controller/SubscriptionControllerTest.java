@@ -8,6 +8,11 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.motechproject.ananya.kilkari.contract.request.*;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
+import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber;
@@ -16,6 +21,7 @@ import org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPac
 import org.motechproject.ananya.kilkari.reports.service.SubscriberService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
+import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriberMapper;
 import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionMapper;
 import org.motechproject.ananya.kilkari.reports.web.util.HttpConstants;
 import org.motechproject.ananya.kilkari.reports.web.util.TestUtils;
@@ -205,6 +211,60 @@ public class SubscriptionControllerTest {
         assertEquals(createdAt.toLocalDate(), actualChangePackRequest.getCreatedAt().toLocalDate());
         assertNull(actualChangePackRequest.getExpectedDateOfDelivery());
         assertEquals(dateOfBirth.toLocalDate(), actualChangePackRequest.getDateOfBirth().toLocalDate());
+    }
+
+    @Test
+    public void shouldReturnSubscriberDetailsForAGivenSubscriptionId() throws Exception {
+        String msisdn = "1234567890";
+        DateTime edd = DateTime.now();
+        DateTime dob = DateTime.now().minusYears(23);
+        String subscriptionId = "subscriptionId";
+        String name = "name";
+        String district = "D1";
+        String block = "B1";
+        String panchayat = "P1";
+        String status = "ACTIVE";
+        String pack = "BARI_KILKARI";
+        int weekNumber = 13;
+        Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null,
+                new LocationDimension(district, block, panchayat), null, null);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null,
+                null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
+
+        final SubscriberResponse expectedResponse = SubscriberMapper.mapFrom(subscription);
+        when(subscriptionService.fetchFor(subscriptionId)).thenReturn(subscription);
+
+        mockMvc(subscriptionController)
+                .perform(get("/subscription/subscriber/" + subscriptionId)).andExpect(status().isOk())
+                .andExpect(content().type(HttpConstants.RESPONSE_JSON))
+                .andExpect(content().string(assertSubscriberResponse(expectedResponse)));
+    }
+
+    @Test
+    public void shouldChangeMsisdnForSubscriptionId() throws Exception {
+        String msisdn = "1234567890";
+        Long msisdnAsLong = 1234567890L;
+        String subscriptionId = "subscriptionId";
+
+        mockMvc(subscriptionController)
+                .perform(post("/subscription/changemsisdn")
+                        .param("subscriptionId", subscriptionId).param("msisdn", msisdn)).andExpect(status().isOk())
+                .andExpect(status().isOk());
+
+        verify(subscriptionService).changeMsisdnForSubscription(subscriptionId, msisdnAsLong);
+    }
+
+    private BaseMatcher<String> assertSubscriberResponse(final SubscriberResponse expectedResponse) {
+        return new BaseMatcher<String>() {
+            @Override
+            public boolean matches(Object o) {
+                return TestUtils.toJson(expectedResponse).equals((String) o);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+            }
+        };
     }
 
     private BaseMatcher<String> assertSubscriptionResponse(final List<SubscriptionResponse> expectedReponseList) {

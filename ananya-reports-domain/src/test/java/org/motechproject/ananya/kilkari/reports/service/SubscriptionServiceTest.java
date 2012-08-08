@@ -3,6 +3,7 @@ package org.motechproject.ananya.kilkari.reports.service;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.*;
 import org.motechproject.ananya.kilkari.reports.repository.AllSubscriptions;
@@ -79,5 +80,23 @@ public class SubscriptionServiceTest {
         List<Subscription> actualSubscriptionList = subscriptionService.findByMsisdn(msisdn.toString());
 
         assertEquals(expectedSubscriptionList, actualSubscriptionList);
+    }
+
+    @Test
+    public void shouldChangeMsisdnForSubscription() {
+        String subscriptionId = "subscriptionId";
+        Subscription subscription = new Subscription();
+        subscription.setSubscriber(new Subscriber());
+        long msisdn = 9876543210L;
+
+        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
+
+        subscriptionService.changeMsisdnForSubscription(subscriptionId, msisdn);
+
+        ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor.forClass(Subscription.class);
+        verify(allSubscriptions).update(subscriptionArgumentCaptor.capture());
+        Subscription modifiedSubscription = subscriptionArgumentCaptor.getValue();
+
+        assertEquals(msisdn, (long)modifiedSubscription.getSubscriber().getMsisdn());
     }
 }

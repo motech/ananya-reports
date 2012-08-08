@@ -4,11 +4,13 @@ import org.motechproject.ananya.kilkari.contract.request.SubscriberReportRequest
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionChangePackRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription;
 import org.motechproject.ananya.kilkari.reports.service.SubscriberService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionService;
 import org.motechproject.ananya.kilkari.reports.service.SubscriptionStatusMeasureService;
+import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriberMapper;
 import org.motechproject.ananya.kilkari.reports.web.mapper.SubscriptionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,5 +66,19 @@ public class SubscriptionController {
             subscriptionResponseList.add(SubscriptionMapper.mapFrom(subscription));
         }
         return subscriptionResponseList;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subscription/subscriber/{subscriptionId}")
+    @ResponseBody
+    public SubscriberResponse getSubscriber(@PathVariable String subscriptionId) {
+        Subscription subscription = subscriptionService.fetchFor(subscriptionId);
+        return SubscriberMapper.mapFrom(subscription);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/subscription/changemsisdn")
+    @ResponseBody
+    public void updateSubscriptionForChangedMsisdn(@RequestParam String subscriptionId, @RequestParam String msisdn) {
+        Long msisdnAsLong = Long.parseLong(msisdn);
+        subscriptionService.changeMsisdnForSubscription(subscriptionId, msisdnAsLong);
     }
 }

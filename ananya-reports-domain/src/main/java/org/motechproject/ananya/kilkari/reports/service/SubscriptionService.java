@@ -46,4 +46,10 @@ public class SubscriptionService {
             return null;
         }
     }
+
+    public void changeMsisdnForSubscription(String subscriptionId, Long msisdn) {
+        Subscription subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
+        subscription.getSubscriber().setMsisdn(msisdn);
+        allSubscriptions.update(subscription);
+    }
 }
