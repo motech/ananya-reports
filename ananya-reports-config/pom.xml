@@ -16,5 +16,10 @@
         <finalName>ananya-reports-config</finalName>
     </build>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+    </dependencies>
 </project>
