@@ -99,6 +99,7 @@ public class SubscriptionStatusMeasureService {
                 subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount());
     }
 
+    @Transactional
     public void changePack(SubscriptionChangePackRequest request) {
         String oldSubscriptionId = request.getOldSubscriptionId();
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(oldSubscriptionId);
@@ -106,9 +107,10 @@ public class SubscriptionStatusMeasureService {
         LocationDimension oldLocationDimension = oldSubscription.getLocationDimension();
 
         String name = oldSubscriber.getName();
-        int age = oldSubscriber.getAgeOfBeneficiary();
+        Integer age = oldSubscriber.getAgeOfBeneficiary();
         String operator = oldSubscription.getOperatorDimension().getOperator();
-        SubscriberLocation location = new SubscriberLocation(oldLocationDimension.getDistrict(), oldLocationDimension.getBlock(), oldLocationDimension.getPanchayat());
+        SubscriberLocation location = oldLocationDimension == null ? null : new SubscriberLocation(oldLocationDimension.getDistrict(),
+                oldLocationDimension.getBlock(), oldLocationDimension.getPanchayat());
 
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(request.getSubscriptionId(), request.getChannel(),
                 request.getMsisdn(), request.getPack(), name, age, request.getCreatedAt(), request.getSubscriptionStatus(),
