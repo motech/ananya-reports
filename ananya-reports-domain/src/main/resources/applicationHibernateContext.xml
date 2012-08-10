@@ -17,17 +17,17 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.ChannelDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.LocationDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.OperatorDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.Subscriber</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.Subscription</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.SubscriptionPackDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.DateDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.TimeDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.dimension.CampaignDimension</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriberCallMeasure</value>
-                <value>org.motechproject.ananya.kilkari.reports.domain.measure.SubscriptionStatusMeasure</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.ChannelDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.OperatorDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPackDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure</value>
             </list>
         </property>
 

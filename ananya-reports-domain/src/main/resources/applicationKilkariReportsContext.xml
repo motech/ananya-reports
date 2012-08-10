@@ -10,7 +10,7 @@
     <util:properties id="campaignProperties" location="classpath:/campaign.properties"/>
     <context:property-placeholder location="classpath*:ananya_reports.properties"/>
 
-    <context:component-scan base-package="org.motechproject.ananya.kilkari"/>
+    <context:component-scan base-package="org.motechproject.ananya.reports"/>
 
     <context:annotation-config/>
 
