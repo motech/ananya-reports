@@ -21,5 +21,9 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.motechproject.contrib-ananya-kilkari</groupId>
+            <artifactId>motech-web-utils</artifactId>
+        </dependency>
     </dependencies>
 </project>
