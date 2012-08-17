@@ -8,7 +8,9 @@
                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
     <util:properties id="campaignProperties" location="classpath:/campaign.properties"/>
-    <context:property-placeholder location="classpath*:*.properties"/>
+
+    <context:property-placeholder location="classpath*:ananya_reports.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath*:postgres.properties" ignore-unresolvable="true"/>
 
     <context:component-scan base-package="org.motechproject.ananya.reports"/>
 
