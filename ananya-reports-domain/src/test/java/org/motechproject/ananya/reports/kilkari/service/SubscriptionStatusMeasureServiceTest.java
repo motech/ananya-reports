@@ -71,21 +71,9 @@ public class SubscriptionStatusMeasureServiceTest {
         String block = "block";
         String panchayat = "panchayat";
         DateTime startDate = DateTime.now();
+        String reason = "some reason";
 
-        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest();
-        subscriptionReportRequest.setMsisdn(msisdn);
-        subscriptionReportRequest.setChannel(channel);
-        subscriptionReportRequest.setSubscriptionId(subscriptionId);
-        subscriptionReportRequest.setOperator(operator);
-        subscriptionReportRequest.setPack(subscriptionPack);
-        subscriptionReportRequest.setCreatedAt(new DateTime(2012, 01, 01, 10, 10));
-        subscriptionReportRequest.setStartDate(startDate);
-        subscriptionReportRequest.setEstimatedDateOfDelivery(edd);
-        subscriptionReportRequest.setDateOfBirth(dob);
-        subscriptionReportRequest.setName(name);
-        subscriptionReportRequest.setAgeOfBeneficiary(age);
-        subscriptionReportRequest.setLocation(new SubscriberLocation(district, block, panchayat));
-        subscriptionReportRequest.setSubscriptionStatus("NEW");
+        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, name, age, new DateTime(2012, 01, 01, 10, 10), "NEW", edd, dob, new SubscriberLocation(district, block, panchayat), operator, startDate, "oldSubscriptionId", reason);
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -121,6 +109,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
         assertEquals(subscriptionId, subscription.getSubscriptionId());
+        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
     }
 
     @Test
@@ -140,17 +129,8 @@ public class SubscriptionStatusMeasureServiceTest {
         DateTime startDate = DateTime.now();
         String operator = "airtel";
 
-        SubscriptionChangePackRequest changePackRequest = new SubscriptionChangePackRequest();
-        changePackRequest.setMsisdn(msisdn);
-        changePackRequest.setChannel(channel);
-        changePackRequest.setSubscriptionId(subscriptionId);
-        changePackRequest.setOldSubscriptionId(oldSubscriptionId);
-        changePackRequest.setPack(subscriptionPack);
-        changePackRequest.setCreatedAt(new DateTime(2012, 01, 01, 10, 10));
-        changePackRequest.setStartDate(startDate);
-        changePackRequest.setExpectedDateOfDelivery(edd);
-        changePackRequest.setDateOfBirth(dob);
-        changePackRequest.setSubscriptionStatus("NEW");
+        String reason = "some reason";
+        SubscriptionChangePackRequest changePackRequest = new SubscriptionChangePackRequest(msisdn,subscriptionId,oldSubscriptionId,subscriptionPack,channel,"NEW", new DateTime(2012, 01, 01, 10, 10), edd, dob, startDate, reason);
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -193,6 +173,7 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
         assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
+        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
 
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());

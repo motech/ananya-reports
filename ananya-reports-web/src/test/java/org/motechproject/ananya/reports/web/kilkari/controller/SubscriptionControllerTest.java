@@ -19,7 +19,6 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPac
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
-import org.motechproject.ananya.reports.web.kilkari.controller.SubscriptionController;
 import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberMapper;
 import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionMapper;
 import org.springframework.http.MediaType;
@@ -73,7 +72,8 @@ public class SubscriptionControllerTest {
                 "\"panchayat\":\"Rajipur\"\n" +
                 "},\n" +
                 "\"operator\":\"airtel\",\n" +
-                "\"subscriptionStatus\":\"NEW\"\n" +
+                "\"subscriptionStatus\":\"NEW\",\n" +
+                "\"reason\":\"some reason\"\n" +
                 "}";
 
         mockMvc(subscriptionController)
@@ -88,6 +88,8 @@ public class SubscriptionControllerTest {
         SubscriptionReportRequest subscriptionReportRequest = subscriptionRequestArgumentCaptor.getValue();
         assertEquals(Long.valueOf(9740123123L), subscriptionReportRequest.getMsisdn());
         assertEquals("sid", subscriptionReportRequest.getSubscriptionId());
+        assertEquals("some reason", subscriptionReportRequest.getReason());
+
     }
 
     @Test
@@ -97,7 +99,8 @@ public class SubscriptionControllerTest {
                 "\"subscriptionId\":\"sid\",\n" +
                 "\"subscriptionStatus\":\"ACTIVE\",\n" +
                 "\"createdAt\":\"2010-05-05\",\n" +
-                "\"graceCount\":7\n" +
+                "\"graceCount\":7,\n" +
+                "\"reason\":\"some reason\"\n" +
                 "}";
 
         mockMvc(subscriptionController)
@@ -113,6 +116,7 @@ public class SubscriptionControllerTest {
         assertEquals("sid", subscriptionStateChangeRequest.getSubscriptionId());
         assertEquals("ACTIVE", subscriptionStateChangeRequest.getSubscriptionStatus());
         assertEquals((Integer) 7, subscriptionStateChangeRequest.getGraceCount());
+        assertEquals("some reason", subscriptionStateChangeRequest.getReason());
     }
 
     @Test
@@ -188,7 +192,8 @@ public class SubscriptionControllerTest {
         DateTime dateOfBirth = DateTime.now().minusYears(10);
         DateTime startDate = DateTime.now();
         String status = "NEW";
-        String changePackRequestJson = TestUtils.toJson(new SubscriptionChangePackRequest(msisdn, subscriptionId, oldSubscriptionId, pack, channel, status, createdAt, null, dateOfBirth, startDate));
+        String reason = "reason for change";
+        String changePackRequestJson = TestUtils.toJson(new SubscriptionChangePackRequest(msisdn, subscriptionId, oldSubscriptionId, pack, channel, status, createdAt, null, dateOfBirth, startDate, reason));
 
         mockMvc(subscriptionController)
                 .perform(post("/subscription/changepack")
@@ -208,6 +213,7 @@ public class SubscriptionControllerTest {
         assertEquals(createdAt.toLocalDate(), actualChangePackRequest.getCreatedAt().toLocalDate());
         assertNull(actualChangePackRequest.getExpectedDateOfDelivery());
         assertEquals(dateOfBirth.toLocalDate(), actualChangePackRequest.getDateOfBirth().toLocalDate());
+        assertEquals(reason, actualChangePackRequest.getReason());
     }
 
     @Test

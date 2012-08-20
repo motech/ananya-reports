@@ -73,7 +73,7 @@ public class SubscriptionStatusMeasureService {
 
         Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
         Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
-        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, null, null);
+        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
     }
 
     @Transactional
@@ -114,7 +114,7 @@ public class SubscriptionStatusMeasureService {
 
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(request.getSubscriptionId(), request.getChannel(),
                 request.getMsisdn(), request.getPack(), name, age, request.getCreatedAt(), request.getSubscriptionStatus(),
-                request.getExpectedDateOfDelivery(), request.getDateOfBirth(), location, operator, request.getStartDate(), oldSubscriptionId);
+                request.getExpectedDateOfDelivery(), request.getDateOfBirth(), location, operator, request.getStartDate(), oldSubscriptionId, request.getReason());
 
         create(subscriptionReportRequest);
     }

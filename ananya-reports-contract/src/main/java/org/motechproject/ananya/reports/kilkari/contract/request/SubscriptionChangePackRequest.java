@@ -26,11 +26,13 @@ public class SubscriptionChangePackRequest implements Serializable {
     private DateTime dateOfBirth;
     @JsonProperty
     private DateTime startDate;
+    @JsonProperty
+    private String reason;
 
     public SubscriptionChangePackRequest() {
     }
 
-    public SubscriptionChangePackRequest(Long msisdn, String subscriptionId, String oldSubscriptionId, String pack, String channel, String subscriptionStatus, DateTime createdAt, DateTime expectedDateOfDelivery, DateTime dateOfBirth, DateTime startDate) {
+    public SubscriptionChangePackRequest(Long msisdn, String subscriptionId, String oldSubscriptionId, String pack, String channel, String subscriptionStatus, DateTime createdAt, DateTime expectedDateOfDelivery, DateTime dateOfBirth, DateTime startDate, String reason) {
         this.msisdn = msisdn;
         this.subscriptionId = subscriptionId;
         this.oldSubscriptionId = oldSubscriptionId;
@@ -41,6 +43,7 @@ public class SubscriptionChangePackRequest implements Serializable {
         this.expectedDateOfDelivery = expectedDateOfDelivery;
         this.dateOfBirth = dateOfBirth;
         this.startDate = startDate;
+        this.reason = reason;
     }
 
     public Long getMsisdn() {
@@ -83,43 +86,7 @@ public class SubscriptionChangePackRequest implements Serializable {
         return startDate;
     }
 
-    public void setMsisdn(Long msisdn) {
-        this.msisdn = msisdn;
-    }
-
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
-    public void setOldSubscriptionId(String oldSubscriptionId) {
-        this.oldSubscriptionId = oldSubscriptionId;
-    }
-
-    public void setPack(String pack) {
-        this.pack = pack;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public void setSubscriptionStatus(String subscriptionStatus) {
-        this.subscriptionStatus = subscriptionStatus;
-    }
-
-    public void setCreatedAt(DateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setExpectedDateOfDelivery(DateTime expectedDateOfDelivery) {
-        this.expectedDateOfDelivery = expectedDateOfDelivery;
-    }
-
-    public void setDateOfBirth(DateTime dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public void setStartDate(DateTime startDate) {
-        this.startDate = startDate;
+    public String getReason() {
+        return reason;
     }
 }
