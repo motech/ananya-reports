@@ -55,25 +55,7 @@ public class SubscriptionStatusMeasureService {
 
     @Transactional
     public void create(SubscriptionReportRequest subscriptionReportRequest) {
-        Long msisdn = subscriptionReportRequest.getMsisdn();
-        String subscriptionId = subscriptionReportRequest.getSubscriptionId();
-        String subscriptionStatus = subscriptionReportRequest.getSubscriptionStatus();
-        if (subscriptionService.exists(subscriptionId)) {
-            return;
-        }
-
-        ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionReportRequest.getChannel());
-        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionReportRequest.getPack());
-        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
-        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
-        SubscriberLocation location = subscriptionReportRequest.getLocation();
-        LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
-        OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
-        Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
-
-        Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
-        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
+        createSubscription(subscriptionReportRequest);
     }
 
     @Transactional
@@ -116,7 +98,29 @@ public class SubscriptionStatusMeasureService {
                 request.getMsisdn(), request.getPack(), name, age, request.getCreatedAt(), request.getSubscriptionStatus(),
                 request.getExpectedDateOfDelivery(), request.getDateOfBirth(), location, operator, request.getStartDate(), oldSubscriptionId, request.getReason());
 
-        create(subscriptionReportRequest);
+        createSubscription(subscriptionReportRequest);
+    }
+
+    private void createSubscription(SubscriptionReportRequest subscriptionReportRequest) {
+        Long msisdn = subscriptionReportRequest.getMsisdn();
+        String subscriptionId = subscriptionReportRequest.getSubscriptionId();
+        String subscriptionStatus = subscriptionReportRequest.getSubscriptionStatus();
+        if (subscriptionService.exists(subscriptionId)) {
+            return;
+        }
+
+        ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionReportRequest.getChannel());
+        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionReportRequest.getPack());
+        DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
+        SubscriberLocation location = subscriptionReportRequest.getLocation();
+        LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
+        OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
+        Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
+
+        Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
+        Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
+        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
     }
 
     private void saveSubscriptionStatusMeasure(Subscription subscription, String subscriptionStatus, Integer subscriptionWeekNumber,
