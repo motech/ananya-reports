@@ -87,10 +87,11 @@ public class SubscriptionStatusMeasureService {
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(oldSubscriptionId);
         Subscriber oldSubscriber = oldSubscription.getSubscriber();
         LocationDimension oldLocationDimension = oldSubscription.getLocationDimension();
+        OperatorDimension operatorDimension = oldSubscription.getOperatorDimension();
 
         String name = oldSubscriber.getName();
         Integer age = oldSubscriber.getAgeOfBeneficiary();
-        String operator = oldSubscription.getOperatorDimension().getOperator();
+        String operator = operatorDimension == null? null : operatorDimension.getOperator();
         SubscriberLocation location = oldLocationDimension == null ? null : new SubscriberLocation(oldLocationDimension.getDistrict(),
                 oldLocationDimension.getBlock(), oldLocationDimension.getPanchayat());
 
