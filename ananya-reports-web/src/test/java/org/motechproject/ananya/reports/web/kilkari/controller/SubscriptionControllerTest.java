@@ -161,7 +161,7 @@ public class SubscriptionControllerTest {
         Integer beneficiaryAge = 24;
         DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
         DateTime dateOfBirth = DateTime.now().minusYears(10);
-        String subscriberRequestJson = TestUtils.toJson(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, expectedDateOfDelivery, dateOfBirth, location));
+        String subscriberRequestJson = TestUtils.toJson(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location));
         SubscriberReportRequest expectedSubscriberReportRequest = TestUtils.fromJson(subscriberRequestJson, SubscriberReportRequest.class);
 
         mockMvc(subscriptionController)

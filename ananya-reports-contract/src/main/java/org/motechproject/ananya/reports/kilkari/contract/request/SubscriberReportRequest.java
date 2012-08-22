@@ -16,23 +16,17 @@ public class SubscriberReportRequest implements Serializable {
     @JsonProperty
     private Integer beneficiaryAge;
     @JsonProperty
-    private DateTime expectedDateOfDelivery;
-    @JsonProperty
-    private DateTime dateOfBirth;
-    @JsonProperty
     private SubscriberLocation location;
 
     public SubscriberReportRequest() {
     }
 
     public SubscriberReportRequest(DateTime createdAt, String beneficiaryName,
-                                   Integer beneficiaryAge, DateTime expectedDateOfDelivery,
-                                   DateTime dateOfBirth, SubscriberLocation location) {
+                                   Integer beneficiaryAge,
+                                   SubscriberLocation location) {
         this.createdAt = createdAt;
         this.beneficiaryName = beneficiaryName;
         this.beneficiaryAge = beneficiaryAge;
-        this.expectedDateOfDelivery = expectedDateOfDelivery;
-        this.dateOfBirth = dateOfBirth;
         this.location = location;
     }
 
@@ -52,16 +46,6 @@ public class SubscriberReportRequest implements Serializable {
     }
 
     @JsonIgnore
-    public DateTime getExpectedDateOfDelivery() {
-        return expectedDateOfDelivery;
-    }
-
-    @JsonIgnore
-    public DateTime getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    @JsonIgnore
     public SubscriberLocation getLocation() {
         return location;
     }
@@ -77,8 +61,6 @@ public class SubscriberReportRequest implements Serializable {
                 .append(this.beneficiaryAge, that.beneficiaryAge)
                 .append(this.beneficiaryName, that.beneficiaryName)
                 .append(this.createdAt, that.createdAt)
-                .append(this.expectedDateOfDelivery, that.expectedDateOfDelivery)
-                .append(this.dateOfBirth, that.dateOfBirth)
                 .append(this.location, that.location)
                 .isEquals();
     }
@@ -89,8 +71,6 @@ public class SubscriberReportRequest implements Serializable {
                 .append(this.beneficiaryAge)
                 .append(this.beneficiaryName)
                 .append(this.createdAt)
-                .append(this.expectedDateOfDelivery)
-                .append(this.dateOfBirth)
                 .append(this.location)
                 .hashCode();
     }

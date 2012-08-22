@@ -102,8 +102,6 @@ public class Subscriber {
     public void updateWith(SubscriberReportRequest subscriberReportRequest, LocationDimension locationDimension, DateDimension dateDimension) {
         ageOfBeneficiary = subscriberReportRequest.getBeneficiaryAge();
         name = subscriberReportRequest.getBeneficiaryName();
-        estimatedDateOfDelivery = convertToDate(subscriberReportRequest.getExpectedDateOfDelivery());
-        dateOfBirth = convertToDate(subscriberReportRequest.getDateOfBirth());
         this.dateDimension = dateDimension;
         this.locationDimension = locationDimension;
     }

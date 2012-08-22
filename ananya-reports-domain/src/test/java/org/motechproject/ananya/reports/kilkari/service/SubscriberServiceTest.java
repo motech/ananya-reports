@@ -48,8 +48,6 @@ public class SubscriberServiceTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
-        DateTime dateOfBirth = DateTime.now().minusYears(10);
         Subscriber subscriber = new Subscriber(msisdn, "oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2"), null, null);
         DateDimension expectedDateDimension = new DateDimension();
         Subscription subscription = mock(Subscription.class);
@@ -59,7 +57,7 @@ public class SubscriberServiceTest {
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat));
         when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
-        subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, expectedDateOfDelivery, dateOfBirth, location), subscriptionId);
+        subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location), subscriptionId);
 
         ArgumentCaptor<Subscriber> captor = ArgumentCaptor.forClass(Subscriber.class);
         verify(allSubscribers).save(captor.capture());
@@ -67,8 +65,6 @@ public class SubscriberServiceTest {
 
         assertEquals(Integer.valueOf(beneficiaryAge), actualSubscriber.getAgeOfBeneficiary());
         assertEquals(beneficiaryName, actualSubscriber.getName());
-        assertEquals(expectedDateOfDelivery, actualSubscriber.getEstimatedDateOfDelivery());
-        assertEquals(dateOfBirth, actualSubscriber.getDateOfBirth());
         assertEquals(district, actualSubscriber.getLocationDimension().getDistrict());
         assertEquals(block, actualSubscriber.getLocationDimension().getBlock());
         assertEquals(panchayat, actualSubscriber.getLocationDimension().getPanchayat());

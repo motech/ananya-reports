@@ -18,19 +18,15 @@ public class SubscriberTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
-        DateTime dateOfBirth = DateTime.now().minusYears(10);
         Subscriber subscriber = new Subscriber(msisdn, "oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1"), null, null);
         DateDimension expectedDateDimension = new DateDimension();
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat);
 
         subscriber.updateWith(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge,
-                expectedDateOfDelivery, dateOfBirth, location), expectedLocationDimension, expectedDateDimension);
+                location), expectedLocationDimension, expectedDateDimension);
 
         assertEquals(Integer.valueOf(beneficiaryAge), subscriber.getAgeOfBeneficiary());
         assertEquals(beneficiaryName, subscriber.getName());
-        assertEquals(dateOfBirth, subscriber.getDateOfBirth());
-        assertEquals(expectedDateOfDelivery, subscriber.getEstimatedDateOfDelivery());
         assertEquals(expectedDateDimension, subscriber.getDateDimension());
         assertEquals(expectedLocationDimension, subscriber.getLocationDimension());
     }
