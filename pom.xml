@@ -12,6 +12,7 @@
         <module>ananya-reports-contract</module>
         <module>ananya-reports-web</module>
         <module>ananya-reports-smoke</module>
+        <module>ananya-reports-performance-tests</module>
     </modules>
     <groupId>org.motechproject.ananya.reports</groupId>
     <artifactId>ananya-reports</artifactId>

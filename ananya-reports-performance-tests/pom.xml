@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ananya-reports</artifactId>
+        <groupId>org.motechproject.ananya.reports</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ananya-reports-performance-tests</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.databene</groupId>
+            <artifactId>databene-benerator</artifactId>
+            <version>0.7.7</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.databene</groupId>
+                <artifactId>maven-benerator-plugin</artifactId>
+                <version>0.7.7</version>
+                <configuration>
+                    <descriptor>src/test/resources/benerator.xml</descriptor>
+                    <dbDriver>org.postgresql.Driver</dbDriver>
+                    <dbUrl>jdbc:postgresql://localhost/ananya/</dbUrl>
+                    <dbUser>postgres</dbUser>
+                    <dbPassword>password</dbPassword>
+                    <xmlRoot>src/test/resources/benerator.xml</xmlRoot>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

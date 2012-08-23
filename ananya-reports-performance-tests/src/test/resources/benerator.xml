@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<setup xmlns="http://databene.org/benerator/0.7.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://databene.org/benerator/0.7.0 http://databene.org/benerator-0.7.0.xsd">
+
+    <import platforms="db"/>
+
+    <bean id="subscribers_sql_file" class="SQLEntityExporter">
+        <property name="uri" value="subscribers.sql"/>
+        <property name="dialect" value="postgres"/>
+    </bean>
+    <bean id="subscriptions_sql_file" class="SQLEntityExporter">
+        <property name="uri" value="subscriptions.sql"/>
+        <property name="dialect" value="postgres"/>
+    </bean>
+
+    <generate type="report.subscribers" count="150000" consumer="subscribers_sql_file">
+        <variable name="person" generator="org.databene.domain.person.PersonGenerator"/>
+
+        <attribute name="msisdn" type="long" pattern="[7-9][0-9]{9}" unique="true"/>
+        <attribute name="name" type="string" script="person.givenName"/>
+        <attribute name="age_of_beneficiary" type="long" min="20" max="50" distribution="random"/>
+        <attribute name="estimated_date_of_delivery"
+                   generator="org.databene.benerator.primitive.datetime.DateGenerator"/>
+        <attribute name="date_of_birth" generator="org.databene.benerator.primitive.datetime.DateGenerator"/>
+        <attribute name="channel_id" type="long" min="1" max="2" distribution="random"/>
+        <attribute name="location_id" type="long" min="1" max="2442" distribution="random"/>
+        <attribute name="time_id" type="long" min="1" max="200" distribution="random"/>
+        <attribute name="operator_id" type="long" min="1" max="6" distribution="random"/>
+    </generate>
+
+    <generate type="report.subscriptions" count="150000" consumer="subscriptions_sql_file">
+        <variable name="person" generator="org.databene.domain.person.PersonGenerator"/>
+
+        <attribute name="subscriber_id" type="long" min="1" max="150000" unique="true"/>
+        <attribute name="subscription_pack_id" type="long" min="1" max="3"/>
+        <attribute name="channel_id" type="long" min="1" max="2" distribution="random"/>
+        <attribute name="location_id" type="long" min="1" max="2442" distribution="random"/>
+        <attribute name="time_id" type="long" min="1" max="200" distribution="random"/>
+        <attribute name="operator_id" type="long" min="1" max="6" distribution="random"/>
+        <attribute name="subscription_id" type="string" generator="org.databene.benerator.primitive.UUIDGenerator" unique="true"/>
+        <attribute name="last_modified_time" generator="org.databene.benerator.primitive.datetime.DateTimeGenerator"/>
+        <attribute name="week_number" type="long" min="1" max="34" distribution="random"/>
+        <attribute name="subscription_status" pattern="(NEW|NEW_EARLY|PENDING_ACTIVATION|ACTIVATION_FAILED|COMPLETED|ACTIVE|DEACTIVATION_REQUEST_RECEIVED|PENDING_DEACTIVATION|DEACTIVATED|SUSPENDED|PENDING_COMPLETION)" distribution="random"/>
+        <attribute name="start_date" generator="org.databene.benerator.primitive.datetime.DateTimeGenerator"/>
+    </generate>
+
+
+</setup>
