@@ -5,6 +5,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class SubscriptionResponse {
 
     @JsonProperty
+    private Long msisdn;
+    @JsonProperty
     private String subscriptionId;
     @JsonProperty
     private String pack;
@@ -23,7 +25,9 @@ public class SubscriptionResponse {
     @JsonProperty
     private LocationResponse location;
 
-    public SubscriptionResponse(String subscriptionId, String pack, String beneficiaryName, String subscriptionStatus, String weekNumber, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location) {
+    public SubscriptionResponse(Long msisdn, String subscriptionId, String pack, String beneficiaryName, String subscriptionStatus,
+                                String weekNumber, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location) {
+        this.msisdn = msisdn;
         this.subscriptionId = subscriptionId;
         this.pack = pack;
         this.beneficiaryName = beneficiaryName;
@@ -69,5 +73,9 @@ public class SubscriptionResponse {
 
     public LocationResponse getLocation() {
         return location;
+    }
+
+    public Long getMsisdn() {
+        return msisdn;
     }
 }

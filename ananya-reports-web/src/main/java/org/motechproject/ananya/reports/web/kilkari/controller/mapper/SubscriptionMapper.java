@@ -11,7 +11,7 @@ public class SubscriptionMapper {
     public static SubscriptionResponse mapFrom(Subscription subscription) {
         Subscriber subscriber = subscription.getSubscriber();
         LocationDimension locationDimension = subscriber.getLocationDimension();
-        return new SubscriptionResponse(subscription.getSubscriptionId(),
+        return new SubscriptionResponse(subscription.getMsisdn(), subscription.getSubscriptionId(),
                 subscription.getSubscriptionPackDimension().getSubscriptionPack(),
                 subscriber.getName(),
                 SubscriptionStatus.from(subscription.getSubscriptionStatus()).getDisplayString(),

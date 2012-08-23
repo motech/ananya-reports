@@ -76,7 +76,7 @@ public class SubscriptionStatusMeasureService {
             subscriber = createNewSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
 
         subscriber = allSubscribers.save(subscriber);
-        Subscription subscription = saveSubscription(subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
+        Subscription subscription = saveSubscription(msisdn, subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
     }
 
@@ -108,7 +108,7 @@ public class SubscriptionStatusMeasureService {
     }
 
     private Subscriber createNewSubscriber(SubscriptionReportRequest subscriptionReportRequest, Long msisdn, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
-        return new Subscriber(msisdn, subscriptionReportRequest.getName(), subscriptionReportRequest.getAgeOfBeneficiary(), subscriptionReportRequest.getEstimatedDateOfDelivery(),
+        return new Subscriber(subscriptionReportRequest.getName(), subscriptionReportRequest.getAgeOfBeneficiary(), subscriptionReportRequest.getEstimatedDateOfDelivery(),
                 subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
     }
 
@@ -128,10 +128,10 @@ public class SubscriptionStatusMeasureService {
         allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
     }
 
-    private Subscription saveSubscription(String subscriptionId, ChannelDimension channelDimension, OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension,
+    private Subscription saveSubscription(Long msisdn, String subscriptionId, ChannelDimension channelDimension, OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension,
                                           DateDimension dateDimension, Subscriber subscriber,
                                           DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber, Subscription oldSubscription) {
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
+        Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
                 dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, weekNumber, oldSubscription);
         subscription = subscriptionService.makeFor(subscription);
         return subscription;

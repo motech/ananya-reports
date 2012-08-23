@@ -42,11 +42,11 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
 
-        Subscriber subscriber = new Subscriber(1234567890L, "name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null);
+        Subscriber subscriber = new Subscriber("name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null);
         template.save(subscriber);
         Subscriber subscriberFromDb = template.loadAll(Subscriber.class).get(0);
 
-        Subscription subscription = new Subscription(subscriberFromDb, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13, null);
+        Subscription subscription = new Subscription(1234L, subscriberFromDb, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13, null);
         template.save(subscription);
         Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
 

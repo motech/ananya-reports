@@ -13,6 +13,9 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "msisdn")
+    private long msisdn;
+
     @ManyToOne
     @JoinColumn(name = "subscriber_id", nullable = false)
     private Subscriber subscriber;
@@ -55,10 +58,11 @@ public class Subscription {
     public Subscription() {
     }
 
-    public Subscription(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
+    public Subscription(Long msisdn, Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
                         DateDimension dateDimension, String subscriptionId,
                         DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Integer weekNumber, Subscription oldSubscription) {
+        this.msisdn = msisdn;
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
         this.channelDimension = channelDimension;
@@ -74,6 +78,10 @@ public class Subscription {
 
     public Integer getId() {
         return id;
+    }
+
+    public Long getMsisdn() {
+        return msisdn;
     }
 
     public Subscriber getSubscriber() {
@@ -140,5 +148,9 @@ public class Subscription {
 
     public void setSubscriber(Subscriber subscriber) {
         this.subscriber = subscriber;
+    }
+
+    public void setMsisdn(Long msisdn) {
+        this.msisdn = msisdn;
     }
 }

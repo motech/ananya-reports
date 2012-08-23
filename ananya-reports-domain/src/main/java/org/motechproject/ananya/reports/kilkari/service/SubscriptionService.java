@@ -49,7 +49,7 @@ public class SubscriptionService {
 
     public void changeMsisdnForSubscription(String subscriptionId, Long msisdn) {
         Subscription subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
-        subscription.getSubscriber().setMsisdn(msisdn);
+        subscription.setMsisdn(msisdn);
         allSubscriptions.update(subscription);
     }
 }

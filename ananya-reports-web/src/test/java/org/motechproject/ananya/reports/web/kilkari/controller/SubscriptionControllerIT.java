@@ -54,10 +54,10 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
         channelDimension = new ChannelDimension("channel");
         dateDimension = allDateDimensions.fetchFor(DateTime.now());
         locationDimension = new LocationDimension("disctrict", "block", "panchayat");
-        subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, channelDimension,
+        subscriber = new Subscriber(name, 23, edd, dob, channelDimension,
                 locationDimension, dateDimension, null);
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
-        subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension,
+        subscription = new Subscription(Long.parseLong(msisdn), subscriber, subscriptionPackDimension, channelDimension,
                 null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
         saveAndMarkForDeletion(channelDimension, subscriptionPackDimension, locationDimension, subscriber, subscription);
     }
@@ -73,7 +73,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
                 .andExpect(status().isOk());
 
         Subscription subscriptionFromReport = allSubscriptions.findBySubscriptionId(subscriptionId);
-        assertEquals(msisdn, subscriptionFromReport.getSubscriber().getMsisdn().toString());
+        assertEquals(msisdn, subscriptionFromReport.getMsisdn().toString());
     }
 
     @Test

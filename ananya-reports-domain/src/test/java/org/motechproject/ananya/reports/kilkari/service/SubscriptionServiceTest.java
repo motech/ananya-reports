@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -46,14 +47,7 @@ public class SubscriptionServiceTest {
 
     @Test
     public void shouldMakeASubscription() {
-        Subscriber subscriber = new Subscriber();
-        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension();
-        ChannelDimension channelDimension = new ChannelDimension();
-        DateDimension dateDimension = new DateDimension();
-        OperatorDimension operatorDimension = new OperatorDimension();
-        LocationDimension locationDimension = new LocationDimension();
-        String subscriptionId = "sub11";
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13, null);
+        Subscription subscription = mock(Subscription.class);
 
         subscriptionService.makeFor(subscription);
 
@@ -85,7 +79,7 @@ public class SubscriptionServiceTest {
         String subscriptionId = "subscriptionId";
         Subscription subscription = new Subscription();
         subscription.setSubscriber(new Subscriber());
-        long msisdn = 9876543210L;
+        Long msisdn = 9876543210L;
 
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
 
@@ -94,7 +88,6 @@ public class SubscriptionServiceTest {
         ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor.forClass(Subscription.class);
         verify(allSubscriptions).update(subscriptionArgumentCaptor.capture());
         Subscription modifiedSubscription = subscriptionArgumentCaptor.getValue();
-
-        assertEquals(msisdn, (long)modifiedSubscription.getSubscriber().getMsisdn());
+        assertEquals(msisdn, modifiedSubscription.getMsisdn());
     }
 }

@@ -54,6 +54,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         String campaignId = "week1";
         DateTime subscriberCreatedDateTime = DateTime.now().minusMonths(1);
         DateTime callStartDateTime = DateTime.now();
+        Long msisdn = 1234567L;
         DateTime callEndDateTime = callStartDateTime.plusMinutes(10);
         String callSource = "OBD";
         markForDeletion(template.save(new CampaignDimension(campaignId, 3600)));
@@ -68,9 +69,9 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         TimeDimension startTime = allTimeDimensions.fetchFor(callStartDateTime);
         DateDimension endDate = allDateDimensions.fetchFor(callEndDateTime);
         TimeDimension endTime = allTimeDimensions.fetchFor(callEndDateTime);
-        Subscriber subscriber = new Subscriber(99876543210L, null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator);
+        Subscriber subscriber = new Subscriber(null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator);
         subscriber = allSubscribers.save(subscriber);
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, operator,
+        Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operator,
                 dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", 13, null);
         subscription = allSubscriptions.save(subscription);
 

@@ -15,9 +15,6 @@ public class Subscriber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "msisdn")
-    private long msisdn;
-
     @Column(name = "name")
     private String name;
 
@@ -49,10 +46,9 @@ public class Subscriber {
     public Subscriber() {
     }
 
-    public Subscriber(Long msisdn, String name, Integer ageOfBeneficiary, DateTime estimatedDateOfDelivery,
+    public Subscriber(String name, Integer ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                       DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
                       DateDimension dateDimension, OperatorDimension operatorDimension) {
-        this.msisdn = msisdn;
         this.name = name;
         this.ageOfBeneficiary = ageOfBeneficiary;
         this.estimatedDateOfDelivery = convertToDate(estimatedDateOfDelivery);
@@ -65,10 +61,6 @@ public class Subscriber {
 
     public Integer getId() {
         return id;
-    }
-
-    public Long getMsisdn() {
-        return msisdn;
     }
 
     public String getName() {
@@ -112,10 +104,6 @@ public class Subscriber {
 
     private DateTime convertToDateTime(Date date) {
         return date != null ? new DateTime(date) : null;
-    }
-
-    public void setMsisdn(long msisdn) {
-        this.msisdn = msisdn;
     }
 
     public void updateWithEddDob(DateTime edd, DateTime dob) {

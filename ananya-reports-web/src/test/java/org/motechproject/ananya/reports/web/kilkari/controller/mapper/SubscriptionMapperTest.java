@@ -26,12 +26,14 @@ public class SubscriptionMapperTest {
         String panchayat = "P1";
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
-        Subscriber subscriber = new Subscriber(12349L, name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
+        Long msisdn = 123L;
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
+        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
+        assertEquals(msisdn, subscriptionResponse.getMsisdn());
         assertEquals(name, subscriptionResponse.getBeneficiaryName());
         assertEquals(status.getDisplayString(), subscriptionResponse.getSubscriptionStatus());
         assertEquals(pack, subscriptionResponse.getPack());
@@ -48,12 +50,14 @@ public class SubscriptionMapperTest {
         String name = "name";
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
-        Subscriber subscriber = new Subscriber(12349L, name, 23, null, null, null, null, null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
+        Subscriber subscriber = new Subscriber(name, 23, null, null, null, null, null, null);
+        Long msisdn = 123L;
+        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
+        assertEquals(msisdn, subscriptionResponse.getMsisdn());
         assertEquals(name, subscriptionResponse.getBeneficiaryName());
         assertEquals(status.getDisplayString(), subscriptionResponse.getSubscriptionStatus());
         assertEquals(pack, subscriptionResponse.getPack());

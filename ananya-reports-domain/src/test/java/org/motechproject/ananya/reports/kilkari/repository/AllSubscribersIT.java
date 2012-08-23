@@ -16,19 +16,18 @@ public class AllSubscribersIT extends SpringIntegrationTest {
 
     @Test
     public void shouldCreateANewSubscriber() {
-        Long msisdn = 998L;
         String name = "name";
         int age = 42;
         DateTime edd = DateTime.now().minusMonths(4);
         DateTime dob = DateTime.now().minusMonths(8);
         ChannelDimension channelDimension = template.loadAll(ChannelDimension.class).get(0);
         DateDimension dateDimension = template.loadAll(DateDimension.class).get(0);
-        Subscriber subscriber = new Subscriber(msisdn, name, age, edd, dob, channelDimension, null, dateDimension, null);
+        Subscriber subscriber = new Subscriber(name, age, edd, dob, channelDimension, null, dateDimension, null);
 
         allSubscribers.save(subscriber);
 
         Subscriber actualSubscriber = template.loadAll(Subscriber.class).get(0);
-        assertEquals(msisdn,actualSubscriber.getMsisdn());
         assertEquals(name,actualSubscriber.getName());
+        assertEquals((Integer)age,actualSubscriber.getAgeOfBeneficiary());
     }
 }

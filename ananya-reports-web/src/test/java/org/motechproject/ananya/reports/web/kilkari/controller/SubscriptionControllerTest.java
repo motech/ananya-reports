@@ -132,8 +132,8 @@ public class SubscriptionControllerTest {
         String status = "ACTIVE";
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
-        Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
+        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
         final SubscriptionResponse expectedResponse = SubscriptionMapper.mapFrom(subscription);
         List<SubscriptionResponse> expectedReponseList = new ArrayList<SubscriptionResponse>() {{
@@ -159,8 +159,6 @@ public class SubscriptionControllerTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        DateTime expectedDateOfDelivery = DateTime.now().plusMonths(1);
-        DateTime dateOfBirth = DateTime.now().minusYears(10);
         String subscriberRequestJson = TestUtils.toJson(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location));
         SubscriberReportRequest expectedSubscriberReportRequest = TestUtils.fromJson(subscriberRequestJson, SubscriberReportRequest.class);
 
@@ -194,9 +192,9 @@ public class SubscriptionControllerTest {
         String status = "ACTIVE";
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
-        Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null,
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null,
                 new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null,
+        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
                 null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
         final SubscriberResponse expectedResponse = SubscriberMapper.mapFrom(subscription);

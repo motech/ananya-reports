@@ -80,7 +80,7 @@ public class SubscriptionStatusMeasureServiceTest {
         DateDimension dateDimension = new DateDimension();
         LocationDimension locationDimension = new LocationDimension();
 
-        Subscriber subscriber = new Subscriber(msisdn, name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
+        Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
         final Subscription[] subscriptionCapture = new Subscription[1];
 
@@ -141,9 +141,9 @@ public class SubscriptionStatusMeasureServiceTest {
 
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
 
-        Subscriber subscriber = new Subscriber(msisdn, name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
+        Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
         String oldSubscriptionId = "oldSubscriptionId";
-        Subscription oldSubscription = new Subscription(subscriber,subscriptionPackDimension, channelDimension, operatorDimension,
+        Subscription oldSubscription = new Subscription(msisdn, subscriber,subscriptionPackDimension, channelDimension, operatorDimension,
                 dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null, null);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, null, null,
                 new DateTime(2012, 01, 01, 10, 10), "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason);

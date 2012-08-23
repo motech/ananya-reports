@@ -24,8 +24,7 @@ public class AllSubscriptions {
 
     public List<Subscription> findByMsisdn(Long msisdn) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Subscription.class);
-        criteria.createAlias("subscriber", "sb");
-        criteria.add(Restrictions.eq("sb.msisdn", msisdn));
+        criteria.add(Restrictions.eq("msisdn", msisdn));
         return template.findByCriteria(criteria);
     }
 
