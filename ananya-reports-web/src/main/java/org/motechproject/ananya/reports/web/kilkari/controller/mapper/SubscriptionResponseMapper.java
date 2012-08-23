@@ -7,7 +7,7 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimensi
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 
-public class SubscriptionMapper {
+public class SubscriptionResponseMapper {
     public static SubscriptionResponse mapFrom(Subscription subscription) {
         Subscriber subscriber = subscription.getSubscriber();
         LocationDimension locationDimension = subscriber.getLocationDimension();

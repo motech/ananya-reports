@@ -10,7 +10,7 @@ import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberMapper;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionMapper;
+import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +56,7 @@ public class SubscriptionController {
         List<Subscription> subscriptionList = subscriptionService.findByMsisdn(msisdn);
         List<SubscriptionResponse> subscriptionResponseList = new ArrayList<>();
         for (Subscription subscription : subscriptionList) {
-            subscriptionResponseList.add(SubscriptionMapper.mapFrom(subscription));
+            subscriptionResponseList.add(SubscriptionResponseMapper.mapFrom(subscription));
         }
         return subscriptionResponseList;
     }

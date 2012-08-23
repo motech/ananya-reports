@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionResponseMapper;
 import org.motechproject.ananya.reports.web.util.HttpConstants;
 import org.motechproject.ananya.reports.web.util.TestUtils;
 import org.motechproject.ananya.reports.kilkari.contract.request.*;
@@ -20,7 +21,6 @@ import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberMapper;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionMapper;
 import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class SubscriptionControllerTest {
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
-        final SubscriptionResponse expectedResponse = SubscriptionMapper.mapFrom(subscription);
+        final SubscriptionResponse expectedResponse = SubscriptionResponseMapper.mapFrom(subscription);
         List<SubscriptionResponse> expectedReponseList = new ArrayList<SubscriptionResponse>() {{
             add(expectedResponse);
         }};

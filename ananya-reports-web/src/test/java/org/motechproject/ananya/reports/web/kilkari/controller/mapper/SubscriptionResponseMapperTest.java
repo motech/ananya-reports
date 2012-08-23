@@ -12,7 +12,7 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPac
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-public class SubscriptionMapperTest {
+public class SubscriptionResponseMapperTest {
     @Test
     public void shouldMapFromSubscriptionStatusMeasureToResponse() {
         DateTime edd = DateTime.now();
@@ -30,7 +30,7 @@ public class SubscriptionMapperTest {
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
-        SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
+        SubscriptionResponse subscriptionResponse = SubscriptionResponseMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
         assertEquals(msisdn, subscriptionResponse.getMsisdn());
@@ -54,7 +54,7 @@ public class SubscriptionMapperTest {
         Long msisdn = 123L;
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
-        SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
+        SubscriptionResponse subscriptionResponse = SubscriptionResponseMapper.mapFrom(subscription);
 
         assertEquals(subscriptionId, subscriptionResponse.getSubscriptionId());
         assertEquals(msisdn, subscriptionResponse.getMsisdn());

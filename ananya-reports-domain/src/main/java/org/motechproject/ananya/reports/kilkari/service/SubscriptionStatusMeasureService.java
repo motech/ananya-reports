@@ -68,12 +68,11 @@ public class SubscriptionStatusMeasureService {
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
 
         Subscriber subscriber;
-        if(isRequestForChangeSubscription(oldSubscription)){
+        if (isRequestForChangeSubscription(oldSubscription)) {
             operatorDimension = oldSubscription.getOperatorDimension();
             subscriber = fetchExistingSubscriber(subscriptionReportRequest, oldSubscription);
-        }
-        else
-            subscriber = createNewSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
+        } else
+            subscriber = createNewSubscriber(subscriptionReportRequest, channelDimension, dateDimension, locationDimension);
 
         subscriber = allSubscribers.save(subscriber);
         Subscription subscription = saveSubscription(msisdn, subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
@@ -107,7 +106,7 @@ public class SubscriptionStatusMeasureService {
         return oldSubscription != null;
     }
 
-    private Subscriber createNewSubscriber(SubscriptionReportRequest subscriptionReportRequest, Long msisdn, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
+    private Subscriber createNewSubscriber(SubscriptionReportRequest subscriptionReportRequest, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
         return new Subscriber(subscriptionReportRequest.getName(), subscriptionReportRequest.getAgeOfBeneficiary(), subscriptionReportRequest.getEstimatedDateOfDelivery(),
                 subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
     }
