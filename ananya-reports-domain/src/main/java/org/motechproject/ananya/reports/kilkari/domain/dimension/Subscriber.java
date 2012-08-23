@@ -117,4 +117,9 @@ public class Subscriber {
     public void setMsisdn(long msisdn) {
         this.msisdn = msisdn;
     }
+
+    public void updateWithEddDob(DateTime edd, DateTime dob) {
+        estimatedDateOfDelivery = convertToDate(edd);
+        dateOfBirth = convertToDate(dob);
+    }
 }

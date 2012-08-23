@@ -19,6 +19,7 @@ import org.motechproject.ananya.reports.kilkari.repository.*;
 import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -72,8 +73,10 @@ public class SubscriptionStatusMeasureServiceTest {
         String panchayat = "panchayat";
         DateTime startDate = DateTime.now();
         String reason = "some reason";
+        String oldSubscriptionId = null;
 
-        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, name, age, new DateTime(2012, 01, 01, 10, 10), "NEW", edd, dob, new SubscriberLocation(district, block, panchayat), operator, startDate, "oldSubscriptionId", reason);
+        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack
+                , name, age, new DateTime(2012, 01, 01, 10, 10), "NEW", edd, dob, new SubscriberLocation(district, block, panchayat), operator, startDate, oldSubscriptionId, reason);
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -84,11 +87,12 @@ public class SubscriptionStatusMeasureServiceTest {
         final Subscription[] subscriptionCapture = new Subscription[1];
 
         when(subscriptionService.exists(subscriptionId)).thenReturn(false);
+        when(allSubscriptions.findBySubscriptionId(oldSubscriptionId)).thenReturn(null);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
         when(allDateDimensions.fetchFor(new DateTime(subscriptionReportRequest.getCreatedAt()))).thenReturn(dateDimension);
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
-        when(allSubscribers.save(any(Subscriber.class))).thenReturn(subscriber);
+        when(allSubscribers.save(any(Subscriber.class))).thenReturn(new Subscriber());
         when(subscriptionService.makeFor(any(Subscription.class))).thenAnswer(new Answer<Subscription>() {
             @Override
             public Subscription answer(InvocationOnMock invocation) throws Throwable {
@@ -105,6 +109,7 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
         assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
+        assertNotSame(subscriber, subscriptionStatusMeasure.getSubscription().getSubscriber());
 
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
@@ -114,6 +119,80 @@ public class SubscriptionStatusMeasureServiceTest {
 
     @Test
     public void shouldCreateSubscriptionStatusMeasureForChangePack() {
+        long msisdn = 998L;
+        String channel = "IVR";
+        String name = "name";
+        Integer age = 42;
+        String subscriptionId = "sub112";
+        String operator = "airtel";
+        String subscriptionPack = "CHOTI_KILKARI";
+        DateTime edd = DateTime.now().minusMonths(4);
+        DateTime dob = DateTime.now().minusMonths(8);
+        DateTime newEdd = DateTime.now().minusMonths(4);
+        DateTime newDob = DateTime.now().minusMonths(8);
+        String district = "district";
+        String block = "block";
+        String panchayat = "panchayat";
+        DateTime startDate = DateTime.now();
+        String reason = "some reason";
+
+        ChannelDimension channelDimension = new ChannelDimension();
+        DateDimension dateDimension = new DateDimension();
+        LocationDimension locationDimension = new LocationDimension();
+        OperatorDimension operatorDimension = new OperatorDimension();
+
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
+
+        Subscriber subscriber = new Subscriber(msisdn, name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
+        String oldSubscriptionId = "oldSubscriptionId";
+        Subscription oldSubscription = new Subscription(subscriber,subscriptionPackDimension, channelDimension, operatorDimension,
+                locationDimension, dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null, null);
+        SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, name, age,
+                new DateTime(2012, 01, 01, 10, 10), "NEW", newEdd, newDob, new SubscriberLocation(district, block, panchayat), operator, startDate, oldSubscriptionId, reason);
+
+        final Subscription[] subscriptionCapture = new Subscription[1];
+
+        when(subscriptionService.exists(subscriptionId)).thenReturn(false);
+        when(allSubscriptions.findBySubscriptionId(oldSubscriptionId)).thenReturn(oldSubscription);
+        when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
+        when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
+        when(allDateDimensions.fetchFor(new DateTime(subscriptionReportRequest.getCreatedAt()))).thenReturn(dateDimension);
+        when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(locationDimension);
+
+        when(allSubscribers.save(any(Subscriber.class))).thenReturn(subscriber);
+
+        when(subscriptionService.makeFor(any(Subscription.class))).thenAnswer(new Answer<Subscription>() {
+            @Override
+            public Subscription answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                subscriptionCapture[0] = (Subscription) args[0];
+                return subscriptionCapture[0];
+            }
+        });
+
+        subscriptionStatusMeasureService.create(subscriptionReportRequest);
+
+        ArgumentCaptor<Subscriber> subscriberArgumentCaptor = ArgumentCaptor.forClass(Subscriber.class);
+        verify(allSubscribers).save(subscriberArgumentCaptor.capture());
+        Subscriber actualSubscriber = subscriberArgumentCaptor.getValue();
+        assertEquals(newEdd, actualSubscriber.getEstimatedDateOfDelivery());
+        assertEquals(newDob, actualSubscriber.getDateOfBirth());
+
+        ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
+        verify(allSubscriptionStatusMeasure).add(captor.capture());
+        SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
+        assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
+        assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
+        assertEquals(subscriber, subscriptionStatusMeasure.getSubscription().getSubscriber());
+
+        Subscription subscription = subscriptionCapture[0];
+        assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
+        assertEquals(subscriptionId, subscription.getSubscriptionId());
+        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
+    }
+
+    @Test
+    public void shouldCreateSubscriptionStatusMeasureForChangePackgg() {
         long msisdn = 998L;
         String channel = "IVR";
         String name = "name";

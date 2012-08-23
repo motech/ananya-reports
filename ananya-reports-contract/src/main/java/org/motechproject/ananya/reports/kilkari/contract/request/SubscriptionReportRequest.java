@@ -121,4 +121,20 @@ public class SubscriptionReportRequest implements Serializable {
     public DateTime getStartDate() {
         return startDate;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAgeOfBeneficiary(Integer age) {
+        this.ageOfBeneficiary = age;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public void setLocation(SubscriberLocation location) {
+        this.location = location;
+    }
 }

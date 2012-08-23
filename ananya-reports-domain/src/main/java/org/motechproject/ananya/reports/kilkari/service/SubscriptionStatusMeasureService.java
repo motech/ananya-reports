@@ -106,9 +106,9 @@ public class SubscriptionStatusMeasureService {
         Long msisdn = subscriptionReportRequest.getMsisdn();
         String subscriptionId = subscriptionReportRequest.getSubscriptionId();
         String subscriptionStatus = subscriptionReportRequest.getSubscriptionStatus();
-        if (subscriptionService.exists(subscriptionId)) {
-            return;
-        }
+//        if (subscriptionService.exists(subscriptionId)) {
+//            return;
+//        }
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor(subscriptionReportRequest.getChannel());
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionReportRequest.getPack());
@@ -119,7 +119,14 @@ public class SubscriptionStatusMeasureService {
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
 
-        Subscriber subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
+        Subscriber subscriber;
+        if(oldSubscription != null){
+            subscriber = oldSubscription.getSubscriber();
+            subscriber.updateWithEddDob(subscriptionReportRequest.getEstimatedDateOfDelivery(), subscriptionReportRequest.getDateOfBirth());
+            subscriber = allSubscribers.save(subscriber);
+        }
+        else
+            subscriber = saveSubscriber(subscriptionReportRequest, msisdn, channelDimension, dateDimension, locationDimension);
         Subscription subscription = saveSubscription(subscriptionId, channelDimension, subscriptionPackDimension, dateDimension, locationDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
     }

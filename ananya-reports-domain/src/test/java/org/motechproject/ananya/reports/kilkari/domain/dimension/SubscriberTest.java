@@ -30,4 +30,18 @@ public class SubscriberTest {
         assertEquals(expectedDateDimension, subscriber.getDateDimension());
         assertEquals(expectedLocationDimension, subscriber.getLocationDimension());
     }
+
+    @Test
+    public void shouldUpdateSubscriberWithEddDob() {
+        DateTime oldEdd = DateTime.now().plus(42);
+        DateTime oldDob = DateTime.now().minusYears(3);
+        DateTime newEdd = DateTime.now().plus(32);
+        DateTime newDob = DateTime.now().minusYears(1);
+        Subscriber subscriber = new Subscriber(1234567890L, "oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1"), null, null);
+
+        subscriber.updateWithEddDob(newEdd, newDob);
+
+        assertEquals(newEdd, subscriber.getEstimatedDateOfDelivery());
+        assertEquals(newDob, subscriber.getDateOfBirth());
+    }
 }

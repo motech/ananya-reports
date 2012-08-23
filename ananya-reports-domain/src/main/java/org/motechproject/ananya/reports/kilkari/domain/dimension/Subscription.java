@@ -13,7 +13,7 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subscriber_id", nullable = false)
     private Subscriber subscriber;
 
