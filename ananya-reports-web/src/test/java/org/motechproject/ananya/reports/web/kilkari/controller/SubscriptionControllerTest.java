@@ -83,7 +83,7 @@ public class SubscriptionControllerTest {
                 )
                 .andExpect(status().isOk());
         ArgumentCaptor<SubscriptionReportRequest> subscriptionRequestArgumentCaptor = ArgumentCaptor.forClass(SubscriptionReportRequest.class);
-        verify(subscriptionStatusMeasureService).create(subscriptionRequestArgumentCaptor.capture());
+        verify(subscriptionStatusMeasureService).createSubscription(subscriptionRequestArgumentCaptor.capture());
 
         SubscriptionReportRequest subscriptionReportRequest = subscriptionRequestArgumentCaptor.getValue();
         assertEquals(Long.valueOf(9740123123L), subscriptionReportRequest.getMsisdn());
@@ -133,7 +133,7 @@ public class SubscriptionControllerTest {
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
         Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
         final SubscriptionResponse expectedResponse = SubscriptionMapper.mapFrom(subscription);
         List<SubscriptionResponse> expectedReponseList = new ArrayList<SubscriptionResponse>() {{
@@ -182,41 +182,6 @@ public class SubscriptionControllerTest {
     }
 
     @Test
-    public void shouldInvokeSubscriberServiceToChangePack() throws Exception {
-        Long msisdn = 1234567890l;
-        String subscriptionId = "sid";
-        String oldSubscriptionId = "oldsid";
-        String pack = "PCK1";
-        String channel = "callcentre";
-        DateTime createdAt = DateTime.now();
-        DateTime dateOfBirth = DateTime.now().minusYears(10);
-        DateTime startDate = DateTime.now();
-        String status = "NEW";
-        String reason = "reason for change";
-        String changePackRequestJson = TestUtils.toJson(new SubscriptionChangePackRequest(msisdn, subscriptionId, oldSubscriptionId, pack, channel, status, createdAt, null, dateOfBirth, startDate, reason));
-
-        mockMvc(subscriptionController)
-                .perform(post("/subscription/changepack")
-                        .body(changePackRequestJson.getBytes())
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk());
-
-        ArgumentCaptor<SubscriptionChangePackRequest> changePackRequestArgumentCaptor = ArgumentCaptor.forClass(SubscriptionChangePackRequest.class);
-        verify(subscriptionStatusMeasureService).changePack(changePackRequestArgumentCaptor.capture());
-        SubscriptionChangePackRequest actualChangePackRequest = changePackRequestArgumentCaptor.getValue();
-
-        assertEquals(subscriptionId, actualChangePackRequest.getSubscriptionId());
-        assertEquals(msisdn, actualChangePackRequest.getMsisdn());
-        assertEquals(pack, actualChangePackRequest.getPack());
-        assertEquals(channel, actualChangePackRequest.getChannel());
-        assertEquals(createdAt.toLocalDate(), actualChangePackRequest.getCreatedAt().toLocalDate());
-        assertNull(actualChangePackRequest.getExpectedDateOfDelivery());
-        assertEquals(dateOfBirth.toLocalDate(), actualChangePackRequest.getDateOfBirth().toLocalDate());
-        assertEquals(reason, actualChangePackRequest.getReason());
-    }
-
-    @Test
     public void shouldReturnSubscriberDetailsForAGivenSubscriptionId() throws Exception {
         String msisdn = "1234567890";
         DateTime edd = DateTime.now();
@@ -231,7 +196,7 @@ public class SubscriptionControllerTest {
         int weekNumber = 13;
         Subscriber subscriber = new Subscriber(Long.valueOf(msisdn), name, 23, edd, dob, null,
                 new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null,
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null,
                 null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
         final SubscriberResponse expectedResponse = SubscriberMapper.mapFrom(subscription);
