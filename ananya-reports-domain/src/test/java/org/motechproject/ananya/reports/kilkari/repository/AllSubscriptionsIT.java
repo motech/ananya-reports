@@ -63,7 +63,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         int weekNumber = 13;
         String subscriptionStatus = "ACTIVE";
         Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, locationDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, weekNumber, null);
+                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, weekNumber, null);
         template.save(subscriber);
         template.save(subscription);
 
@@ -84,8 +84,8 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         Subscriber subscriber2 = new Subscriber(1234567891L, "", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension);
         int weekNumber = 13;
         String subscriptionStatus = "ACTIVE";
-        Subscription subscription1 = new Subscription(subscriber1, subscriptionPackDimension, channelDimension, operatorDimension, locationDimension, dateDimension, subscriptionId1, now, now, subscriptionStatus, weekNumber, null);
-        Subscription subscription2 = new Subscription(subscriber2, subscriptionPackDimension, channelDimension, operatorDimension, locationDimension, dateDimension, subscriptionId2, now, now, subscriptionStatus, weekNumber, null);
+        Subscription subscription1 = new Subscription(subscriber1, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId1, now, now, subscriptionStatus, weekNumber, null);
+        Subscription subscription2 = new Subscription(subscriber2, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId2, now, now, subscriptionStatus, weekNumber, null);
         template.save(subscriber1);
         template.save(subscription1);
         template.save(subscriber2);
@@ -104,7 +104,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, operatorDimension);
         template.save(subscriber);
 
-        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, locationDimension, dateDimension, subscriptionId, now, now, "ACTIVE", 13, null);
+        Subscription subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, now, now, "ACTIVE", 13, null);
         allSubscriptions.save(subscription);
 
 

@@ -8,7 +8,6 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimensi
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPackDimension;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionMapper;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -28,7 +27,7 @@ public class SubscriptionMapperTest {
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
         Subscriber subscriber = new Subscriber(12349L, name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 
@@ -50,7 +49,7 @@ public class SubscriptionMapperTest {
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
         Subscriber subscriber = new Subscriber(12349L, name, 23, null, null, null, null, null, null);
-        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
+        Subscription subscription = new Subscription(subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
         SubscriptionResponse subscriptionResponse = SubscriptionMapper.mapFrom(subscription);
 

@@ -34,10 +34,6 @@ public class Subscription {
     private OperatorDimension operatorDimension;
 
     @ManyToOne
-    @JoinColumn(name = "location_id")
-    private LocationDimension locationDimension;
-
-    @ManyToOne
     @JoinColumn(name = "time_id", nullable = false)
     private DateDimension dateDimension;
 
@@ -61,13 +57,12 @@ public class Subscription {
 
     public Subscription(Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                        LocationDimension locationDimension, DateDimension dateDimension, String subscriptionId,
+                        DateDimension dateDimension, String subscriptionId,
                         DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Integer weekNumber, Subscription oldSubscription) {
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
         this.channelDimension = channelDimension;
         this.operatorDimension = operatorDimension;
-        this.locationDimension = locationDimension;
         this.dateDimension = dateDimension;
         this.subscriptionId = subscriptionId;
         this.oldSubscription = oldSubscription;
@@ -103,10 +98,6 @@ public class Subscription {
 
     public DateDimension getDateDimension() {
         return dateDimension;
-    }
-
-    public LocationDimension getLocationDimension() {
-        return locationDimension;
     }
 
     public void setSubscriptionId(String subscriptionId) {

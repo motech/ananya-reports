@@ -58,7 +58,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, null);
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
         subscription = new Subscription(subscriber, subscriptionPackDimension, channelDimension,
-                null, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
+                null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
         saveAndMarkForDeletion(channelDimension, subscriptionPackDimension, locationDimension, subscriber, subscription);
     }
 
