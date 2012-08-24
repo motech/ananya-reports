@@ -401,6 +401,11 @@
                 <artifactId>motech-diagnostics</artifactId>
                 <version>${motech-contrib.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.databene</groupId>
+                <artifactId>databene-benerator</artifactId>
+                <version>0.7.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
