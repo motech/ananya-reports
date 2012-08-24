@@ -11,16 +11,14 @@
     <context:component-scan base-package="org.motechproject.ananya.reports"/>
 
     <import resource="classpath:applicationKilkariReportsContext.xml"/>
-    <import resource="classpath:applicationContext-Diagnostics-Common.xml"/>
 
-    <bean id="configurationDiagnostic" class="org.motechproject.diagnostics.diagnostics.ConfigurationDiagnostic">
-        <constructor-arg>
-            <map>
-                <entry key="ananyaReportsProperties"><util:properties location="classpath:ananya_reports.properties"/></entry>
-                <entry key="campaignProperties"><util:properties location="classpath:campaign.properties"/></entry>
-                <entry key="postgresProperties"><util:properties location="classpath:postgres.properties"/></entry>
-                <entry key="log4jProperties"><util:properties location="classpath:log4j.properties"/></entry>
-            </map>
-        </constructor-arg>
-    </bean>
+    <import resource="classpath:applicationContext-Diagnostics-Postgres.xml"/>
+    <import resource="classpath:applicationContext-Diagnostics-Configuration.xml"/>
+
+    <util:map id="configurationFilesMap">
+        <entry key="ananyaReportsProperties"><util:properties location="classpath:ananya_reports.properties"/></entry>
+        <entry key="campaignProperties"><util:properties location="classpath:campaign.properties"/></entry>
+        <entry key="postgresProperties"><util:properties location="classpath:postgres.properties"/></entry>
+        <entry key="log4jProperties"><util:properties location="classpath:log4j.properties"/></entry>
+</util:map>
 </beans>
