@@ -27,7 +27,7 @@ public class ReportingService {
             @Override
             protected List<SubscriptionStatus> run() {
                 List<SubscriptionStatus> subscriptionStatuses;
-                String query = "select ssm.status,s.msisdn,s.name,s.age_of_beneficiary,s.estimated_date_of_delivery,s.date_of_birth,spd.subscription_pack,cd.channel " +
+                String query = "select ssm.status,sc.msisdn,s.name,s.age_of_beneficiary,s.estimated_date_of_delivery,s.date_of_birth,spd.subscription_pack,cd.channel " +
                         "from report.subscription_status_measure ssm " +
                         "join report.subscriptions sc on sc.id = ssm.subscription_id " +
                         "join report.subscribers s on s.id=sc.subscriber_id " +
