@@ -40,7 +40,7 @@ public class SubscriptionController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/subscriber/{subscriptionId}")
     @ResponseBody
-    public void updateSubscriber(@RequestBody SubscriberReportRequest subscriberReportRequest, @PathVariable String subscriptionId) {
+    public void updateSubscriber(@RequestBody SubscriberReportRequest subscriberReportRequest, @PathVariable("subscriptionId") String subscriptionId) {
         subscriberService.update(subscriberReportRequest, subscriptionId);
     }
 

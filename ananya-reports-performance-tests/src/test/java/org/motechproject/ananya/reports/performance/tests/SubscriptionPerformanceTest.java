@@ -2,6 +2,7 @@ package org.motechproject.ananya.reports.performance.tests;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.junit.runner.RunWith;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
@@ -23,6 +24,7 @@ public class SubscriptionPerformanceTest extends BasePerformanceTest {
 
     @LoadTest(concurrentUsers = 10)
     public void shouldCreateAndUpdateASubscription() throws InterruptedException {
+        DateTime beforeTest = DateTime.now();
         SubscriptionReportRequest subscriptionReportRequest = createSubscriptionRequest();
 
         ResponseEntity<String> creationResponse = HttpUtils.httpPost(null, subscriptionReportRequest, "subscription");
@@ -33,8 +35,12 @@ public class SubscriptionPerformanceTest extends BasePerformanceTest {
         try {
             HttpUtils.httpPut(stateChangeRequest, "subscription", stateChangeRequest.getSubscriptionId());
         } catch (Exception e) {
-            fail("Updation of subscription failed. Exception : " + e.getStackTrace());
+                fail("Updation of subscription failed. Exception : " + e.getStackTrace());
         }
+
+        DateTime afterTest = DateTime.now();
+        Period p = new Period(beforeTest, afterTest);
+        System.out.println(p.getMillis() + " ms");
     }
 
     private SubscriptionStateChangeRequest createStateChangeRequest(SubscriptionReportRequest createRequest) {
