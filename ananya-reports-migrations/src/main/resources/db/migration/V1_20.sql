@@ -1,4 +1,4 @@
 ALTER TABLE report.subscribers DROP COLUMN msisdn;
-ALTER TABLE report.subscriptions ADD COLUMN msisdn BIGINT NOT NULL DEFAULT(12345) ;
+ALTER TABLE report.subscriptions ADD COLUMN msisdn BIGINT NOT NULL ;
 
 
