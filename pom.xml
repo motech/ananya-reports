@@ -402,6 +402,11 @@
                 <version>${motech-contrib.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.motechproject.contrib-ananya-kilkari</groupId>
+                <artifactId>motech-performance-tests</artifactId>
+                <version>${motech-contrib.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.databene</groupId>
                 <artifactId>databene-benerator</artifactId>
                 <version>0.7.7</version>
