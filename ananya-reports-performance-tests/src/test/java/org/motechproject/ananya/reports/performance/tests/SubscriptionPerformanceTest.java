@@ -8,8 +8,8 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionRep
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.reports.performance.tests.utils.BasePerformanceTest;
 import org.motechproject.ananya.reports.performance.tests.utils.HttpUtils;
+import org.motechproject.performance.tests.LoadPerf;
 import org.motechproject.performance.tests.LoadRunner;
-import org.motechproject.performance.tests.LoadTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -22,7 +22,7 @@ public class SubscriptionPerformanceTest extends BasePerformanceTest {
         super(name);
     }
 
-    @LoadTest(concurrentUsers = 10)
+    @LoadPerf(concurrentUsers = 10)
     public void shouldCreateAndUpdateASubscription() throws InterruptedException {
         DateTime beforeTest = DateTime.now();
         SubscriptionReportRequest subscriptionReportRequest = createSubscriptionRequest();
