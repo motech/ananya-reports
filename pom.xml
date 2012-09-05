@@ -148,15 +148,24 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <argLine>-XX:-UseSplitVerifier</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
+                        <phase>test</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <argLine>-XX:MaxPermSize=1024M</argLine>
+                            <argLine>-XX:MaxPermSize=1024M -XX:-UseSplitVerifier</argLine>
                             <includes>
                                 <include>**/*IT.java</include>
                             </includes>
@@ -164,6 +173,22 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>**/*Stub*.*</exclude>
+                            <exclude>**/*Test*.*</exclude>
+                            <exclude>db/migration/**/*.*</exclude>
+                            <exclude>**/contract/**/*.*</exclude>
+                        </excludes>
+                    </instrumentation>
+                </configuration>
             </plugin>
         </plugins>
     </build>

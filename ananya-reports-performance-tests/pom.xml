@@ -69,6 +69,7 @@
                 <version>2.9</version>
                 <configuration>
                     <skipTests>true</skipTests>
+                    <argLine>-XX:-UseSplitVerifier</argLine>
                 </configuration>
             </plugin>
         </plugins>
