@@ -1,5 +1,6 @@
 package org.motechproject.ananya.reports.kilkari.contract.request;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
@@ -86,6 +87,11 @@ public class CallDetailsReportRequest implements Serializable {
 
     public String getCallSource() {
         return callSource;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
 
