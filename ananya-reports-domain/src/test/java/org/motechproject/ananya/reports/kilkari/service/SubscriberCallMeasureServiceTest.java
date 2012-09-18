@@ -165,4 +165,13 @@ public class SubscriberCallMeasureServiceTest {
         assertNull(subscriberCallMeasure.getRetryCount());
         assertEquals("OBD", subscriberCallMeasure.getCallSource());
     }
+
+    @Test
+    public void shouldDeleteAllCallMeasuresForAGivenMsisdn() {
+        Long msisdn = 1234L;
+
+        subscriberCallMeasureService.deleteSubscriberCallDetailsFor(msisdn);
+
+        verify(allSubscriberCallMeasures).deleteFor(msisdn);
+    }
 }

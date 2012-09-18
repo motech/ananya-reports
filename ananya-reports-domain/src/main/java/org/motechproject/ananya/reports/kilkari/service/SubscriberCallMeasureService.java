@@ -57,6 +57,11 @@ public class SubscriberCallMeasureService {
                 callDetailsReportRequest.getCallSource()));
     }
 
+    @Transactional
+    public void deleteSubscriberCallDetailsFor(Long msisdn) {
+        allSubscriberCallMeasures.deleteFor(msisdn);
+    }
+
     private Integer getPercentageListenedTo(Integer durationListenedTo, Integer messageDuration) {
         Integer percentage = (durationListenedTo - welcomeMessageDuration) * 100 / messageDuration;
 
