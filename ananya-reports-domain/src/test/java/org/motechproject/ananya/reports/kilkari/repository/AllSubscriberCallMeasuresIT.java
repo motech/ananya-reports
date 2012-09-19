@@ -3,7 +3,6 @@ package org.motechproject.ananya.reports.kilkari.repository;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure;
@@ -109,7 +108,6 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void shouldRemoveAllMeasuresForAnMsisdn() {
         Integer duration = 50;
         Integer percentageListened = 90;
