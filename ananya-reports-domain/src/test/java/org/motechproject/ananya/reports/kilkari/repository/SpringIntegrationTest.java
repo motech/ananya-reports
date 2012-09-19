@@ -17,8 +17,8 @@ import java.util.List;
 public abstract class SpringIntegrationTest {
 
     @Autowired
-    @Qualifier("dataAccessTemplate")
-    protected DataAccessTemplate template;
+    @Qualifier("testDataAccessTemplate")
+    protected TestDataAccessTemplate template;
 
     @Before
     public void setUp() {
