@@ -56,4 +56,31 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         assertEquals(1, subscriptionStatusMeasures.size());
         assertEquals(subscriptionFromDb, subscriptionStatusMeasures.get(0).getSubscription());
     }
+
+    @Test
+    public void shouldDeleteAllSubscriptionStatusMeasuresForAGivenMsisdn() {
+        String subscriptionPack = "CHOTI_KILKARI";
+        String subscriptionId = "subscriptionId";
+        DateTime createdAt = DateTime.now();
+        Long msisdn = 1234L;
+
+        ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
+        DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
+        SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
+
+        Subscriber subscriber = new Subscriber("name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null);
+        template.save(subscriber);
+        Subscriber subscriberFromDb = template.loadAll(Subscriber.class).get(0);
+
+        Subscription subscription = new Subscription(msisdn, subscriberFromDb, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", 13, null);
+        template.save(subscription);
+        Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
+        template.save(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension));
+
+        allSubscriptionStatusMeasure.deleteFor(msisdn);
+
+        List<SubscriptionStatusMeasure> subscriptionStatusMeasures = template.loadAll(SubscriptionStatusMeasure.class);
+        assertEquals(0, subscriptionStatusMeasures.size());
+    }
 }

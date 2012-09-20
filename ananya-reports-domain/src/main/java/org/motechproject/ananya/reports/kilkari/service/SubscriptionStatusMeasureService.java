@@ -102,6 +102,11 @@ public class SubscriptionStatusMeasureService {
                 subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount());
     }
 
+    @Transactional
+    public void deleteFor(Long msisdn) {
+        allSubscriptionStatusMeasure.deleteFor(msisdn);
+    }
+
     private boolean isRequestForChangeSubscription(Subscription oldSubscription) {
         return oldSubscription != null;
     }

@@ -58,7 +58,7 @@ public class SubscriberCallMeasureService {
     }
 
     @Transactional
-    public void deleteSubscriberCallDetailsFor(Long msisdn) {
+    public void deleteFor(Long msisdn) {
         allSubscriberCallMeasures.deleteFor(msisdn);
     }
 

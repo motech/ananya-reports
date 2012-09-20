@@ -12,20 +12,31 @@ import static org.mockito.Mockito.verify;
 public class ReportsPurgeServiceTest {
     @Mock
     private SubscriberCallMeasureService subscriberCallMeasureService;
+    @Mock
+    private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
 
     private ReportsPurgeService reportsPurgeService;
 
     @Before
     public void setUp() {
-        reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService);
+        reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService, subscriptionStatusMeasureService);
     }
 
     @Test
-    public void shouldPurgeMeasuresBasedOnMsisdn() {
+    public void shouldPurgeSubscriberCallMeasuresBasedOnMsisdn() {
         Long msisdn = 1234L;
 
         reportsPurgeService.purge(msisdn);
 
-        verify(subscriberCallMeasureService).deleteSubscriberCallDetailsFor(msisdn);
+        verify(subscriberCallMeasureService).deleteFor(msisdn);
+    }
+
+    @Test
+    public void shouldPurgeSubscriptionStatusMeasuresBasedOnMsisdn() {
+        Long msisdn = 1234L;
+
+        reportsPurgeService.purge(msisdn);
+
+        verify(subscriptionStatusMeasureService).deleteFor(msisdn);
     }
 }

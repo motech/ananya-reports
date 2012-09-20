@@ -16,9 +16,7 @@ import org.motechproject.ananya.reports.kilkari.repository.*;
 
 import java.sql.Timestamp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -143,7 +141,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null);
         String oldSubscriptionId = "oldSubscriptionId";
-        Subscription oldSubscription = new Subscription(msisdn, subscriber,subscriptionPackDimension, channelDimension, operatorDimension,
+        Subscription oldSubscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
                 dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null, null);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, null, null,
                 new DateTime(2012, 01, 01, 10, 10), "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason);
@@ -349,5 +347,14 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = subscriptionStatusMeasureArgumentCaptor.getValue();
 
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
+    }
+
+    @Test
+    public void shouldDeleteSubscriptionStatusMeasuresForAGivenMsisdn() {
+        Long msisdn = 1234L;
+
+        subscriptionStatusMeasureService.deleteFor(msisdn);
+
+        verify(allSubscriptionStatusMeasure).deleteFor(msisdn);
     }
 }

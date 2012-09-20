@@ -170,7 +170,7 @@ public class SubscriberCallMeasureServiceTest {
     public void shouldDeleteAllCallMeasuresForAGivenMsisdn() {
         Long msisdn = 1234L;
 
-        subscriberCallMeasureService.deleteSubscriberCallDetailsFor(msisdn);
+        subscriberCallMeasureService.deleteFor(msisdn);
 
         verify(allSubscriberCallMeasures).deleteFor(msisdn);
     }
