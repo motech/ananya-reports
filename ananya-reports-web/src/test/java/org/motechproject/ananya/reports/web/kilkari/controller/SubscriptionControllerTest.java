@@ -7,27 +7,30 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionResponseMapper;
-import org.motechproject.ananya.reports.web.util.HttpConstants;
-import org.motechproject.ananya.reports.web.util.TestUtils;
-import org.motechproject.ananya.reports.kilkari.contract.request.*;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPackDimension;
+import org.motechproject.ananya.reports.kilkari.service.ReportsPurgeService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
 import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberMapper;
+import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionResponseMapper;
+import org.motechproject.ananya.reports.web.util.HttpConstants;
+import org.motechproject.ananya.reports.web.util.TestUtils;
 import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -46,11 +49,13 @@ public class SubscriptionControllerTest {
     private SubscriptionService subscriptionService;
     @Mock
     private SubscriberService subscriberService;
+    @Mock
+    private ReportsPurgeService reportsPurgeService;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService);
+        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService, reportsPurgeService);
     }
 
     @Test
@@ -117,6 +122,18 @@ public class SubscriptionControllerTest {
         assertEquals("ACTIVE", subscriptionStateChangeRequest.getSubscriptionStatus());
         assertEquals((Integer) 7, subscriptionStateChangeRequest.getGraceCount());
         assertEquals("some reason", subscriptionStateChangeRequest.getReason());
+    }
+
+    @Test
+    public void shouldPurgeSubscriptionDetailsForAGivenMsisdn() throws Exception {
+        String msisdn = "1234";
+        mockMvc(subscriptionController)
+                .perform(delete("/subscription/" + msisdn)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk());
+
+        verify(reportsPurgeService).purge(msisdn);
     }
 
     @Test

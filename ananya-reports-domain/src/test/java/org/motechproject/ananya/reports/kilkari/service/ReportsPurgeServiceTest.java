@@ -28,40 +28,41 @@ public class ReportsPurgeServiceTest {
 
     @Test
     public void shouldPurgeSubscriberCallMeasuresBasedOnMsisdn() {
-        Long msisdn = 1234L;
+        String msisdn = "1234";
 
         reportsPurgeService.purge(msisdn);
 
-        verify(subscriberCallMeasureService).deleteFor(msisdn);
+        verify(subscriberCallMeasureService).deleteFor(Long.valueOf(msisdn));
     }
 
     @Test
     public void shouldPurgeSubscriptionStatusMeasuresBasedOnMsisdn() {
-        Long msisdn = 1234L;
+        String msisdn = "1234";
 
         reportsPurgeService.purge(msisdn);
 
-        verify(subscriptionStatusMeasureService).deleteFor(msisdn);
+        verify(subscriptionStatusMeasureService).deleteFor(Long.valueOf(msisdn));
     }
 
     @Test
     public void shouldPurgeSubscriptionsBasedOnMsisdn() {
-        Long msisdn = 1234L;
+        String msisdn = "1234";
 
         reportsPurgeService.purge(msisdn);
 
-        verify(subscriptionService).deleteFor(msisdn);
+        verify(subscriptionService).deleteFor(Long.valueOf(msisdn));
     }
 
     @Test
     public void shouldDeleteMeasuresBeforeDeletingTheDynamicDimensions() {
-        Long msisdn = 1234L;
+        String msisdn = "1234";
+        Long msisdnAsLong = Long.valueOf(msisdn);
 
         reportsPurgeService.purge(msisdn);
 
         InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
-        order.verify(subscriberCallMeasureService).deleteFor(msisdn);
-        order.verify(subscriptionStatusMeasureService).deleteFor(msisdn);
-        order.verify(subscriptionService).deleteFor(msisdn);
+        order.verify(subscriberCallMeasureService).deleteFor(msisdnAsLong);
+        order.verify(subscriptionStatusMeasureService).deleteFor(msisdnAsLong);
+        order.verify(subscriptionService).deleteFor(msisdnAsLong);
     }
 }
