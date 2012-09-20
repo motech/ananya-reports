@@ -1,20 +1,18 @@
 package org.motechproject.ananya.reports.kilkari.service;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class SubscriptionServiceTest {
@@ -89,5 +87,14 @@ public class SubscriptionServiceTest {
         verify(allSubscriptions).update(subscriptionArgumentCaptor.capture());
         Subscription modifiedSubscription = subscriptionArgumentCaptor.getValue();
         assertEquals(msisdn, modifiedSubscription.getMsisdn());
+    }
+
+    @Test
+    public void shouldDeleteAllSubscriptionsForAGivenMsisdn() {
+        Long msisdn = 1234L;
+
+        subscriptionService.deleteFor(msisdn);
+
+        verify(allSubscriptions).deleteFor(msisdn);
     }
 }

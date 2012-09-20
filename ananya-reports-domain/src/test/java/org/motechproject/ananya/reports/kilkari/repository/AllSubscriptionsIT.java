@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AllSubscriptionsIT extends SpringIntegrationTest {
 
@@ -75,6 +76,25 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         assertEquals(new Timestamp(now.getMillis()), expectedSubscription.getLastModifiedTime());
         assertEquals(subscriptionStatus, expectedSubscription.getSubscriptionStatus());
         assertEquals(Integer.valueOf(weekNumber), expectedSubscription.getWeekNumber());
+    }
+
+    @Test
+    public void shouldDeleteSubscriptionAndSubscriberByMsisdn() {
+        String subscriptionId = "sub11";
+        Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension,
+                locationDimension, dateDimension, operatorDimension);
+        int weekNumber = 13;
+        String subscriptionStatus = "ACTIVE";
+        Long msisdn = 123L;
+        Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
+                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, weekNumber, null);
+        template.save(subscriber);
+        template.save(subscription);
+
+        allSubscriptions.deleteFor(msisdn);
+
+        assertTrue(template.loadAll(Subscription.class).isEmpty());
+        assertTrue(template.loadAll(Subscriber.class).isEmpty());
     }
 
     @Test

@@ -1,8 +1,12 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
@@ -18,6 +22,7 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "subscriber_id", nullable = false)
+    @Cascade(value = {CascadeType.DELETE})
     private Subscriber subscriber;
 
     @OneToOne

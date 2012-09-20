@@ -39,17 +39,21 @@ public class SubscriptionService {
         return allSubscriptions.findByMsisdn(tryParse(msisdn));
     }
 
+    public void changeMsisdnForSubscription(String subscriptionId, Long msisdn) {
+        Subscription subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
+        subscription.setMsisdn(msisdn);
+        allSubscriptions.update(subscription);
+    }
+
+    public void deleteFor(Long msisdn) {
+        allSubscriptions.deleteFor(msisdn);
+    }
+
     private Long tryParse(String msisdn) {
         try {
             return Long.parseLong(msisdn);
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public void changeMsisdnForSubscription(String subscriptionId, Long msisdn) {
-        Subscription subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
-        subscription.setMsisdn(msisdn);
-        allSubscriptions.update(subscription);
     }
 }

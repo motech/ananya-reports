@@ -33,6 +33,11 @@ public class AllSubscriptions {
         return subscription;
     }
 
+    public void deleteFor(Long msisdn) {
+        List<Subscription> subscriptions = findByMsisdn(msisdn);
+        template.deleteAll(subscriptions);
+    }
+
     public void update(Subscription subscription) {
         template.update(subscription);
     }
