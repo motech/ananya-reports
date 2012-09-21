@@ -7,8 +7,11 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReportsPurgeServiceTest {
@@ -20,45 +23,25 @@ public class ReportsPurgeServiceTest {
     private SubscriptionService subscriptionService;
 
     private ReportsPurgeService reportsPurgeService;
+    private File tempFile;
+    private String filePath;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
+        tempFile = File.createTempFile("tmp", "txt");
+        filePath = tempFile.getAbsolutePath();
     }
 
     @Test
-    public void shouldPurgeSubscriberCallMeasuresBasedOnMsisdn() {
-        String msisdn = "1234";
-
-        reportsPurgeService.purge(msisdn);
-
-        verify(subscriberCallMeasureService).deleteFor(Long.valueOf(msisdn));
-    }
-
-    @Test
-    public void shouldPurgeSubscriptionStatusMeasuresBasedOnMsisdn() {
-        String msisdn = "1234";
-
-        reportsPurgeService.purge(msisdn);
-
-        verify(subscriptionStatusMeasureService).deleteFor(Long.valueOf(msisdn));
-    }
-
-    @Test
-    public void shouldPurgeSubscriptionsBasedOnMsisdn() {
-        String msisdn = "1234";
-
-        reportsPurgeService.purge(msisdn);
-
-        verify(subscriptionService).deleteFor(Long.valueOf(msisdn));
-    }
-
-    @Test
-    public void shouldDeleteMeasuresBeforeDeletingTheDynamicDimensions() {
+    public void shouldDeleteMeasuresBeforeDeletingTheDynamicDimensions() throws IOException {
         String msisdn = "1234";
         Long msisdnAsLong = Long.valueOf(msisdn);
+        FileWriter fileWriter = new FileWriter(tempFile);
+        fileWriter.write(msisdn);
+        fileWriter.close();
 
-        reportsPurgeService.purge(msisdn);
+        reportsPurgeService.purgeSubscriptionData(filePath);
 
         InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
         order.verify(subscriberCallMeasureService).deleteFor(msisdnAsLong);

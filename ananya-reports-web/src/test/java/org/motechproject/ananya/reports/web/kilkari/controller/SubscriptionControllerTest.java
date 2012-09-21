@@ -125,18 +125,6 @@ public class SubscriptionControllerTest {
     }
 
     @Test
-    public void shouldPurgeSubscriptionDetailsForAGivenMsisdn() throws Exception {
-        String msisdn = "1234";
-        mockMvc(subscriptionController)
-                .perform(delete("/subscription/" + msisdn)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk());
-
-        verify(reportsPurgeService).purge(msisdn);
-    }
-
-    @Test
     public void shouldReturnSubscriptionAndSubscriberDetails() throws Exception {
         String msisdn = "1234567890";
         DateTime edd = DateTime.now();

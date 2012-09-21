@@ -56,12 +56,6 @@ public class SubscriptionController {
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/subscription/{msisdn}")
-    @ResponseBody
-    public void purgeSubscription(@PathVariable String msisdn) {
-        reportsPurgeService.purge(msisdn);
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "/subscriber")
     @ResponseBody
     public List<SubscriptionResponse> getSubscriptions(@RequestParam String msisdn) {

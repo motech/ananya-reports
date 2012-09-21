@@ -35,6 +35,10 @@
             <artifactId>commons-lang</artifactId>
         </dependency>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
