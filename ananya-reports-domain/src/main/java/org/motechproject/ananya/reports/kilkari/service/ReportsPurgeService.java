@@ -28,7 +28,7 @@ public class ReportsPurgeService {
         List<String> msisdnList = readFile(filePath);
 
         for (String msisdn : msisdnList) {
-            purge(msisdn);
+            purgeFor(msisdn);
         }
     }
 
@@ -37,12 +37,17 @@ public class ReportsPurgeService {
         return FileUtils.readLines(inputFile);
     }
 
-    private void purge(String msisdn) {
-        logger.info("Started purging report records for msisdn : " + msisdn);
+    private void purgeFor(String msisdn) {
+        msisdn = msisdn.trim();
+        if(msisdn.isEmpty()) {
+            return;
+        }
+
+        logger.info("Started purging report records for msisdn: " + msisdn);
         Long msisdnInLong = Long.valueOf(msisdn);
         subscriberCallMeasureService.deleteFor(msisdnInLong);
         subscriptionStatusMeasureService.deleteFor(msisdnInLong);
         subscriptionService.deleteFor(msisdnInLong);
-        logger.info("Finished purging report records for msisdn : " + msisdn);
+        logger.info("Finished purging report records for msisdn: " + msisdn);
     }
 }
