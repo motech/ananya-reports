@@ -17,7 +17,6 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimensi
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPackDimension;
-import org.motechproject.ananya.reports.kilkari.service.ReportsPurgeService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
@@ -49,13 +48,11 @@ public class SubscriptionControllerTest {
     private SubscriptionService subscriptionService;
     @Mock
     private SubscriberService subscriberService;
-    @Mock
-    private ReportsPurgeService reportsPurgeService;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService, reportsPurgeService);
+        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService);
     }
 
     @Test

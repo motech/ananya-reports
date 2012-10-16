@@ -6,7 +6,6 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionSta
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
-import org.motechproject.ananya.reports.kilkari.service.ReportsPurgeService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
@@ -25,17 +24,14 @@ public class SubscriptionController {
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
     private SubscriptionService subscriptionService;
     private SubscriberService subscriberService;
-    private ReportsPurgeService reportsPurgeService;
 
     @Autowired
     public SubscriptionController(SubscriptionStatusMeasureService subscriptionStatusMeasureService,
                                   SubscriptionService subscriptionService,
-                                  SubscriberService subscriberService,
-                                  ReportsPurgeService reportsPurgeService) {
+                                  SubscriberService subscriberService) {
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
         this.subscriptionService = subscriptionService;
         this.subscriberService = subscriberService;
-        this.reportsPurgeService = reportsPurgeService;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription")

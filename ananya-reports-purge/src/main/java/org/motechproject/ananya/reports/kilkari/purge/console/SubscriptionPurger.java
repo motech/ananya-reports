@@ -1,7 +1,7 @@
-package org.motechproject.ananya.reports.kilkari.console;
+package org.motechproject.ananya.reports.kilkari.purge.console;
 
 import org.motechproject.ananya.reports.kilkari.exception.WrongNumberArgsException;
-import org.motechproject.ananya.reports.kilkari.service.ReportsPurgeService;
+import org.motechproject.ananya.reports.kilkari.purge.service.ReportsPurgeService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;

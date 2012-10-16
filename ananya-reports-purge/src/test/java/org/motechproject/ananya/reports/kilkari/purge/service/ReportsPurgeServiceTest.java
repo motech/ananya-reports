@@ -1,4 +1,4 @@
-package org.motechproject.ananya.reports.kilkari.service;
+package org.motechproject.ananya.reports.kilkari.purge.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,6 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.motechproject.ananya.reports.kilkari.service.SubscriberCallMeasureService;
+import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
+import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
 
 import java.io.File;
 import java.io.FileWriter;
