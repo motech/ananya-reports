@@ -7,7 +7,7 @@
     <import platforms="db"/>
     <include uri="benerator.properties"/>
 
-    <database id="ananya" url="jdbc:postgresql://localhost/ananya/"
+    <database id="ananya" url="jdbc:postgresql://localhost/ananya_kilkari/"
               driver="org.postgresql.Driver" user="postgres" password="password" batch="false" schema="report"
               catalog="ananya"/>
 

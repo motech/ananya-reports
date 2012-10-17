@@ -4,20 +4,14 @@
 
         <echo message="Cleaning all databases"/>
         <flyway:clean driver="org.postgresql.Driver"
-                      url="jdbc:postgresql://localhost/ananya/"
+                      url="jdbc:postgresql://localhost/ananya_kilkari/"
                       user="postgres"
                       password="password"
                       schemas="report"
                       classpath="${runtime-classpath}"/>
 
-        <exec executable="psql">
-            <arg line="-U postgres" />
-            <arg line="-d ananya"/>
-            <arg line="-f ${basedir}/../ananya-reports-migrations/src/main/resources/db/setup/base_setup.sql"/>
-        </exec>
-
         <flyway:init driver="org.postgresql.Driver"
-                     url="jdbc:postgresql://localhost/ananya/"
+                     url="jdbc:postgresql://localhost/ananya_kilkari/"
                      user="postgres"
                      password="password"
                      schemas="report"
@@ -29,7 +23,7 @@
     <target name="migrate.db">
             <echo message="Applying database migrations"/>
             <flyway:migrate driver="org.postgresql.Driver"
-                            url="jdbc:postgresql://localhost/ananya/"
+                            url="jdbc:postgresql://localhost/ananya_kilkari/"
                             user="postgres"
                             password="password"
                             schemas="report"

@@ -57,7 +57,7 @@
                 <configuration>
                     <descriptor>src/test/resources/benerator.xml</descriptor>
                     <dbDriver>org.postgresql.Driver</dbDriver>
-                    <dbUrl>jdbc:postgresql://localhost/ananya/</dbUrl>
+                    <dbUrl>jdbc:postgresql://localhost/ananya_kilkari/</dbUrl>
                     <dbUser>postgres</dbUser>
                     <dbPassword>password</dbPassword>
                     <xmlRoot>src/test/resources/benerator.xml</xmlRoot>
