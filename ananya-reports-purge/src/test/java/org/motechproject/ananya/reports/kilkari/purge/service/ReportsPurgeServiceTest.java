@@ -100,12 +100,14 @@ public class ReportsPurgeServiceTest {
     @Test
     public void shouldTrimMsisdnWhileReadingFromTheFile() throws IOException {
         String msisdn1 = "1234567890";
+        String invalidMsisdn = "aragorn";
         String msisdn2 = "1234567891";
         Long msisdn1AsLong = Long.valueOf(msisdn1);
         Long msisdn2AsLong = Long.valueOf(msisdn2);
 
         FileWriter fileWriter = new FileWriter(tempFile);
         fileWriter.write("    " + msisdn1 + "    ");
+        fileWriter.write("\n   " + invalidMsisdn + "    ");
         fileWriter.write("\n   " + msisdn2);
         fileWriter.close();
 

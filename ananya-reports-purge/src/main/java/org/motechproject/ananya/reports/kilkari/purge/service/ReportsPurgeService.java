@@ -48,7 +48,14 @@ public class ReportsPurgeService {
         }
 
         logger.info("Started purging report records for msisdn: " + msisdn);
-        Long msisdnInLong = Long.valueOf(msisdn);
+        Long msisdnInLong;
+        try{
+            msisdnInLong = Long.valueOf(msisdn);
+        }catch (Exception e){
+            logger.info("Invalid non numeric msisdn: " + msisdn);
+            return;
+
+        }
         subscriberCallMeasureService.deleteFor(msisdnInLong);
         subscriptionStatusMeasureService.deleteFor(msisdnInLong);
         subscriptionService.deleteFor(msisdnInLong);
