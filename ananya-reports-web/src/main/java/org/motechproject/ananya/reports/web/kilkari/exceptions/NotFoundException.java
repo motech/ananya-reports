@@ -1,4 +1,4 @@
-package org.motechproject.ananya.reports.web.exceptions;
+package org.motechproject.ananya.reports.web.kilkari.exceptions;
 
 public class NotFoundException extends RuntimeException {
 

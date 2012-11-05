@@ -1,7 +1,7 @@
 package org.motechproject.ananya.reports.web.kilkari.controller.views;
 
 import org.motechproject.ananya.reports.web.BaseResponse;
-import org.motechproject.ananya.reports.web.exceptions.NotFoundException;
+import org.motechproject.ananya.reports.web.kilkari.exceptions.NotFoundException;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.AbstractView;
 

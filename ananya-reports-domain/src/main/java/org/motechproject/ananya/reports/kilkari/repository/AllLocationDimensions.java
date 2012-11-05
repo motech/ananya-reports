@@ -20,4 +20,7 @@ public class AllLocationDimensions {
         return (LocationDimension) template.getUniqueResult(LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT,new String[] {"district","block","panchayat"},new String[] {StringUtils.upperCase(district),StringUtils.upperCase(block),StringUtils.upperCase(panchayat)});
     }
 
+    public void createOrUpdate(LocationDimension locationDimension) {
+        template.saveOrUpdate(locationDimension);
+    }
 }

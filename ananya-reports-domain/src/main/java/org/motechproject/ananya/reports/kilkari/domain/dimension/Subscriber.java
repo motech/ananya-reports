@@ -87,6 +87,10 @@ public class Subscriber {
         this.operatorDimension = operatorDimension;
     }
 
+    public void setLocationDimension(LocationDimension locationDimension) {
+        this.locationDimension = locationDimension;
+    }
+
     public DateDimension getDateDimension() {
         return dateDimension;
     }

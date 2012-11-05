@@ -1,7 +1,7 @@
 package org.motechproject.ananya.reports.web;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.motechproject.ananya.reports.web.exceptions.NotFoundException;
+import org.motechproject.ananya.reports.web.kilkari.exceptions.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -26,46 +26,41 @@ public class LocationDimension {
     @Column(name = "panchayat")
     private String panchayat;
 
+    @Column(name = "status")
+    private String status;
+
     public LocationDimension() {
     }
 
-    public LocationDimension(String district, String block, String panchayat) {
+    public LocationDimension(String district, String block, String panchayat, String status) {
         this.district = district;
         this.block = block;
         this.panchayat = panchayat;
+        this.status = status;
     }
 
     public Integer getId() {
-        return this.id;
+        return id;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
 
     public String getDistrict() {
         return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
     }
 
     public String getBlock() {
         return block;
     }
 
-    public void setBlock(String block) {
-        this.block = block;
-    }
-
     public String getPanchayat() {
         return panchayat;
     }
 
-    public void setPanchayat(String panchayat) {
-        this.panchayat = panchayat;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -79,6 +74,7 @@ public class LocationDimension {
                 .append(this.district, that.district)
                 .append(this.block, that.block)
                 .append(this.panchayat, that.panchayat)
+                .append(this.status, that.status)
                 .isEquals();
 
     }
@@ -89,6 +85,7 @@ public class LocationDimension {
                 .append(this.district)
                 .append(this.block)
                 .append(this.panchayat)
+                .append(this.status)
                 .hashCode();
     }
 }

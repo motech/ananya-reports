@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class SubscriberService {
@@ -42,5 +44,13 @@ public class SubscriberService {
         subscriber.updateWith(subscriberReportRequest, locationDimension, dateDimension);
 
         allSubscribers.save(subscriber);
+    }
+
+    public void updateLocation(LocationDimension oldLocation, LocationDimension newLocation) {
+        List<Subscriber> subscriberList = allSubscribers.findByLocation(oldLocation);
+        for(Subscriber subscriber : subscriberList) {
+            subscriber.setLocationDimension(newLocation);
+        }
+        allSubscribers.saveOrUpdateAll(subscriberList);
     }
 }

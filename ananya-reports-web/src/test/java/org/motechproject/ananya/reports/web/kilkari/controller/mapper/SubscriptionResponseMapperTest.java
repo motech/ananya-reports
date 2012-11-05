@@ -27,7 +27,7 @@ public class SubscriptionResponseMapperTest {
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
         Long msisdn = 123L;
-        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat), null, null);
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null);
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
         SubscriptionResponse subscriptionResponse = SubscriptionResponseMapper.mapFrom(subscription);
