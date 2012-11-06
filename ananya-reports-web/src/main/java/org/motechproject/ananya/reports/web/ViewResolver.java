@@ -2,6 +2,7 @@ package org.motechproject.ananya.reports.web;
 
 import org.motechproject.ananya.reports.web.kilkari.controller.views.ExceptionView;
 import org.motechproject.ananya.reports.web.kilkari.controller.views.NotFoundExceptionView;
+import org.motechproject.ananya.reports.web.kilkari.controller.views.ValidationExceptionView;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.View;
 
@@ -18,6 +19,7 @@ public class ViewResolver implements org.springframework.web.servlet.ViewResolve
         this.viewMap = new HashMap<>();
         this.viewMap.put("exceptionView", new ExceptionView());
         this.viewMap.put("notFoundExceptionView", new NotFoundExceptionView());
+        this.viewMap.put("validationExceptionView", new ValidationExceptionView());
     }
 
     @Override

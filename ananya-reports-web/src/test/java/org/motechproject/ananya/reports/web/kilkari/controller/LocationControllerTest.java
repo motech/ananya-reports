@@ -1,7 +1,9 @@
 package org.motechproject.ananya.reports.web.kilkari.controller;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.internal.matchers.Contains;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
@@ -13,6 +15,7 @@ import org.motechproject.ananya.reports.web.kilkari.controller.views.HttpConstan
 import org.motechproject.ananya.reports.web.util.TestUtils;
 import org.springframework.http.MediaType;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -69,7 +72,8 @@ public class LocationControllerTest {
 
     @Test
     public void shouldUpdateLocation() throws Exception {
-        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(new LocationRequest("D1","B1","P1"), new LocationRequest("D1","B1","P1"), LocationStatus.VALID.name(), null);
+        DateTime now = DateTime.now();
+        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(new LocationRequest("D1","B1","P1"), new LocationRequest("D1","B1","P1"), LocationStatus.VALID.name(), now);
 
         mockMvc(locationController)
                 .perform(post("/location")
@@ -77,8 +81,26 @@ public class LocationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(locationService).addOrUpdate(expectedLocationRequest);
+        ArgumentCaptor<LocationSyncRequest> captor = ArgumentCaptor.forClass(LocationSyncRequest.class);
+        verify(locationService).addOrUpdate(captor.capture());
+        LocationSyncRequest actualLocationSyncRequest = captor.getValue();
+        assertEquals(expectedLocationRequest.getActualLocation(), actualLocationSyncRequest.getActualLocation());
+        assertEquals(expectedLocationRequest.getNewLocation(), actualLocationSyncRequest.getNewLocation());
+        assertEquals(expectedLocationRequest.getLocationStatus(), actualLocationSyncRequest.getLocationStatus());
+        assertEquals(expectedLocationRequest.getLastModifiedTime().getMillis(), actualLocationSyncRequest.getLastModifiedTime().getMillis());
     }
+
+    @Test
+    public void shouldFailIfRequestNotValid() throws Exception {
+        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(null, new LocationRequest("D1","B1","P1"), LocationStatus.VALID.name(), null);
+
+        mockMvc(locationController)
+                .perform(post("/location")
+                        .body(TestUtils.toJson(expectedLocationRequest).getBytes())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     public void shouldReturn404ResponseIfLocationNotFound() throws Exception {

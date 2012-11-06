@@ -2,6 +2,7 @@ package org.motechproject.ananya.reports.web;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.motechproject.ananya.reports.web.kilkari.exceptions.NotFoundException;
+import org.motechproject.ananya.reports.web.kilkari.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
         Properties properties = new Properties();
         properties.put(".Exception", "exceptionView");
         properties.put(NotFoundException.class.getCanonicalName(), "notFoundExceptionView");
+        properties.put(ValidationException.class.getCanonicalName(), "validationExceptionView");
         setExceptionMappings(properties);
     }
 

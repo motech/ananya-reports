@@ -5,6 +5,9 @@ import org.motechproject.ananya.reports.kilkari.contract.response.LocationRespon
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.service.LocationService;
 import org.motechproject.ananya.reports.web.kilkari.exceptions.NotFoundException;
+import org.motechproject.ananya.reports.web.kilkari.exceptions.ValidationException;
+import org.motechproject.ananya.reports.web.kilkari.validator.Errors;
+import org.motechproject.ananya.reports.web.kilkari.validator.LocationSyncRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,13 @@ public class LocationController {
     public
     @ResponseBody
     void addOrUpdateLocation(@RequestBody LocationSyncRequest locationSyncRequest) {
+        Errors errors = LocationSyncRequestValidator.validate(locationSyncRequest);
+        raiseExceptionOnError(errors);
         locationService.addOrUpdate(locationSyncRequest);
+    }
+
+    private void raiseExceptionOnError(Errors errors) {
+        if (errors.hasErrors())
+            throw new ValidationException(errors.allMessages());
     }
 }
