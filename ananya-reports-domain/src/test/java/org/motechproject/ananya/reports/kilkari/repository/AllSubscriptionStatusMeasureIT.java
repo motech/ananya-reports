@@ -33,7 +33,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
 
     @Test
     public void shouldAddNewSubscriptionStatusMeasure() {
-        String subscriptionPack = "CHOTI_KILKARI";
+        String subscriptionPack = "NAVJAAT_KILKARI";
         String subscriptionId = "subscriptionId";
         DateTime createdAt = DateTime.now();
 
@@ -59,7 +59,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
 
     @Test
     public void shouldDeleteAllSubscriptionStatusMeasuresForAGivenMsisdn() {
-        String subscriptionPack = "CHOTI_KILKARI";
+        String subscriptionPack = "NAVJAAT_KILKARI";
         String subscriptionId = "subscriptionId";
         DateTime createdAt = DateTime.now();
         Long msisdn = 1234L;

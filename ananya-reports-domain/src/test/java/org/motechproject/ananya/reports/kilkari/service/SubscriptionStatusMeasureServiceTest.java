@@ -61,7 +61,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Integer age = 42;
         String subscriptionId = "sub112";
         String operator = "airtel";
-        String subscriptionPack = "CHOTI_KILKARI";
+        String subscriptionPack = "NAVJAAT_KILKARI";
         DateTime edd = DateTime.now().minusMonths(4);
         DateTime dob = DateTime.now().minusMonths(8);
         String district = "district";
@@ -121,7 +121,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Integer age = 42;
         String subscriptionId = "sub112";
         String operator = "airtel";
-        String subscriptionPack = "CHOTI_KILKARI";
+        String subscriptionPack = "NAVJAAT_KILKARI";
         DateTime edd = DateTime.now().minusMonths(4);
         DateTime dob = DateTime.now().minusMonths(8);
         DateTime newEdd = DateTime.now().minusMonths(4);
@@ -200,7 +200,7 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
 
         ChannelDimension channelDimension = new ChannelDimension();
-        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("CHOTI_KILKARI");
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
         DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
         TimeDimension timeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
 
@@ -259,7 +259,7 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
 
         ChannelDimension channelDimension = new ChannelDimension();
-        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("CHOTI_KILKARI");
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
         DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
         TimeDimension timeDimension = new TimeDimension(new DateTime(2012, 01, 01, 10, 10));
 
@@ -316,7 +316,7 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
 
         ChannelDimension channelDimension = new ChannelDimension();
-        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("CHOTI_KILKARI");
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
         DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
         OperatorDimension operatorDimension = new OperatorDimension(operator);
 
