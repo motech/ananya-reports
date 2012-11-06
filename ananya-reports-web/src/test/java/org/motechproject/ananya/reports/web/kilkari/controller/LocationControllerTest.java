@@ -1,7 +1,6 @@
 package org.motechproject.ananya.reports.web.kilkari.controller;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.internal.matchers.Contains;
@@ -43,7 +42,7 @@ public class LocationControllerTest {
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID", null));
         mockMvc(locationController)
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isOk())
@@ -59,7 +58,7 @@ public class LocationControllerTest {
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID", null));
         mockMvc(locationController)
                 .perform(get("/location"))
                 .andExpect(status().isNotFound())

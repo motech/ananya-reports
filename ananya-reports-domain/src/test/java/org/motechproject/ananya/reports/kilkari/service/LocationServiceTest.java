@@ -11,6 +11,7 @@ import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.repository.AllLocationDimensions;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -35,7 +36,7 @@ public class LocationServiceTest {
     @Test
     public void shouldFetchLocationForDistrictBlockAndPanchayat() {
 
-        LocationDimension expectedLocationDimension = new LocationDimension("mydistrict", "myblock", "mypanchayat", "VALID");
+        LocationDimension expectedLocationDimension = new LocationDimension("mydistrict", "myblock", "mypanchayat", "VALID", null);
         when(allLocationDimensions.fetchFor("mydistrict", "myblock", "mypanchayat")).thenReturn(expectedLocationDimension);
 
         LocationDimension locationDimension = locationService.fetchFor("mydistrict", "myblock", "mypanchayat");
@@ -46,13 +47,14 @@ public class LocationServiceTest {
     @Test
     public void shouldAddOrUpdateLocation() {
         LocationRequest locationRequest = new LocationRequest("d", "b", "p");
+        Timestamp lastModifiedTime = new Timestamp(DateTime.now().getMillis());
 
-        locationService.addOrUpdate(new LocationSyncRequest(locationRequest, locationRequest, LocationStatus.VALID.name(), DateTime.now()));
+        locationService.addOrUpdate(new LocationSyncRequest(locationRequest, locationRequest, LocationStatus.VALID.name(), new DateTime(lastModifiedTime)));
 
         ArgumentCaptor<LocationDimension> captor = ArgumentCaptor.forClass(LocationDimension.class);
         verify(allLocationDimensions).createOrUpdate(captor.capture());
         LocationDimension actualLocationDimension = captor.getValue();
-        assertEquals(new LocationDimension("d", "b", "p", LocationStatus.VALID.name()), actualLocationDimension);
+        assertEquals(new LocationDimension("d", "b", "p", LocationStatus.VALID.name(), lastModifiedTime), actualLocationDimension);
         verify(subscriberService, never()).updateLocation(any(LocationDimension.class), any(LocationDimension.class));
     }
 
@@ -60,17 +62,29 @@ public class LocationServiceTest {
     public void shouldUpdateLocationStatus() {
         LocationRequest oldLocationRequest = new LocationRequest("d", "b", "p");
         LocationRequest newLocationRequest = new LocationRequest("d1", "b1", "p1");
-        LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name());
-        LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name());
-        when(locationService.fetchFor("d","b","p")).thenReturn(expectedOldLocationDimension);
+        Timestamp lastModifiedTime = new Timestamp(DateTime.now().getMillis());
+        LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name(), lastModifiedTime);
+        LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name(), lastModifiedTime);
+        when(locationService.fetchFor("d", "b", "p")).thenReturn(expectedOldLocationDimension);
 
-        locationService.addOrUpdate(new LocationSyncRequest(oldLocationRequest, newLocationRequest, LocationStatus.INVALID.name(), DateTime.now()));
+        locationService.addOrUpdate(new LocationSyncRequest(oldLocationRequest, newLocationRequest, LocationStatus.INVALID.name(), new DateTime(lastModifiedTime)));
 
         ArgumentCaptor<LocationDimension> captor = ArgumentCaptor.forClass(LocationDimension.class);
         verify(allLocationDimensions, times(2)).createOrUpdate(captor.capture());
-        List<LocationDimension> actualLocationDimensions =  captor.getAllValues();
+        List<LocationDimension> actualLocationDimensions = captor.getAllValues();
         assertEquals(expectedNewLocationDimension, actualLocationDimensions.get(0));
         assertEquals(expectedOldLocationDimension, actualLocationDimensions.get(1));
         verify(subscriberService).updateLocation(expectedOldLocationDimension, expectedNewLocationDimension);
+    }
+
+    @Test
+    public void shouldUpdateLocationOnlyIfLatestRequest() {
+        LocationRequest locationRequest = new LocationRequest("d", "b", "p");
+        when(allLocationDimensions.fetchFor("d", "b", "p")).thenReturn(new LocationDimension("d", "b", "p", null, new Timestamp(DateTime.now().getMillis())));
+
+        locationService.addOrUpdate(new LocationSyncRequest(locationRequest, locationRequest, LocationStatus.VALID.name(), DateTime.now().minusDays(1)));
+
+        verify(subscriberService, never()).updateLocation(any(LocationDimension.class), any(LocationDimension.class));
+        verify(allLocationDimensions, never()).createOrUpdate(any(LocationDimension.class));
     }
 }

@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "location_dimension")
@@ -29,14 +30,18 @@ public class LocationDimension {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "last_modified_time")
+    private Timestamp lastModifiedTime;
+
     public LocationDimension() {
     }
 
-    public LocationDimension(String district, String block, String panchayat, String status) {
+    public LocationDimension(String district, String block, String panchayat, String status, Timestamp lastModifiedTime) {
         this.district = district;
         this.block = block;
         this.panchayat = panchayat;
         this.status = status;
+        this.lastModifiedTime = lastModifiedTime;
     }
 
     public Integer getId() {
@@ -63,6 +68,10 @@ public class LocationDimension {
         this.status = status;
     }
 
+    public Timestamp getLastModifiedTime() {
+        return lastModifiedTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,6 +84,7 @@ public class LocationDimension {
                 .append(this.block, that.block)
                 .append(this.panchayat, that.panchayat)
                 .append(this.status, that.status)
+                .append(this.lastModifiedTime, that.lastModifiedTime)
                 .isEquals();
 
     }
@@ -86,6 +96,7 @@ public class LocationDimension {
                 .append(this.block)
                 .append(this.panchayat)
                 .append(this.status)
+                .append(this.lastModifiedTime)
                 .hashCode();
     }
 }

@@ -54,13 +54,13 @@ public class SubscriberServiceTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID"), null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID", null), null, null);
         DateDimension expectedDateDimension = new DateDimension();
         Subscription subscription = mock(Subscription.class);
 
         when(subscription.getSubscriber()).thenReturn(subscriber);
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
-        when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID", null));
         when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
         subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location), subscriptionId);
@@ -79,8 +79,8 @@ public class SubscriberServiceTest {
 
     @Test
     public void shouldUpdateLocation() {
-        LocationDimension oldLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.NOT_VERIFIED.name());
-        LocationDimension newLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.VALID.name());
+        LocationDimension oldLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.NOT_VERIFIED.name(), null);
+        LocationDimension newLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.VALID.name(), null);
         ArrayList<Subscriber> subscribers = new ArrayList<>();
         subscribers.add(new Subscriber("name", null, null, null, null, oldLocation, null, null));
         when(allSubscribers.findByLocation(oldLocation)).thenReturn(subscribers);
