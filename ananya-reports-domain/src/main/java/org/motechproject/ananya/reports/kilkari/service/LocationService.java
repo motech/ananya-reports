@@ -34,7 +34,7 @@ public class LocationService {
 
     @Transactional
     public void addOrUpdate(LocationSyncRequest locationSyncRequest) {
-        if(isNotLatestRequest(locationSyncRequest)) {
+        if (isNotLatestRequest(locationSyncRequest)) {
             return;
         }
 
@@ -63,8 +63,11 @@ public class LocationService {
 
     private void createNewLocation(LocationSyncRequest locationSyncRequest, LocationDimension actualLocation) {
         LocationRequest newLocationRequest = locationSyncRequest.getNewLocation();
-        LocationDimension newLocation = new LocationDimension(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name(), new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
-        allLocationDimensions.createOrUpdate(newLocation);
+        LocationDimension newLocation = allLocationDimensions.fetchFor(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat());
+        if (newLocation == null) {
+            newLocation = new LocationDimension(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name(), new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
+            allLocationDimensions.createOrUpdate(newLocation);
+        }
         remapSubscribers(actualLocation, newLocation);
     }
 
