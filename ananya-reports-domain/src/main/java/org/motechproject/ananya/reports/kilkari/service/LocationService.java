@@ -72,6 +72,11 @@ public class LocationService {
     }
 
     private void remapSubscribers(LocationDimension oldLocation, LocationDimension newLocation) {
+        if (oldLocationIsNotPresent(oldLocation)) return;
         subscriberService.updateLocation(oldLocation, newLocation);
+    }
+
+    private boolean oldLocationIsNotPresent(LocationDimension oldLocation) {
+        return oldLocation == null;
     }
 }

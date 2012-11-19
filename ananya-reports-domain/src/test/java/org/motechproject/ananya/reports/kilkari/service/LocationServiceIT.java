@@ -28,12 +28,9 @@ public class LocationServiceIT extends SpringIntegrationTest {
         template.save(existingLocationDimension);
         markForDeletion(existingLocationDimension);
 
-
         LocationDimension locationDimension = locationService.fetchFor(district, block, panchayat);
         assertEquals(district,locationDimension.getDistrict());
         assertEquals(block,locationDimension.getBlock());
         assertEquals(panchayat,locationDimension.getPanchayat());
-
     }
-
 }

@@ -106,4 +106,23 @@ public class LocationServiceTest {
         assertEquals(expectedOldLocationDimension, actualLocationDimensions.get(0));
         verify(subscriberService).updateLocation(expectedOldLocationDimension, expectedNewLocationDimension);
     }
+
+    @Test
+    public void shouldNotRemapSubscribersIfOldLocationIsNotPresent() {
+        LocationRequest oldLocationRequest = new LocationRequest("d", "b", "p");
+        LocationRequest newLocationRequest = new LocationRequest("d1", "b1", "p1");
+        Timestamp lastModifiedTime = new Timestamp(DateTime.now().getMillis());
+        LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name(), lastModifiedTime);
+        LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name(), lastModifiedTime);
+        when(allLocationDimensions.fetchFor("d", "b", "p")).thenReturn(null);
+        when(allLocationDimensions.fetchFor("d1", "b1", "p1")).thenReturn(expectedNewLocationDimension);
+
+        locationService.addOrUpdate(new LocationSyncRequest(oldLocationRequest, newLocationRequest, LocationStatus.INVALID.name(), new DateTime(lastModifiedTime)));
+
+        ArgumentCaptor<LocationDimension> captor = ArgumentCaptor.forClass(LocationDimension.class);
+        verify(allLocationDimensions).createOrUpdate(captor.capture());
+        List<LocationDimension> actualLocationDimensions = captor.getAllValues();
+        assertEquals(expectedOldLocationDimension, actualLocationDimensions.get(0));
+        verify(subscriberService, never()).updateLocation(expectedOldLocationDimension, expectedNewLocationDimension);
+    }
 }
