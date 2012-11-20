@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
-import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.WeekNumber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
@@ -27,7 +26,7 @@ public class SubscriptionStatusMeasureService {
     private AllSubscriptions allSubscriptions;
     private SubscriptionService subscriptionService;
     private AllSubscribers allSubscribers;
-    private AllLocationDimensions allLocationDimensions;
+    private LocationService locationService;
     private AllTimeDimensions allTimeDimensions;
 
     public SubscriptionStatusMeasureService() {
@@ -39,7 +38,7 @@ public class SubscriptionStatusMeasureService {
                                             AllSubscriptionPackDimensions allSubscriptionPackDimensions,
                                             AllOperatorDimensions allOperatorDimensions, AllSubscribers allSubscribers,
                                             SubscriptionService subscriptionService, AllSubscriptions allSubscriptions,
-                                            AllDateDimensions allDateDimensions, AllLocationDimensions allLocationDimensions,
+                                            AllDateDimensions allDateDimensions, LocationService locationService,
                                             AllTimeDimensions allTimeDimensions) {
         this.allSubscriptionStatusMeasure = allSubscriptionStatusMeasure;
         this.allChannelDimensions = allChannelDimensions;
@@ -49,7 +48,7 @@ public class SubscriptionStatusMeasureService {
         this.subscriptionService = subscriptionService;
         this.allSubscriptions = allSubscriptions;
         this.allDateDimensions = allDateDimensions;
-        this.allLocationDimensions = allLocationDimensions;
+        this.locationService = locationService;
         this.allTimeDimensions = allTimeDimensions;
     }
 
@@ -64,7 +63,7 @@ public class SubscriptionStatusMeasureService {
         DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         SubscriberLocation location = subscriptionReportRequest.getLocation();
-        LocationDimension locationDimension = handleLocation(location);
+        LocationDimension locationDimension = locationService.handleLocationRequest(location);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
 
@@ -80,16 +79,6 @@ public class SubscriptionStatusMeasureService {
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
     }
 
-    private LocationDimension handleLocation(SubscriberLocation location) {
-        LocationDimension locationDimension = null;
-        if (location == null) return locationDimension;
-        locationDimension = allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
-        if (locationDimension == null) {
-            locationDimension = new LocationDimension(location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name(), new Timestamp(DateTime.now().getMillis()));
-            allLocationDimensions.createOrUpdate(locationDimension);
-        }
-        return locationDimension;
-    }
 
     @Transactional
     public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {

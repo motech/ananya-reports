@@ -8,17 +8,14 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
-import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.repository.AllDateDimensions;
-import org.motechproject.ananya.reports.kilkari.repository.AllLocationDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscribers;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -32,7 +29,7 @@ public class SubscriberServiceTest {
     @Mock
     private AllSubscribers allSubscribers;
     @Mock
-    private AllLocationDimensions allLocationDimensions;
+    private LocationService locationService;
     @Mock
     private AllDateDimensions allDateDimensions;
     @Captor
@@ -41,7 +38,7 @@ public class SubscriberServiceTest {
     @Before
     public void setUp() {
         initMocks(this);
-        subscriberService = new SubscriberService(allSubscriptions, allSubscribers, allLocationDimensions, allDateDimensions);
+        subscriberService = new SubscriberService(allSubscriptions, allSubscribers, locationService, allDateDimensions);
     }
 
     @Test
@@ -60,11 +57,12 @@ public class SubscriberServiceTest {
 
         when(subscription.getSubscriber()).thenReturn(subscriber);
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
-        when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID", null));
+        when(locationService.handleLocationRequest(location)).thenReturn(new LocationDimension(district, block, panchayat, "VALID", null));
         when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
         subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location), subscriptionId);
 
+        verify(locationService).handleLocationRequest(location);
         ArgumentCaptor<Subscriber> captor = ArgumentCaptor.forClass(Subscriber.class);
         verify(allSubscribers).save(captor.capture());
         Subscriber actualSubscriber = captor.getValue();
@@ -75,21 +73,5 @@ public class SubscriberServiceTest {
         assertEquals(block, actualSubscriber.getLocationDimension().getBlock());
         assertEquals(panchayat, actualSubscriber.getLocationDimension().getPanchayat());
         assertEquals(expectedDateDimension, actualSubscriber.getDateDimension());
-    }
-
-    @Test
-    public void shouldUpdateLocation() {
-        LocationDimension oldLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.NOT_VERIFIED.name(), null);
-        LocationDimension newLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.VALID.name(), null);
-        ArrayList<Subscriber> subscribers = new ArrayList<>();
-        subscribers.add(new Subscriber("name", null, null, null, null, oldLocation, null, null));
-        when(allSubscribers.findByLocation(oldLocation)).thenReturn(subscribers);
-
-        subscriberService.updateLocation(oldLocation, newLocation);
-
-        verify(allSubscribers).saveOrUpdateAll(subscribersCaptor.capture());
-        List<Subscriber> actualSubscribersList = subscribersCaptor.getValue();
-        assertEquals(1, actualSubscribersList.size());
-        assertEquals(newLocation, actualSubscribersList.get(0).getLocationDimension());
     }
 }

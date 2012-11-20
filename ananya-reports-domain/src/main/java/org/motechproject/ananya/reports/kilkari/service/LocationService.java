@@ -3,28 +3,32 @@ package org.motechproject.ananya.reports.kilkari.service;
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.repository.AllLocationDimensions;
+import org.motechproject.ananya.reports.kilkari.repository.AllSubscribers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class LocationService {
 
     private AllLocationDimensions allLocationDimensions;
-    private SubscriberService subscriberService;
+    private AllSubscribers allSubscribers;
 
     public LocationService() {
     }
 
     @Autowired
-    public LocationService(AllLocationDimensions allLocationDimensions, SubscriberService subscriberService) {
+    public LocationService(AllLocationDimensions allLocationDimensions, AllSubscribers allSubscribers) {
         this.allLocationDimensions = allLocationDimensions;
-        this.subscriberService = subscriberService;
+        this.allSubscribers = allSubscribers;
     }
 
     @Transactional
@@ -45,6 +49,19 @@ public class LocationService {
             createNewLocation(locationSyncRequest, actualLocation);
         }
         createOrUpdateExistingLocation(actualLocation, actualLocationRequest, locationSyncRequest.getLocationStatus(), locationSyncRequest.getLastModifiedTime());
+    }
+
+    @Transactional
+    public LocationDimension handleLocationRequest(SubscriberLocation location) {
+        if (location == null) return null;
+
+        LocationDimension locationDimension = allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
+        if (locationDimension != null)
+            return locationDimension;
+
+        locationDimension = new LocationDimension(location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name(), new Timestamp(DateTime.now().getMillis()));
+        allLocationDimensions.createOrUpdate(locationDimension);
+        return locationDimension;
     }
 
     private boolean isNotLatestRequest(LocationSyncRequest locationSyncRequest) {
@@ -73,7 +90,11 @@ public class LocationService {
 
     private void remapSubscribers(LocationDimension oldLocation, LocationDimension newLocation) {
         if (oldLocationIsNotPresent(oldLocation)) return;
-        subscriberService.updateLocation(oldLocation, newLocation);
+        List<Subscriber> subscriberList = allSubscribers.findByLocation(oldLocation);
+        for(Subscriber subscriber : subscriberList) {
+            subscriber.setLocationDimension(newLocation);
+        }
+        allSubscribers.saveOrUpdateAll(subscriberList);
     }
 
     private boolean oldLocationIsNotPresent(LocationDimension oldLocation) {
