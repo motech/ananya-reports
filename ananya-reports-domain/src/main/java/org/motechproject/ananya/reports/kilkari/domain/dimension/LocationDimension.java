@@ -84,7 +84,6 @@ public class LocationDimension {
                 .append(this.block, that.block)
                 .append(this.panchayat, that.panchayat)
                 .append(this.status, that.status)
-                .append(this.lastModifiedTime, that.lastModifiedTime)
                 .isEquals();
 
     }
@@ -96,7 +95,6 @@ public class LocationDimension {
                 .append(this.block)
                 .append(this.panchayat)
                 .append(this.status)
-                .append(this.lastModifiedTime)
                 .hashCode();
     }
 }

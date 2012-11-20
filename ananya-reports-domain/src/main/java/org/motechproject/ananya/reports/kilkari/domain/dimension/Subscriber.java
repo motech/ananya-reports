@@ -1,5 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
 
@@ -113,5 +115,15 @@ public class Subscriber {
     public void updateWithEddDob(DateTime edd, DateTime dob) {
         estimatedDateOfDelivery = convertToDate(edd);
         dateOfBirth = convertToDate(dob);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

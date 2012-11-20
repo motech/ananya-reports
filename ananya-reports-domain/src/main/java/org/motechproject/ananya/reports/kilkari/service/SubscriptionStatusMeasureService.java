@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.WeekNumber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
@@ -63,7 +64,7 @@ public class SubscriptionStatusMeasureService {
         DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         SubscriberLocation location = subscriptionReportRequest.getLocation();
-        LocationDimension locationDimension = location == null ? null : allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
+        LocationDimension locationDimension = handleLocation(location);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
 
@@ -77,6 +78,17 @@ public class SubscriptionStatusMeasureService {
         subscriber = allSubscribers.save(subscriber);
         Subscription subscription = saveSubscription(msisdn, subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), subscriptionReportRequest.getCreatedAt(), subscriptionStatus, null, oldSubscription);
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, null, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null);
+    }
+
+    private LocationDimension handleLocation(SubscriberLocation location) {
+        LocationDimension locationDimension = null;
+        if (location == null) return locationDimension;
+        locationDimension = allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
+        if (locationDimension == null) {
+            locationDimension = new LocationDimension(location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name(), new Timestamp(DateTime.now().getMillis()));
+            allLocationDimensions.createOrUpdate(locationDimension);
+        }
+        return locationDimension;
     }
 
     @Transactional
