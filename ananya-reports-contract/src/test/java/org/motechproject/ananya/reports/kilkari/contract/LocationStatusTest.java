@@ -1,6 +1,7 @@
-package org.motechproject.ananya.reports.kilkari.domain;
+package org.motechproject.ananya.reports.kilkari.contract;
 
 import org.junit.Test;
+import org.motechproject.ananya.reports.kilkari.contract.LocationStatus;
 
 import static junit.framework.Assert.*;
 

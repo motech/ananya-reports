@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
+import org.motechproject.ananya.reports.kilkari.contract.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.repository.AllLocationDimensions;
@@ -167,10 +167,9 @@ public class LocationServiceTest {
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, LocationStatus.NOT_VERIFIED.name());
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(null);
 
-        LocationDimension locationDimension = locationService.handleLocationRequest(new SubscriberLocation(district, block, panchayat));
+        locationService.handleLocationRequest(new SubscriberLocation(district, block, panchayat));
 
         verify(allLocationDimensions).createOrUpdate(expectedLocationDimension);
-        assertEquals(expectedLocationDimension, locationDimension);
     }
 
     @Test
@@ -178,6 +177,8 @@ public class LocationServiceTest {
         LocationDimension locationDimension = locationService.handleLocationRequest(null);
 
         assertNull(locationDimension);
+        verify(allLocationDimensions, never()).fetchFor(anyString(), anyString(), anyString());
+        verify(allLocationDimensions, never()).createOrUpdate(any(LocationDimension.class));
     }
 
     private void verifySubscriberLocationUpdate(LocationDimension newLocation) {

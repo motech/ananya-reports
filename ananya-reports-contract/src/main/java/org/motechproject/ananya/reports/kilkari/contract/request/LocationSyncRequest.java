@@ -3,7 +3,9 @@ package org.motechproject.ananya.reports.kilkari.contract.request;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.DateTime;
 
-public class LocationSyncRequest {
+import java.io.Serializable;
+
+public class LocationSyncRequest implements Serializable {
     private LocationRequest actualLocation;
     private LocationRequest newLocation;
     private String locationStatus;
