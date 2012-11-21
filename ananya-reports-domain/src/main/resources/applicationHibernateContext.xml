@@ -15,6 +15,11 @@
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
+
+        <property name="entityInterceptor">
+            <bean class="org.motechproject.ananya.reports.kilkari.domain.AuditTrailInterceptor"/>
+        </property>
+
         <property name="annotatedClasses">
             <list>
                 <value>org.motechproject.ananya.reports.kilkari.domain.dimension.ChannelDimension</value>

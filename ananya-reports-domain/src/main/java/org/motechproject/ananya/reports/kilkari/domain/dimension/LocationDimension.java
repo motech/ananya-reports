@@ -31,17 +31,16 @@ public class LocationDimension {
     private String status;
 
     @Column(name = "last_modified_time")
-    private Timestamp lastModifiedTime;
+    private Timestamp lastModified;
 
     public LocationDimension() {
     }
 
-    public LocationDimension(String district, String block, String panchayat, String status, Timestamp lastModifiedTime) {
+    public LocationDimension(String district, String block, String panchayat, String status) {
         this.district = district;
         this.block = block;
         this.panchayat = panchayat;
         this.status = status;
-        this.lastModifiedTime = lastModifiedTime;
     }
 
     public Integer getId() {
@@ -68,8 +67,12 @@ public class LocationDimension {
         this.status = status;
     }
 
-    public Timestamp getLastModifiedTime() {
-        return lastModifiedTime;
+    public Timestamp getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Timestamp lastModified) {
+        this.lastModified = lastModified;
     }
 
     @Override

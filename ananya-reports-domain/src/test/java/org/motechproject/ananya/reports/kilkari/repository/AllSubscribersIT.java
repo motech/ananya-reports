@@ -39,7 +39,7 @@ public class AllSubscribersIT extends SpringIntegrationTest {
         String name = "name";
         ChannelDimension channelDimension = template.loadAll(ChannelDimension.class).get(0);
         DateDimension dateDimension = template.loadAll(DateDimension.class).get(0);
-        LocationDimension locationDimension = new LocationDimension("D1", "B1", "P1", "VALID", null);
+        LocationDimension locationDimension = new LocationDimension("D1", "B1", "P1", "VALID");
         template.save(locationDimension);
         Subscriber subscriber = new Subscriber(name, null, null, null, channelDimension, locationDimension, dateDimension, null);
         template.save(subscriber);

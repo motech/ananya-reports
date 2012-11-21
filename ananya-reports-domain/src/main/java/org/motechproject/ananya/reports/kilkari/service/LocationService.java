@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -59,7 +58,7 @@ public class LocationService {
         if (locationDimension != null)
             return locationDimension;
 
-        locationDimension = new LocationDimension(location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name(), new Timestamp(DateTime.now().getMillis()));
+        locationDimension = new LocationDimension(location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name());
         allLocationDimensions.createOrUpdate(locationDimension);
         return locationDimension;
     }
@@ -67,12 +66,12 @@ public class LocationService {
     private boolean isNotLatestRequest(LocationSyncRequest locationSyncRequest) {
         LocationRequest actualLocation = locationSyncRequest.getActualLocation();
         LocationDimension locationDimension = allLocationDimensions.fetchFor(actualLocation.getDistrict(), actualLocation.getBlock(), actualLocation.getPanchayat());
-        return locationDimension != null && locationDimension.getLastModifiedTime() != null && locationDimension.getLastModifiedTime().after(locationSyncRequest.getLastModifiedTime().toDate());
+        return locationDimension != null && locationDimension.getLastModified() != null && locationDimension.getLastModified().after(locationSyncRequest.getLastModifiedTime().toDate());
     }
 
     private void createOrUpdateExistingLocation(LocationDimension actualLocation, LocationRequest actualLocationRequest, String locationStatus, DateTime lastModifiedTime) {
         actualLocation = actualLocation == null ?
-                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationStatus, new Timestamp(lastModifiedTime.getMillis()))
+                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationStatus)
                 : actualLocation;
         actualLocation.setStatus(locationStatus);
         allLocationDimensions.createOrUpdate(actualLocation);
@@ -82,7 +81,7 @@ public class LocationService {
         LocationRequest newLocationRequest = locationSyncRequest.getNewLocation();
         LocationDimension newLocation = allLocationDimensions.fetchFor(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat());
         if (newLocation == null) {
-            newLocation = new LocationDimension(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name(), new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
+            newLocation = new LocationDimension(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name());
             allLocationDimensions.createOrUpdate(newLocation);
         }
         remapSubscribers(actualLocation, newLocation);

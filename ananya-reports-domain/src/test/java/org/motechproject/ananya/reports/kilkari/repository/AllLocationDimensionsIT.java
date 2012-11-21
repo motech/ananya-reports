@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AllLocationDimensionsIT extends SpringIntegrationTest {
 
@@ -25,11 +26,13 @@ public class AllLocationDimensionsIT extends SpringIntegrationTest {
 
     @Test
     public void shouldFetchByDistrictBlockPanchayat() {
-        LocationDimension expectedDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.NOT_VERIFIED.name(), new Timestamp(DateTime.now().getMillis()));
+        DateTime now = DateTime.now();
+        LocationDimension expectedDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.NOT_VERIFIED.name());
+        expectedDimension.setLastModified(new Timestamp(DateTime.now().minusDays(1).getMillis()));
         allLocationDimensions.createOrUpdate(expectedDimension);
 
         LocationDimension actualDimension = allLocationDimensions.fetchFor("d1", "b1", "p1");
-
+        assertTrue(now.isBefore(actualDimension.getLastModified().getTime()));
         assertEquals(expectedDimension, actualDimension);
     }
 }

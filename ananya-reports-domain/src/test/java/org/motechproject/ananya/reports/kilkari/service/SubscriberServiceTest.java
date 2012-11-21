@@ -51,13 +51,13 @@ public class SubscriberServiceTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID", null), null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID"), null, null);
         DateDimension expectedDateDimension = new DateDimension();
         Subscription subscription = mock(Subscription.class);
 
         when(subscription.getSubscriber()).thenReturn(subscriber);
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
-        when(locationService.handleLocationRequest(location)).thenReturn(new LocationDimension(district, block, panchayat, "VALID", null));
+        when(locationService.handleLocationRequest(location)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
         when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
         subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location), subscriptionId);

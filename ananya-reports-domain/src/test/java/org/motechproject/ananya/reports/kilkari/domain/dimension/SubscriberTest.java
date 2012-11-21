@@ -18,9 +18,9 @@ public class SubscriberTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID", null), null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null);
         DateDimension expectedDateDimension = new DateDimension();
-        LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, "VALID", null);
+        LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, "VALID");
 
         subscriber.updateWith(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge,
                 location), expectedLocationDimension, expectedDateDimension);
@@ -37,7 +37,7 @@ public class SubscriberTest {
         DateTime oldDob = DateTime.now().minusYears(3);
         DateTime newEdd = DateTime.now().plus(32);
         DateTime newDob = DateTime.now().minusYears(1);
-        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID", null), null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null);
 
         subscriber.updateWithEddDob(newEdd, newDob);
 
