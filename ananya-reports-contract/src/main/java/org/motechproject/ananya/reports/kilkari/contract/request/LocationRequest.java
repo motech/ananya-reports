@@ -2,9 +2,7 @@ package org.motechproject.ananya.reports.kilkari.contract.request;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
-import java.io.Serializable;
-
-public class LocationRequest implements Serializable {
+public class LocationRequest {
     private String district;
     private String block;
     private String panchayat;

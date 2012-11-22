@@ -3,7 +3,7 @@ package org.motechproject.ananya.reports.web.kilkari.validator;
 import org.apache.commons.lang.StringUtils;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
-import org.motechproject.ananya.reports.kilkari.contract.LocationStatus;
+import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 
 public class LocationSyncRequestValidator {
     public static Errors validate(LocationSyncRequest locationSyncRequest) {

@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.motechproject.ananya.reports.kilkari.contract.LocationStatus;
+import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.reports.kilkari.contract.LocationStatus;
+import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.repository.AllLocationDimensions;

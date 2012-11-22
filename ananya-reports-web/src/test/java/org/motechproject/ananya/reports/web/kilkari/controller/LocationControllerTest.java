@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.internal.matchers.Contains;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
-import org.motechproject.ananya.reports.kilkari.contract.LocationStatus;
+import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.service.LocationService;
 import org.motechproject.ananya.reports.web.kilkari.controller.views.HttpConstants;

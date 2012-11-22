@@ -1,4 +1,4 @@
-package org.motechproject.ananya.reports.kilkari.contract;
+package org.motechproject.ananya.reports.kilkari.domain;
 
 import org.apache.commons.lang.StringUtils;
 

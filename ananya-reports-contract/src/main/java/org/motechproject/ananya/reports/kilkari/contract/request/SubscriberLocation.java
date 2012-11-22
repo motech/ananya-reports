@@ -2,7 +2,6 @@ package org.motechproject.ananya.reports.kilkari.contract.request;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -72,10 +71,5 @@ public class SubscriberLocation implements Serializable {
                 .append(this.block)
                 .append(this.panchayat)
                 .hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 }
