@@ -154,7 +154,7 @@ public class LocationServiceTest {
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, LocationStatus.VALID.name());
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(expectedLocationDimension);
 
-        LocationDimension locationDimension = locationService.handleLocationRequest(new SubscriberLocation(district, block, panchayat));
+        LocationDimension locationDimension = locationService.createAndFetch(new SubscriberLocation(district, block, panchayat));
 
         assertEquals(expectedLocationDimension, locationDimension);
     }
@@ -167,7 +167,7 @@ public class LocationServiceTest {
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, LocationStatus.NOT_VERIFIED.name());
         when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(null);
 
-        LocationDimension locationDimension = locationService.handleLocationRequest(new SubscriberLocation(district, block, panchayat));
+        LocationDimension locationDimension = locationService.createAndFetch(new SubscriberLocation(district, block, panchayat));
 
         verify(allLocationDimensions).createOrUpdate(expectedLocationDimension);
         assertEquals(expectedLocationDimension, locationDimension);
@@ -175,7 +175,7 @@ public class LocationServiceTest {
 
     @Test
     public void shouldNotCreateOrFetchLocationIfRequestIsNull(){
-        LocationDimension locationDimension = locationService.handleLocationRequest(null);
+        LocationDimension locationDimension = locationService.createAndFetch(null);
 
         assertNull(locationDimension);
     }

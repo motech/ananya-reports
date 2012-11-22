@@ -51,7 +51,7 @@ public class LocationService {
     }
 
     @Transactional
-    public LocationDimension handleLocationRequest(SubscriberLocation location) {
+    public LocationDimension createAndFetch(SubscriberLocation location) {
         if (location == null) return null;
 
         LocationDimension locationDimension = allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());

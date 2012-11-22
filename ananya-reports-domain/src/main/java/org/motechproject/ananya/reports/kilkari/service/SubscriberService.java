@@ -33,7 +33,7 @@ public class SubscriberService {
 
     public void update(SubscriberReportRequest subscriberReportRequest, String subscriptionId) {
         Subscriber subscriber = allSubscriptions.findBySubscriptionId(subscriptionId).getSubscriber();
-        LocationDimension locationDimension = locationService.handleLocationRequest(subscriberReportRequest.getLocation());
+        LocationDimension locationDimension = locationService.createAndFetch(subscriberReportRequest.getLocation());
         DateDimension dateDimension = allDateDimensions.fetchFor(subscriberReportRequest.getCreatedAt());
 
         subscriber.updateWith(subscriberReportRequest, locationDimension, dateDimension);

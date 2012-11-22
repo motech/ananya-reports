@@ -57,12 +57,12 @@ public class SubscriberServiceTest {
 
         when(subscription.getSubscriber()).thenReturn(subscriber);
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
-        when(locationService.handleLocationRequest(location)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.createAndFetch(location)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
         when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
         subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location), subscriptionId);
 
-        verify(locationService).handleLocationRequest(location);
+        verify(locationService).createAndFetch(location);
         ArgumentCaptor<Subscriber> captor = ArgumentCaptor.forClass(Subscriber.class);
         verify(allSubscribers).save(captor.capture());
         Subscriber actualSubscriber = captor.getValue();

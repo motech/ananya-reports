@@ -63,7 +63,7 @@ public class SubscriptionStatusMeasureService {
         DateDimension dateDimension = allDateDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         TimeDimension timeDimension = allTimeDimensions.fetchFor(subscriptionReportRequest.getCreatedAt());
         SubscriberLocation location = subscriptionReportRequest.getLocation();
-        LocationDimension locationDimension = locationService.handleLocationRequest(location);
+        LocationDimension locationDimension = locationService.createAndFetch(location);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionReportRequest.getOperator()) ? null : allOperatorDimensions.fetchFor(subscriptionReportRequest.getOperator());
         Subscription oldSubscription = allSubscriptions.findBySubscriptionId(subscriptionReportRequest.getOldSubscriptionId());
 

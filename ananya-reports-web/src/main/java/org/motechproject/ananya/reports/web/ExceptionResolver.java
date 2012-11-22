@@ -31,7 +31,8 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
                                               HttpServletResponse response,
                                               Object handler,
                                               Exception ex) {
-        log.error(getExceptionString(ex), ex);
+        if (!(ex instanceof NotFoundException))
+            log.error(getExceptionString(ex), ex);
 
         return super.doResolveException(request, response, handler, ex);
     }

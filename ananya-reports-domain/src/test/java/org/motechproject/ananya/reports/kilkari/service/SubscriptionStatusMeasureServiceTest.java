@@ -89,7 +89,7 @@ public class SubscriptionStatusMeasureServiceTest {
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
         when(allDateDimensions.fetchFor(new DateTime(subscriptionReportRequest.getCreatedAt()))).thenReturn(dateDimension);
-        when(locationService.handleLocationRequest(subscriberLocation)).thenReturn(locationDimension);
+        when(locationService.createAndFetch(subscriberLocation)).thenReturn(locationDimension);
         when(allSubscribers.save(any(Subscriber.class))).thenReturn(subscriber);
         when(subscriptionService.makeFor(any(Subscription.class))).thenAnswer(new Answer<Subscription>() {
             @Override
@@ -102,7 +102,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.createSubscription(subscriptionReportRequest);
 
-        verify(locationService).handleLocationRequest(subscriberLocation);
+        verify(locationService).createAndFetch(subscriberLocation);
         verify(allSubscribers).save(subscriber);
 
         ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
