@@ -25,7 +25,7 @@ public class AllSubscribersIT extends SpringIntegrationTest {
         DateTime dob = DateTime.now().minusMonths(8);
         ChannelDimension channelDimension = template.loadAll(ChannelDimension.class).get(0);
         DateDimension dateDimension = template.loadAll(DateDimension.class).get(0);
-        Subscriber subscriber = new Subscriber(name, age, edd, dob, channelDimension, null, dateDimension, null);
+        Subscriber subscriber = new Subscriber(name, age, edd, dob, channelDimension, null, dateDimension, null, null);
 
         allSubscribers.save(subscriber);
 
@@ -41,7 +41,7 @@ public class AllSubscribersIT extends SpringIntegrationTest {
         DateDimension dateDimension = template.loadAll(DateDimension.class).get(0);
         LocationDimension locationDimension = new LocationDimension("D1", "B1", "P1", "VALID");
         template.save(locationDimension);
-        Subscriber subscriber = new Subscriber(name, null, null, null, channelDimension, locationDimension, dateDimension, null);
+        Subscriber subscriber = new Subscriber(name, null, null, null, channelDimension, locationDimension, dateDimension, null, null);
         template.save(subscriber);
 
         List<Subscriber> actualSubscribers = allSubscribers.findByLocation(locationDimension);

@@ -114,13 +114,13 @@ public class SubscriptionStatusMeasureService {
 
     private Subscriber createNewSubscriber(SubscriptionReportRequest subscriptionReportRequest, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
         return new Subscriber(subscriptionReportRequest.getName(), subscriptionReportRequest.getAgeOfBeneficiary(), subscriptionReportRequest.getEstimatedDateOfDelivery(),
-                subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null);
+                subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null, subscriptionReportRequest.getStartWeekNumber());
     }
 
     private Subscriber fetchExistingSubscriber(SubscriptionReportRequest subscriptionReportRequest, Subscription oldSubscription) {
         Subscriber subscriber;
         subscriber = oldSubscription.getSubscriber();
-        subscriber.updateWithEddDob(subscriptionReportRequest.getEstimatedDateOfDelivery(), subscriptionReportRequest.getDateOfBirth());
+        subscriber.updateSubscriptionDates(subscriptionReportRequest.getEstimatedDateOfDelivery(), subscriptionReportRequest.getDateOfBirth(), subscriptionReportRequest.getStartWeekNumber());
         return subscriber;
     }
 
@@ -135,9 +135,9 @@ public class SubscriptionStatusMeasureService {
 
     private Subscription saveSubscription(Long msisdn, String subscriptionId, ChannelDimension channelDimension, OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension,
                                           DateDimension dateDimension, Subscriber subscriber,
-                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber, Subscription oldSubscription) {
+                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Integer campaignId, Subscription oldSubscription) {
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, weekNumber, oldSubscription);
+                dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, campaignId, oldSubscription);
         subscription = subscriptionService.makeFor(subscription);
         return subscription;
     }

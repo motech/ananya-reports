@@ -45,14 +45,18 @@ public class Subscriber {
     @JoinColumn(name = "operator_id")
     private OperatorDimension operatorDimension;
 
+    @Column(name = "start_week_number")
+    private Integer startWeekNumber;
+
     public Subscriber() {
     }
 
     public Subscriber(String name, Integer ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                       DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
-                      DateDimension dateDimension, OperatorDimension operatorDimension) {
+                      DateDimension dateDimension, OperatorDimension operatorDimension, Integer startWeekNumber) {
         this.name = name;
         this.ageOfBeneficiary = ageOfBeneficiary;
+        this.startWeekNumber = startWeekNumber;
         this.estimatedDateOfDelivery = convertToDate(estimatedDateOfDelivery);
         this.dateOfBirth = convertToDate(dateOfBirth);
         this.channelDimension = channelDimension;
@@ -67,6 +71,10 @@ public class Subscriber {
 
     public String getName() {
         return name;
+    }
+
+    public Integer getStartWeekNumber() {
+        return startWeekNumber;
     }
 
     public Integer getAgeOfBeneficiary() {
@@ -112,7 +120,8 @@ public class Subscriber {
         return date != null ? new DateTime(date) : null;
     }
 
-    public void updateWithEddDob(DateTime edd, DateTime dob) {
+    public void updateSubscriptionDates(DateTime edd, DateTime dob, Integer startWeekNumber) {
+        this.startWeekNumber = startWeekNumber;
         estimatedDateOfDelivery = convertToDate(edd);
         dateOfBirth = convertToDate(dob);
     }

@@ -24,9 +24,14 @@ public class SubscriptionResponse {
     private String dateOfBirth;
     @JsonProperty
     private LocationResponse location;
+    @JsonProperty
+    private Integer startWeekNumber;
+
+    public SubscriptionResponse() {
+    }
 
     public SubscriptionResponse(Long msisdn, String subscriptionId, String pack, String beneficiaryName, String subscriptionStatus,
-                                String weekNumber, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location) {
+                                String weekNumber, String beneficiaryAge, String expectedDateOfDelivery, String dateOfBirth, LocationResponse location, Integer startWeekNumber) {
         this.msisdn = msisdn;
         this.subscriptionId = subscriptionId;
         this.pack = pack;
@@ -37,6 +42,7 @@ public class SubscriptionResponse {
         this.expectedDateOfDelivery = expectedDateOfDelivery;
         this.dateOfBirth = dateOfBirth;
         this.location = location;
+        this.startWeekNumber = startWeekNumber;
     }
 
     public String getSubscriptionId() {
@@ -77,5 +83,9 @@ public class SubscriptionResponse {
 
     public Long getMsisdn() {
         return msisdn;
+    }
+
+    public Integer getStartWeekNumber() {
+        return startWeekNumber;
     }
 }

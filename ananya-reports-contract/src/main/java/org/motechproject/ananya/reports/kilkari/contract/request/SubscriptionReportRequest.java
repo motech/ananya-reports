@@ -40,12 +40,14 @@ public class SubscriptionReportRequest implements Serializable {
 
     private String reason;
 
+    private Integer startWeekNumber;
+
     public SubscriptionReportRequest() {
     }
 
     public SubscriptionReportRequest(String subscriptionId, String channel, Long msisdn, String pack, String name, Integer ageOfBeneficiary,
                                      DateTime createdAt, String subscriptionStatus, DateTime estimatedDateOfDelivery, DateTime dateOfBirth,
-                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId, String reason) {
+                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId, String reason, Integer startWeekNumber) {
         this.subscriptionId = subscriptionId;
         this.channel = channel;
         this.msisdn = msisdn;
@@ -61,6 +63,7 @@ public class SubscriptionReportRequest implements Serializable {
         this.startDate = startDate;
         this.oldSubscriptionId = oldSubscriptionId;
         this.reason = reason;
+        this.startWeekNumber = startWeekNumber;
     }
 
     public String getOperator() {
@@ -123,20 +126,8 @@ public class SubscriptionReportRequest implements Serializable {
         return startDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAgeOfBeneficiary(Integer age) {
-        this.ageOfBeneficiary = age;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public void setLocation(SubscriberLocation location) {
-        this.location = location;
+    public Integer getStartWeekNumber() {
+        return startWeekNumber;
     }
 
     @Override

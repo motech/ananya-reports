@@ -27,7 +27,8 @@ public class SubscriptionResponseMapperTest {
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
         Long msisdn = 123L;
-        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null);
+        Integer startWeekNumber = 45;
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber);
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
         SubscriptionResponse subscriptionResponse = SubscriptionResponseMapper.mapFrom(subscription);
@@ -42,6 +43,7 @@ public class SubscriptionResponseMapperTest {
         assertEquals(district, subscriptionResponse.getLocation().getDistrict());
         assertEquals(block, subscriptionResponse.getLocation().getBlock());
         assertEquals(panchayat, subscriptionResponse.getLocation().getPanchayat());
+        assertEquals(startWeekNumber, subscriptionResponse.getStartWeekNumber());
     }
 
     @Test
@@ -50,7 +52,8 @@ public class SubscriptionResponseMapperTest {
         String name = "name";
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
-        Subscriber subscriber = new Subscriber(name, 23, null, null, null, null, null, null);
+        Integer startWeekNumber = 22;
+        Subscriber subscriber = new Subscriber(name, 23, null, null, null, null, null, null, startWeekNumber);
         Long msisdn = 123L;
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), 13, null);
 
@@ -64,5 +67,6 @@ public class SubscriptionResponseMapperTest {
         assertNull(subscriptionResponse.getExpectedDateOfDelivery());
         assertNull(subscriptionResponse.getDateOfBirth());
         assertNull(subscriptionResponse.getLocation());
+        assertEquals(startWeekNumber, subscriptionResponse.getStartWeekNumber());
     }
 }

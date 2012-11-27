@@ -15,11 +15,11 @@ public class SubscriptionResponseMapper {
                 subscription.getSubscriptionPackDimension().getSubscriptionPack(),
                 subscriber.getName(),
                 SubscriptionStatus.from(subscription.getSubscriptionStatus()).getDisplayString(),
-                String.valueOf(subscription.getWeekNumber()),
+                String.valueOf(subscription.getCampaignId()),
                 subscriber.getAgeOfBeneficiary() == null ? null : String.valueOf(subscriber.getAgeOfBeneficiary()),
                 subscriber.getEstimatedDateOfDelivery() == null ? null : subscriber.getEstimatedDateOfDelivery().toString("dd-MM-yyyy"),
                 subscriber.getDateOfBirth() == null ? null : subscriber.getDateOfBirth().toString("dd-MM-yyyy"),
-                locationDimension == null ? null : new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat())
-        );
+                locationDimension == null ? null : new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()),
+                subscriber.getStartWeekNumber());
     }
 }

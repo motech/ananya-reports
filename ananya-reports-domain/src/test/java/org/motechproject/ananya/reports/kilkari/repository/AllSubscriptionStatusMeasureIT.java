@@ -42,7 +42,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
 
-        Subscriber subscriber = new Subscriber("name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null);
+        Subscriber subscriber = new Subscriber("name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null, null);
         template.save(subscriber);
         Subscriber subscriberFromDb = template.loadAll(Subscriber.class).get(0);
 
@@ -69,7 +69,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor(subscriptionPack);
 
-        Subscriber subscriber = new Subscriber("name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null);
+        Subscriber subscriber = new Subscriber("name", 12, DateTime.now(), DateTime.now().minusYears(23), channelDimension, null, dateDimension, null, null);
         template.save(subscriber);
         Subscriber subscriberFromDb = template.loadAll(Subscriber.class).get(0);
 

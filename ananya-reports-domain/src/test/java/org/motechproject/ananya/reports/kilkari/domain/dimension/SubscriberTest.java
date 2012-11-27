@@ -18,7 +18,7 @@ public class SubscriberTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, null);
         DateDimension expectedDateDimension = new DateDimension();
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, "VALID");
 
@@ -37,11 +37,15 @@ public class SubscriberTest {
         DateTime oldDob = DateTime.now().minusYears(3);
         DateTime newEdd = DateTime.now().plus(32);
         DateTime newDob = DateTime.now().minusYears(1);
-        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null);
+        Integer startWeekNumber = 33;
+        Integer newStartWeekNumber = 38;
 
-        subscriber.updateWithEddDob(newEdd, newDob);
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber);
+
+        subscriber.updateSubscriptionDates(newEdd, newDob, newStartWeekNumber);
 
         assertEquals(newEdd, subscriber.getEstimatedDateOfDelivery());
         assertEquals(newDob, subscriber.getDateOfBirth());
+        assertEquals(newStartWeekNumber, subscriber.getStartWeekNumber());
     }
 }
