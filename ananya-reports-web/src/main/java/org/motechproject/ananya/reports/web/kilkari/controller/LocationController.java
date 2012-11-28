@@ -24,7 +24,7 @@ public class LocationController {
     @RequestMapping(value = "/location", method = RequestMethod.GET)
     @ResponseBody
     public LocationResponse getLocation(@RequestParam(required = false) String district, @RequestParam(required = false) String block, @RequestParam(required = false) String panchayat) {
-        LocationDimension locationDimension = locationService.fetchFor(district, block, panchayat);
+        LocationDimension locationDimension = locationService.digDeepAndFetchFor(district, block, panchayat);
         if (locationDimension == null) {
             throw new NotFoundException("location not found");
         }

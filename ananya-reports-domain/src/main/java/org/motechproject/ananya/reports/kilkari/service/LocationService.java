@@ -1,6 +1,5 @@
 package org.motechproject.ananya.reports.kilkari.service;
 
-import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -31,8 +31,9 @@ public class LocationService {
     }
 
     @Transactional
-    public LocationDimension fetchFor(String district, String block, String panchayat) {
-        return allLocationDimensions.fetchFor(district, block, panchayat);
+    public LocationDimension digDeepAndFetchFor(String district, String block, String panchayat) {
+        LocationDimension locationDimension = allLocationDimensions.fetchFor(district, block, panchayat);
+        return (locationDimension != null && locationDimension.isInvalidLocation()) ? locationDimension.getAlternateLocation() : locationDimension;
     }
 
     @Transactional
@@ -44,17 +45,18 @@ public class LocationService {
         LocationStatus locationStatus = LocationStatus.getFor(locationSyncRequest.getLocationStatus());
         LocationRequest actualLocationRequest = locationSyncRequest.getActualLocation();
         LocationDimension actualLocation = allLocationDimensions.fetchFor(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat());
+        LocationDimension newLocation = null;
         if (locationStatus.equals(LocationStatus.INVALID)) {
-            createNewLocation(locationSyncRequest, actualLocation);
+            newLocation = createNewLocation(locationSyncRequest, actualLocation);
         }
-        createOrUpdateExistingLocation(actualLocation, actualLocationRequest, locationSyncRequest.getLocationStatus(), locationSyncRequest.getLastModifiedTime());
+        createOrUpdateExistingLocation(actualLocation, newLocation, locationSyncRequest);
     }
 
-    @Transactional
+    //Don't put @Transactional on me. The callers are already @Transactional
     public LocationDimension createAndFetch(SubscriberLocation location) {
         if (location == null) return null;
 
-        LocationDimension locationDimension = allLocationDimensions.fetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
+        LocationDimension locationDimension = digDeepAndFetchFor(location.getDistrict(), location.getBlock(), location.getPanchayat());
         if (locationDimension != null)
             return locationDimension;
 
@@ -69,15 +71,18 @@ public class LocationService {
         return locationDimension != null && locationDimension.getLastModified() != null && locationDimension.getLastModified().after(locationSyncRequest.getLastModifiedTime().toDate());
     }
 
-    private void createOrUpdateExistingLocation(LocationDimension actualLocation, LocationRequest actualLocationRequest, String locationStatus, DateTime lastModifiedTime) {
+    private void createOrUpdateExistingLocation(LocationDimension actualLocation, LocationDimension newLocation, LocationSyncRequest locationSyncRequest) {
+        LocationRequest actualLocationRequest = locationSyncRequest.getActualLocation();
         actualLocation = actualLocation == null ?
-                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationStatus)
+                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationSyncRequest.getLocationStatus())
                 : actualLocation;
-        actualLocation.setStatus(locationStatus);
+        actualLocation.setStatus(locationSyncRequest.getLocationStatus());
+        actualLocation.setAlternateLocation(newLocation);
+        actualLocation.setLastModified(new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
         allLocationDimensions.createOrUpdate(actualLocation);
     }
 
-    private void createNewLocation(LocationSyncRequest locationSyncRequest, LocationDimension actualLocation) {
+    private LocationDimension createNewLocation(LocationSyncRequest locationSyncRequest, LocationDimension actualLocation) {
         LocationRequest newLocationRequest = locationSyncRequest.getNewLocation();
         LocationDimension newLocation = allLocationDimensions.fetchFor(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat());
         if (newLocation == null) {
@@ -85,12 +90,13 @@ public class LocationService {
             allLocationDimensions.createOrUpdate(newLocation);
         }
         remapSubscribers(actualLocation, newLocation);
+        return newLocation;
     }
 
     private void remapSubscribers(LocationDimension oldLocation, LocationDimension newLocation) {
         if (oldLocationIsNotPresent(oldLocation)) return;
         List<Subscriber> subscriberList = allSubscribers.findByLocation(oldLocation);
-        for(Subscriber subscriber : subscriberList) {
+        for (Subscriber subscriber : subscriberList) {
             subscriber.setLocationDimension(newLocation);
         }
         allSubscribers.saveOrUpdateAll(subscriberList);

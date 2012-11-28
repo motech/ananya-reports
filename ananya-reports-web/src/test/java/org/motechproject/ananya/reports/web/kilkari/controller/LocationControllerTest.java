@@ -45,7 +45,7 @@ public class LocationControllerTest {
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
         mockMvc(locationController)
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ public class LocationControllerTest {
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.fetchFor(district,block,panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
         mockMvc(locationController)
                 .perform(get("/location"))
                 .andExpect(status().isNotFound())
@@ -108,7 +108,7 @@ public class LocationControllerTest {
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.fetchFor(district,block,panchayat)).thenReturn(null);
+        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(null);
         mockMvc(locationController)
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isNotFound())

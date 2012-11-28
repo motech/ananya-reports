@@ -2,6 +2,7 @@ package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -33,6 +34,11 @@ public class LocationDimension {
     @Column(name = "last_modified_time")
     private Timestamp lastModified;
 
+    @ManyToOne
+    @JoinColumn(name = "alternate_location")
+    private LocationDimension alternateLocation;
+
+
     public LocationDimension() {
     }
 
@@ -63,6 +69,18 @@ public class LocationDimension {
         return status;
     }
 
+    public LocationStatus getStatusAsEnum() {
+        return LocationStatus.getFor(status);
+    }
+
+    public boolean isInvalidLocation() {
+        return getStatusAsEnum() != null ? getStatusAsEnum().equals(LocationStatus.INVALID) : false;
+    }
+
+    public LocationDimension getAlternateLocation() {
+        return alternateLocation;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }
@@ -73,6 +91,10 @@ public class LocationDimension {
 
     public void setLastModified(Timestamp lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public void setAlternateLocation(LocationDimension alternateLocation) {
+        this.alternateLocation = alternateLocation;
     }
 
     @Override
@@ -87,6 +109,7 @@ public class LocationDimension {
                 .append(this.block, that.block)
                 .append(this.panchayat, that.panchayat)
                 .append(this.status, that.status)
+                .append(this.alternateLocation, that.alternateLocation)
                 .isEquals();
 
     }
@@ -98,6 +121,7 @@ public class LocationDimension {
                 .append(this.block)
                 .append(this.panchayat)
                 .append(this.status)
+                .append(this.alternateLocation)
                 .hashCode();
     }
 }

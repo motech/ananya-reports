@@ -31,6 +31,7 @@ public class SubscriberService {
         this.allDateDimensions = allDateDimensions;
     }
 
+    @Transactional
     public void update(SubscriberReportRequest subscriberReportRequest, String subscriptionId) {
         Subscriber subscriber = allSubscriptions.findBySubscriptionId(subscriptionId).getSubscriber();
         LocationDimension locationDimension = locationService.createAndFetch(subscriberReportRequest.getLocation());

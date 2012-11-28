@@ -44,13 +44,24 @@ public class LocationServiceTest {
 
     @Test
     public void shouldFetchLocationForDistrictBlockAndPanchayat() {
-
         LocationDimension expectedLocationDimension = new LocationDimension("mydistrict", "myblock", "mypanchayat", "VALID");
         when(allLocationDimensions.fetchFor("mydistrict", "myblock", "mypanchayat")).thenReturn(expectedLocationDimension);
 
-        LocationDimension locationDimension = locationService.fetchFor("mydistrict", "myblock", "mypanchayat");
+        LocationDimension locationDimension = locationService.digDeepAndFetchFor("mydistrict", "myblock", "mypanchayat");
 
         assertEquals(expectedLocationDimension, locationDimension);
+    }
+
+    @Test
+    public void shouldReturnAlternateLocationIfTheExistingLocationIsInvalid() {
+        LocationDimension alternateLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.VALID.name());
+        LocationDimension expectedLocationDimension = new LocationDimension("mydistrict", "myblock", "mypanchayat", LocationStatus.INVALID.name());
+        expectedLocationDimension.setAlternateLocation(alternateLocation);
+        when(allLocationDimensions.fetchFor("mydistrict", "myblock", "mypanchayat")).thenReturn(expectedLocationDimension);
+
+        LocationDimension locationDimension = locationService.digDeepAndFetchFor("mydistrict", "myblock", "mypanchayat");
+
+        assertEquals(alternateLocation, locationDimension);
     }
 
     @Test
@@ -77,7 +88,7 @@ public class LocationServiceTest {
         LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name());
         ArrayList<Subscriber> subscribers = new ArrayList<>();
         subscribers.add(new Subscriber("name", null, null, null, null, expectedOldLocationDimension, null, null));
-        when(locationService.fetchFor("d", "b", "p")).thenReturn(expectedOldLocationDimension);
+        when(locationService.digDeepAndFetchFor("d", "b", "p")).thenReturn(expectedOldLocationDimension);
         when(allSubscribers.findByLocation(expectedOldLocationDimension)).thenReturn(subscribers);
 
         locationService.addOrUpdate(new LocationSyncRequest(oldLocationRequest, newLocationRequest, LocationStatus.INVALID.name(), new DateTime(lastModifiedTime)));
@@ -131,8 +142,9 @@ public class LocationServiceTest {
         LocationRequest oldLocationRequest = new LocationRequest("d", "b", "p");
         LocationRequest newLocationRequest = new LocationRequest("d1", "b1", "p1");
         Timestamp lastModifiedTime = new Timestamp(DateTime.now().getMillis());
-        LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name());
         LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name());
+        LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name());
+        expectedOldLocationDimension.setAlternateLocation(expectedNewLocationDimension);
         when(allLocationDimensions.fetchFor("d", "b", "p")).thenReturn(null);
         when(allLocationDimensions.fetchFor("d1", "b1", "p1")).thenReturn(expectedNewLocationDimension);
 
@@ -160,6 +172,21 @@ public class LocationServiceTest {
     }
 
     @Test
+    public void shouldFetchAlternateLocationIfExistingLocationIsInvalid() {
+        String district = "d";
+        String block = "b";
+        String panchayat = "p";
+        LocationDimension alternateLocation = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name());
+        LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, LocationStatus.INVALID.name());
+        expectedLocationDimension.setAlternateLocation(alternateLocation);
+        when(allLocationDimensions.fetchFor(district, block, panchayat)).thenReturn(expectedLocationDimension);
+
+        LocationDimension locationDimension = locationService.createAndFetch(new SubscriberLocation(district, block, panchayat));
+
+        assertEquals(alternateLocation, locationDimension);
+    }
+
+    @Test
     public void shouldCreateALocationIfDoesNotExist() {
         String district = "d";
         String block = "b";
@@ -174,7 +201,7 @@ public class LocationServiceTest {
     }
 
     @Test
-    public void shouldNotCreateOrFetchLocationIfRequestIsNull(){
+    public void shouldNotCreateOrFetchLocationIfRequestIsNull() {
         LocationDimension locationDimension = locationService.createAndFetch(null);
 
         assertNull(locationDimension);
