@@ -1,5 +1,6 @@
 package org.motechproject.ananya.reports.kilkari.service;
 
+import org.apache.log4j.Logger;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.LocationSyncRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
@@ -20,6 +21,8 @@ public class LocationService {
 
     private AllLocationDimensions allLocationDimensions;
     private AllSubscribers allSubscribers;
+    Logger logger = Logger.getLogger(LocationService.class);
+
 
     public LocationService() {
     }
@@ -39,6 +42,7 @@ public class LocationService {
     @Transactional
     public void addOrUpdate(LocationSyncRequest locationSyncRequest) {
         if (isNotLatestRequest(locationSyncRequest)) {
+            logger.info("Not syncing " + locationSyncRequest + " since it is not the latest request.");
             return;
         }
 
@@ -73,12 +77,14 @@ public class LocationService {
 
     private void createOrUpdateExistingLocation(LocationDimension actualLocation, LocationDimension newLocation, LocationSyncRequest locationSyncRequest) {
         LocationRequest actualLocationRequest = locationSyncRequest.getActualLocation();
+        String locationStatus = locationSyncRequest.getLocationStatus();
         actualLocation = actualLocation == null ?
-                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationSyncRequest.getLocationStatus())
+                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationStatus)
                 : actualLocation;
-        actualLocation.setStatus(locationSyncRequest.getLocationStatus());
+        actualLocation.setStatus(locationStatus);
         actualLocation.setAlternateLocation(newLocation);
         actualLocation.setLastModified(new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
+        logger.info("Updating existing location : " + actualLocation + "with status : " + locationStatus);
         allLocationDimensions.createOrUpdate(actualLocation);
     }
 
@@ -88,7 +94,9 @@ public class LocationService {
         if (newLocation == null) {
             newLocation = new LocationDimension(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name());
             allLocationDimensions.createOrUpdate(newLocation);
+            logger.info("Added new location : " + newLocation);
         }
+        logger.info("Remapping subscribers from " + actualLocation + " to new location : " + newLocation);
         remapSubscribers(actualLocation, newLocation);
         return newLocation;
     }

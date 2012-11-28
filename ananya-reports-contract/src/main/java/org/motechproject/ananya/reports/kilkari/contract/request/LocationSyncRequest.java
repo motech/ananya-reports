@@ -39,4 +39,14 @@ public class LocationSyncRequest {
     public boolean equals(Object other) {
         return EqualsBuilder.reflectionEquals(this, other);
     }
+
+    @Override
+    public String toString() {
+        return "LocationSyncRequest{" +
+                "actualLocation=" + actualLocation +
+                ", newLocation=" + newLocation +
+                ", locationStatus='" + locationStatus +
+                ", lastModifiedTime=" + lastModifiedTime +
+                '}';
+    }
 }

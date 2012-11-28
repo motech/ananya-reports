@@ -32,4 +32,13 @@ public class LocationRequest {
     public boolean equals(Object other) {
         return EqualsBuilder.reflectionEquals(this, other);
     }
+
+    @Override
+    public String toString() {
+        return "LocationRequest{" +
+                "district='" + district +
+                "', block='" + block +
+                "', panchayat='" + panchayat +
+                "'}";
+    }
 }
