@@ -36,7 +36,7 @@ public class LocationService {
     @Transactional
     public LocationDimension digDeepAndFetchFor(String district, String block, String panchayat) {
         LocationDimension locationDimension = allLocationDimensions.fetchFor(district, block, panchayat);
-        return (locationDimension != null && locationDimension.isInvalidLocation()) ? locationDimension.getAlternateLocation() : locationDimension;
+        return locationDimension != null ? getValidLocation(locationDimension) : null;
     }
 
     @Transactional
@@ -73,6 +73,10 @@ public class LocationService {
         LocationRequest actualLocation = locationSyncRequest.getActualLocation();
         LocationDimension locationDimension = allLocationDimensions.fetchFor(actualLocation.getDistrict(), actualLocation.getBlock(), actualLocation.getPanchayat());
         return locationDimension != null && locationDimension.getLastModified() != null && locationDimension.getLastModified().after(locationSyncRequest.getLastModifiedTime().toDate());
+    }
+
+    private LocationDimension getValidLocation(LocationDimension locationDimension) {
+        return locationDimension.isInvalidLocation() ? getValidLocation(locationDimension.getAlternateLocation()) : locationDimension;
     }
 
     private void createOrUpdateExistingLocation(LocationDimension actualLocation, LocationDimension newLocation, LocationSyncRequest locationSyncRequest) {

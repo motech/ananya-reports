@@ -54,14 +54,23 @@ public class LocationServiceTest {
 
     @Test
     public void shouldReturnAlternateLocationIfTheExistingLocationIsInvalid() {
-        LocationDimension alternateLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.VALID.name());
+        LocationDimension alternateLocation = new LocationDimension("D2", "B2", "P2", LocationStatus.VALID.name());
+        LocationDimension alternateInvalidLocation = new LocationDimension("D1", "B1", "P1", LocationStatus.INVALID.name());
+        alternateInvalidLocation.setAlternateLocation(alternateLocation);
         LocationDimension expectedLocationDimension = new LocationDimension("mydistrict", "myblock", "mypanchayat", LocationStatus.INVALID.name());
-        expectedLocationDimension.setAlternateLocation(alternateLocation);
+        expectedLocationDimension.setAlternateLocation(alternateInvalidLocation);
         when(allLocationDimensions.fetchFor("mydistrict", "myblock", "mypanchayat")).thenReturn(expectedLocationDimension);
 
         LocationDimension locationDimension = locationService.digDeepAndFetchFor("mydistrict", "myblock", "mypanchayat");
 
         assertEquals(alternateLocation, locationDimension);
+    }
+
+     @Test
+    public void shouldReturnNullIfTheLocationDoesNotExist() {
+        LocationDimension locationDimension = locationService.digDeepAndFetchFor("mydistrict", "myblock", "mypanchayat");
+
+        assertNull(locationDimension);
     }
 
     @Test
