@@ -47,13 +47,13 @@ public class LocationService {
         }
 
         LocationStatus locationStatus = LocationStatus.getFor(locationSyncRequest.getLocationStatus());
-        LocationRequest actualLocationRequest = locationSyncRequest.getActualLocation();
-        LocationDimension actualLocation = allLocationDimensions.fetchFor(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat());
+        LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
+        LocationDimension existingLocation = allLocationDimensions.fetchFor(existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat());
         LocationDimension newLocation = null;
         if (locationStatus.equals(LocationStatus.INVALID)) {
-            newLocation = createNewLocation(locationSyncRequest, actualLocation);
+            newLocation = createNewLocation(locationSyncRequest, existingLocation);
         }
-        createOrUpdateExistingLocation(actualLocation, newLocation, locationSyncRequest);
+        createOrUpdateExistingLocation(existingLocation, newLocation, locationSyncRequest);
     }
 
     //Don't put @Transactional on me. The callers are already @Transactional
@@ -70,8 +70,8 @@ public class LocationService {
     }
 
     private boolean isNotLatestRequest(LocationSyncRequest locationSyncRequest) {
-        LocationRequest actualLocation = locationSyncRequest.getActualLocation();
-        LocationDimension locationDimension = allLocationDimensions.fetchFor(actualLocation.getDistrict(), actualLocation.getBlock(), actualLocation.getPanchayat());
+        LocationRequest existingLocation = locationSyncRequest.getExistingLocation();
+        LocationDimension locationDimension = allLocationDimensions.fetchFor(existingLocation.getDistrict(), existingLocation.getBlock(), existingLocation.getPanchayat());
         return locationDimension != null && locationDimension.getLastModified() != null && locationDimension.getLastModified().after(locationSyncRequest.getLastModifiedTime().toDate());
     }
 
@@ -79,20 +79,20 @@ public class LocationService {
         return locationDimension.isInvalidLocation() ? getValidLocation(locationDimension.getAlternateLocation()) : locationDimension;
     }
 
-    private void createOrUpdateExistingLocation(LocationDimension actualLocation, LocationDimension newLocation, LocationSyncRequest locationSyncRequest) {
-        LocationRequest actualLocationRequest = locationSyncRequest.getActualLocation();
+    private void createOrUpdateExistingLocation(LocationDimension existingLocation, LocationDimension newLocation, LocationSyncRequest locationSyncRequest) {
+        LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
         String locationStatus = locationSyncRequest.getLocationStatus();
-        actualLocation = actualLocation == null ?
-                new LocationDimension(actualLocationRequest.getDistrict(), actualLocationRequest.getBlock(), actualLocationRequest.getPanchayat(), locationStatus)
-                : actualLocation;
-        actualLocation.setStatus(locationStatus);
-        actualLocation.setAlternateLocation(newLocation);
-        actualLocation.setLastModified(new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
-        logger.info("Updating existing location : " + actualLocation + "with status : " + locationStatus);
-        allLocationDimensions.createOrUpdate(actualLocation);
+        existingLocation = existingLocation == null ?
+                new LocationDimension(existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat(), locationStatus)
+                : existingLocation;
+        existingLocation.setStatus(locationStatus);
+        existingLocation.setAlternateLocation(newLocation);
+        existingLocation.setLastModified(new Timestamp(locationSyncRequest.getLastModifiedTime().getMillis()));
+        logger.info("Updating existing location : " + existingLocation + "with status : " + locationStatus);
+        allLocationDimensions.createOrUpdate(existingLocation);
     }
 
-    private LocationDimension createNewLocation(LocationSyncRequest locationSyncRequest, LocationDimension actualLocation) {
+    private LocationDimension createNewLocation(LocationSyncRequest locationSyncRequest, LocationDimension existingLocation) {
         LocationRequest newLocationRequest = locationSyncRequest.getNewLocation();
         LocationDimension newLocation = allLocationDimensions.fetchFor(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat());
         if (newLocation == null) {
@@ -100,8 +100,8 @@ public class LocationService {
             allLocationDimensions.createOrUpdate(newLocation);
             logger.info("Added new location : " + newLocation);
         }
-        logger.info("Remapping subscribers from " + actualLocation + " to new location : " + newLocation);
-        remapSubscribers(actualLocation, newLocation);
+        logger.info("Remapping subscribers from " + existingLocation + " to new location : " + newLocation);
+        remapSubscribers(existingLocation, newLocation);
         return newLocation;
     }
 

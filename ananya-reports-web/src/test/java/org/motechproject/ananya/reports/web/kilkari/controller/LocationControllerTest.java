@@ -84,7 +84,7 @@ public class LocationControllerTest {
         ArgumentCaptor<LocationSyncRequest> captor = ArgumentCaptor.forClass(LocationSyncRequest.class);
         verify(locationService).addOrUpdate(captor.capture());
         LocationSyncRequest actualLocationSyncRequest = captor.getValue();
-        assertEquals(expectedLocationRequest.getActualLocation(), actualLocationSyncRequest.getActualLocation());
+        assertEquals(expectedLocationRequest.getExistingLocation(), actualLocationSyncRequest.getExistingLocation());
         assertEquals(expectedLocationRequest.getNewLocation(), actualLocationSyncRequest.getNewLocation());
         assertEquals(expectedLocationRequest.getLocationStatus(), actualLocationSyncRequest.getLocationStatus());
         assertEquals(expectedLocationRequest.getLastModifiedTime().getMillis(), actualLocationSyncRequest.getLastModifiedTime().getMillis());
