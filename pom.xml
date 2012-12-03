@@ -14,6 +14,7 @@
         <module>ananya-reports-smoke</module>
         <module>ananya-reports-performance-tests</module>
         <module>ananya-reports-purge</module>
+        <module>ananya-jasper-reports</module>
     </modules>
     <groupId>org.motechproject.ananya.reports</groupId>
     <artifactId>ananya-reports</artifactId>

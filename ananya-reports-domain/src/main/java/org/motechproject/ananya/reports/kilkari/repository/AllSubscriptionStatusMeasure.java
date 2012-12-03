@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -25,5 +26,9 @@ public class AllSubscriptionStatusMeasure {
         criteria.add(Restrictions.eq("s.msisdn", msisdn));
         List<SubscriptionStatusMeasure> subscriptionStatusMeasures = template.findByCriteria(criteria);
         template.deleteAll(subscriptionStatusMeasures);
+    }
+
+    public ArrayList<Object> getSubscriptionDetails() {
+        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 }
