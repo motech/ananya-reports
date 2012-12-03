@@ -21,7 +21,8 @@ public class LocationService {
 
     private AllLocationDimensions allLocationDimensions;
     private AllSubscribers allSubscribers;
-    Logger logger = Logger.getLogger(LocationService.class);
+    private static Logger logger = Logger.getLogger(LocationService.class);
+    private static final Object SYNC_LOCK = new Object();
 
 
     public LocationService() {
@@ -41,19 +42,21 @@ public class LocationService {
 
     @Transactional
     public void addOrUpdate(LocationSyncRequest locationSyncRequest) {
-        if (isNotLatestRequest(locationSyncRequest)) {
-            logger.info("Not syncing " + locationSyncRequest + " since it is not the latest request.");
-            return;
-        }
+        synchronized (SYNC_LOCK) {
+            if (isNotLatestRequest(locationSyncRequest)) {
+                logger.info("Not syncing " + locationSyncRequest + " since it is not the latest request.");
+                return;
+            }
 
-        LocationStatus locationStatus = LocationStatus.getFor(locationSyncRequest.getLocationStatus());
-        LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
-        LocationDimension existingLocation = allLocationDimensions.fetchFor(existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat());
-        LocationDimension newLocation = null;
-        if (locationStatus.equals(LocationStatus.INVALID)) {
-            newLocation = createNewLocation(locationSyncRequest, existingLocation);
+            LocationStatus locationStatus = LocationStatus.getFor(locationSyncRequest.getLocationStatus());
+            LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
+            LocationDimension existingLocation = allLocationDimensions.fetchFor(existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat());
+            LocationDimension newLocation = null;
+            if (locationStatus.equals(LocationStatus.INVALID)) {
+                newLocation = createNewLocation(locationSyncRequest, existingLocation);
+            }
+            createOrUpdateExistingLocation(existingLocation, newLocation, locationSyncRequest);
         }
-        createOrUpdateExistingLocation(existingLocation, newLocation, locationSyncRequest);
     }
 
     //Don't put @Transactional on me. The callers are already @Transactional
