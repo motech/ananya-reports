@@ -6,7 +6,7 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimensi
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 
-public class SubscriberMapper {
+public class SubscriberResponseMapper {
     public static SubscriberResponse mapFrom(Subscription subscription){
         Subscriber subscriber = subscription.getSubscriber();
         LocationDimension locationDimension = subscriber.getLocationDimension();
@@ -14,7 +14,7 @@ public class SubscriberMapper {
         if (locationDimension != null)
             locationResponse = new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat());
 
-        return new SubscriberResponse(subscriber.getName(), subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(),
+        return new SubscriberResponse(subscription.getSubscriptionId(), subscriber.getName(), subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(),
                 subscriber.getEstimatedDateOfDelivery(), locationResponse);
     }
 }

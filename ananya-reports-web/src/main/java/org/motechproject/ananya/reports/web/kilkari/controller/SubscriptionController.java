@@ -4,13 +4,11 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberRepor
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
-import org.motechproject.ananya.reports.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberMapper;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionResponseMapper;
+import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,20 +52,20 @@ public class SubscriptionController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/subscriber")
     @ResponseBody
-    public List<SubscriptionResponse> getSubscriptions(@RequestParam String msisdn) {
+    public List<SubscriberResponse> getSubscriberDetails(@RequestParam String msisdn) {
         List<Subscription> subscriptionList = subscriptionService.findByMsisdn(msisdn);
-        List<SubscriptionResponse> subscriptionResponseList = new ArrayList<>();
+        List<SubscriberResponse> subscriberResponseList = new ArrayList<>();
         for (Subscription subscription : subscriptionList) {
-            subscriptionResponseList.add(SubscriptionResponseMapper.mapFrom(subscription));
+            subscriberResponseList.add(SubscriberResponseMapper.mapFrom(subscription));
         }
-        return subscriptionResponseList;
+        return subscriberResponseList;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/subscription/subscriber/{subscriptionId}")
     @ResponseBody
     public SubscriberResponse getSubscriber(@PathVariable String subscriptionId) {
         Subscription subscription = subscriptionService.fetchFor(subscriptionId);
-        return SubscriberMapper.mapFrom(subscription);
+        return SubscriberResponseMapper.mapFrom(subscription);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription/changemsisdn")

@@ -12,7 +12,6 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberRepor
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
-import org.motechproject.ananya.reports.kilkari.contract.response.SubscriptionResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
@@ -20,8 +19,7 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPac
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberMapper;
-import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriptionResponseMapper;
+import org.motechproject.ananya.reports.web.kilkari.controller.mapper.SubscriberResponseMapper;
 import org.motechproject.ananya.reports.web.util.HttpConstants;
 import org.motechproject.ananya.reports.web.util.TestUtils;
 import org.springframework.http.MediaType;
@@ -138,8 +136,8 @@ public class SubscriptionControllerTest {
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber);
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
-        final SubscriptionResponse expectedResponse = SubscriptionResponseMapper.mapFrom(subscription);
-        List<SubscriptionResponse> expectedReponseList = new ArrayList<SubscriptionResponse>() {{
+        final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
+        List<SubscriberResponse> expectedReponseList = new ArrayList<SubscriberResponse>() {{
             add(expectedResponse);
         }};
         List<Subscription> subscriptions = new ArrayList<>();
@@ -149,7 +147,7 @@ public class SubscriptionControllerTest {
         mockMvc(subscriptionController)
                 .perform(get("/subscriber").param("msisdn", msisdn)).andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.RESPONSE_JSON))
-                .andExpect(content().string(assertSubscriptionResponse(expectedReponseList)));
+                .andExpect(content().string(assertSubscriberResponse(expectedReponseList)));
     }
 
     @Test
@@ -200,7 +198,7 @@ public class SubscriptionControllerTest {
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
                 null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
 
-        final SubscriberResponse expectedResponse = SubscriberMapper.mapFrom(subscription);
+        final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(subscription);
 
         mockMvc(subscriptionController)
@@ -236,7 +234,7 @@ public class SubscriptionControllerTest {
         };
     }
 
-    private BaseMatcher<String> assertSubscriptionResponse(final List<SubscriptionResponse> expectedReponseList) {
+    private BaseMatcher<String> assertSubscriberResponse(final List<SubscriberResponse> expectedReponseList) {
         return new BaseMatcher<String>() {
             @Override
             public boolean matches(Object o) {

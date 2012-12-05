@@ -80,7 +80,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
     public void shouldFetchSubscriberDetailsForAGivenSubscriptionId() throws Exception {
         createSubscriptionForTest();
 
-        SubscriberResponse expectedSubscriberResponse = new SubscriberResponse(subscriber.getName(),
+        SubscriberResponse expectedSubscriberResponse = new SubscriberResponse(subscriptionId, subscriber.getName(),
                 subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(), subscriber.getEstimatedDateOfDelivery(),
                 new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()));
 

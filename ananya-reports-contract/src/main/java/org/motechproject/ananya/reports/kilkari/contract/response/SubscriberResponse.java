@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 
 public class SubscriberResponse {
 
+    private String subscriptionId;
+
     private String beneficiaryName;
 
     private Integer beneficiaryAge;
@@ -19,12 +21,17 @@ public class SubscriberResponse {
     public SubscriberResponse() {
     }
 
-    public SubscriberResponse(String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery, LocationResponse locationResponse) {
+    public SubscriberResponse(String subscriptionId, String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery, LocationResponse locationResponse) {
+        this.subscriptionId = subscriptionId;
         this.beneficiaryName = beneficiaryName;
         this.beneficiaryAge = beneficiaryAge;
         this.dateOfBirth = dateOfBirth;
         this.expectedDateOfDelivery = expectedDateOfDelivery;
         this.locationResponse = locationResponse;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
     }
 
     public String getBeneficiaryName() {
