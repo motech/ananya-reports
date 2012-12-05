@@ -1,8 +1,10 @@
 package org.motechproject.ananya.reports.kilkari.domain.measure;
 
+import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "subscription_status_measure")
@@ -49,12 +51,15 @@ public class SubscriptionStatusMeasure {
     @JoinColumn(name = "time_id", nullable = false)
     private TimeDimension timeDimension;
 
+    @Column(name="last_modified_time")
+    private Timestamp lastModifiedTime;
+
     public SubscriptionStatusMeasure() {
     }
 
     public SubscriptionStatusMeasure(Subscription subscription, String status, Integer weekNumber, String remarks,
                                      Integer graceCount, ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                                     SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension, TimeDimension timeDimension) {
+                                     SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension, TimeDimension timeDimension, DateTime lastModifiedTime) {
         this.subscription = subscription;
         this.status = status;
         this.weekNumber = weekNumber;
@@ -65,6 +70,7 @@ public class SubscriptionStatusMeasure {
         this.subscriptionPackDimension = subscriptionPackDimension;
         this.dateDimension = dateDimension;
         this.timeDimension = timeDimension;
+        this.lastModifiedTime = lastModifiedTime == null ? null : new Timestamp(lastModifiedTime.getMillis());
     }
 
     public Integer getId() {
@@ -77,6 +83,10 @@ public class SubscriptionStatusMeasure {
 
     public String getStatus() {
         return status;
+    }
+
+    public Timestamp getLastModifiedTime() {
+        return lastModifiedTime;
     }
 
     public Integer getWeekNumber() {

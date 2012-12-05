@@ -27,8 +27,4 @@ public class AllSubscriptionStatusMeasure {
         List<SubscriptionStatusMeasure> subscriptionStatusMeasures = template.findByCriteria(criteria);
         template.deleteAll(subscriptionStatusMeasures);
     }
-
-    public ArrayList<Object> getSubscriptionDetails() {
-        return null;  //To change body of created methods use File | Settings | File Templates.
-    }
 }
