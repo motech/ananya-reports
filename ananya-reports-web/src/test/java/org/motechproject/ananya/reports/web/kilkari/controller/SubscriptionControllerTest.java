@@ -134,7 +134,7 @@ public class SubscriptionControllerTest {
         int weekNumber = 13;
         int startWeekNumber = 33;
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber);
-        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
+        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
         List<SubscriberResponse> expectedReponseList = new ArrayList<SubscriberResponse>() {{
@@ -196,7 +196,7 @@ public class SubscriptionControllerTest {
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null,
                 new LocationDimension(district, block, panchayat, "VALID"), null, null, null);
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
-                null, subscriptionId, DateTime.now(), DateTime.now(), status, weekNumber, null);
+                null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(subscription);

@@ -65,7 +65,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         String subscriptionStatus = "ACTIVE";
         Long msisdn = 123L;
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, weekNumber, null);
+                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null);
         template.save(subscriber);
         template.save(subscription);
 
@@ -75,7 +75,6 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         assertEquals(msisdn, expectedSubscription.getMsisdn());
         assertEquals(new Timestamp(now.getMillis()), expectedSubscription.getLastModifiedTime());
         assertEquals(subscriptionStatus, expectedSubscription.getSubscriptionStatus());
-        assertEquals(Integer.valueOf(weekNumber), expectedSubscription.getCampaignId());
     }
 
     @Test
@@ -87,7 +86,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         String subscriptionStatus = "ACTIVE";
         Long msisdn = 123L;
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, weekNumber, null);
+                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null);
         template.save(subscriber);
         template.save(subscription);
 
@@ -106,8 +105,8 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         Subscriber subscriber2 = new Subscriber("", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension, null);
         int weekNumber = 13;
         String subscriptionStatus = "ACTIVE";
-        Subscription subscription1 = new Subscription(msisdn, subscriber1, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId1, now, now, subscriptionStatus, weekNumber, null);
-        Subscription subscription2 = new Subscription(1234L, subscriber2, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId2, now, now, subscriptionStatus, weekNumber, null);
+        Subscription subscription1 = new Subscription(msisdn, subscriber1, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId1, now, now, subscriptionStatus, null);
+        Subscription subscription2 = new Subscription(1234L, subscriber2, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId2, now, now, subscriptionStatus, null);
         template.save(subscriber1);
         template.save(subscription1);
         template.save(subscriber2);
@@ -126,7 +125,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, operatorDimension, null);
         template.save(subscriber);
 
-        Subscription subscription = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, now, now, "ACTIVE", 13, null);
+        Subscription subscription = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, now, now, "ACTIVE", null);
         allSubscriptions.save(subscription);
 
 

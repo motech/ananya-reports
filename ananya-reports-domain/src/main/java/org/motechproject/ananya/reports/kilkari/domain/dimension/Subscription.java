@@ -57,16 +57,13 @@ public class Subscription {
     @Column(name = "subscription_status")
     private String subscriptionStatus;
 
-    @Column(name = "campaign_id")
-    private Integer campaignId;
-
     public Subscription() {
     }
 
     public Subscription(Long msisdn, Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
                         DateDimension dateDimension, String subscriptionId,
-                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Integer campaignId, Subscription oldSubscription) {
+                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Subscription oldSubscription) {
         this.msisdn = msisdn;
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
@@ -78,7 +75,6 @@ public class Subscription {
         this.startDate = new Timestamp(startDate.getMillis());
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
-        this.campaignId = campaignId;
     }
 
     public Integer getId() {
@@ -113,10 +109,6 @@ public class Subscription {
         return dateDimension;
     }
 
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
     public void setOperatorDimension(OperatorDimension operatorDimension) {
         this.operatorDimension = operatorDimension;
     }
@@ -129,22 +121,13 @@ public class Subscription {
         return subscriptionStatus;
     }
 
-    public Integer getCampaignId() {
-        return campaignId;
-    }
-
     public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-    public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus, Integer weekNumber) {
+    public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
-        this.campaignId = weekNumber;
     }
 
     public Subscription getOldSubscription() {

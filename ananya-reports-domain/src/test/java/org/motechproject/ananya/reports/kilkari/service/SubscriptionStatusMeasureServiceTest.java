@@ -146,7 +146,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null, startWeekNumber);
         String oldSubscriptionId = "oldSubscriptionId";
         Subscription oldSubscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null, null);
+                dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, null, null,
                 new DateTime(2012, 01, 01, 10, 10), "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason, newStartWeekNumber);
 
@@ -216,7 +216,6 @@ public class SubscriptionStatusMeasureServiceTest {
         when(mockedSubscription.getSubscriptionId()).thenReturn(subscriptionId);
         when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.plusDays(2).getMillis()));
         when(mockedSubscription.getSubscriptionStatus()).thenReturn("NEW");
-        when(mockedSubscription.getCampaignId()).thenReturn(13);
         Subscriber mockedSubscriber = mock(Subscriber.class);
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
         when(mockedSubscription.getStartDate()).thenReturn(startDate);
@@ -230,7 +229,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
 
-        verify(mockedSubscription, never()).updateDetails(any(DateTime.class), anyString(), anyInt());
+        verify(mockedSubscription, never()).updateDetails(any(DateTime.class), anyString());
         verify(allSubscriptions).update(mockedSubscription);
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
@@ -277,7 +276,6 @@ public class SubscriptionStatusMeasureServiceTest {
         when(mockedSubscription.getSubscriber()).thenReturn(mockedSubscriber);
         when(mockedSubscription.getLastModifiedTime()).thenReturn(new Timestamp(createdAt.minusDays(2).getMillis()));
         when(mockedSubscription.getSubscriptionStatus()).thenReturn("NEW");
-        when(mockedSubscription.getCampaignId()).thenReturn(null);
         when(mockedSubscription.getStartDate()).thenReturn(startDateTimestamp);
 
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(mockedSubscription);
@@ -289,7 +287,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
 
-        verify(mockedSubscription).updateDetails(createdAt, subscriptionStatus, null);
+        verify(mockedSubscription).updateDetails(createdAt, subscriptionStatus);
         verify(allSubscriptions).update(mockedSubscription);
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
