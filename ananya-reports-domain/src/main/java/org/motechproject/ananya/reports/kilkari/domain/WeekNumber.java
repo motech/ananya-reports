@@ -7,6 +7,6 @@ public class WeekNumber {
         if(SubscriptionStatus.hasNotBeenActivated(subscriptionStatus))
             return null;
         Integer diffInWeeks = (int) ((endDate.minus(startDate.getMillis())).getMillis() / (7 * 24 * 60 * 60 * 1000));
-        return SubscriptionPack.getFor(pack).getWeekNumber() + diffInWeeks;
+        return SubscriptionPack.getFor(pack).getStartWeek() + diffInWeeks;
     }
 }

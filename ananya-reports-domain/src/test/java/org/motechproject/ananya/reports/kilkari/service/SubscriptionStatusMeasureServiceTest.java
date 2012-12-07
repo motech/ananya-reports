@@ -238,7 +238,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertEquals(Integer.valueOf(13), subscriptionStatusMeasure.getWeekNumber());
+        assertEquals(Integer.valueOf(17), subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
