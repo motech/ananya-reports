@@ -11,7 +11,6 @@ import org.motechproject.ananya.reports.kilkari.repository.AllDateDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriberCallMeasures;
 import org.motechproject.ananya.reports.kilkari.repository.AllTimeDimensions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ public class SubscriberCallMeasureService {
     private AllCampaignDimensions allCampaignDimensions;
     private AllDateDimensions allDateDimensions;
     private AllTimeDimensions allTimeDimensions;
-    private Integer welcomeMessageDuration;
 
     public SubscriberCallMeasureService() {
     }
@@ -70,13 +68,8 @@ public class SubscriberCallMeasureService {
                         ? campaignDimension.getObdMessageDuration()
                         : campaignDimension.getInboxMessageDuration();
 
-        Integer percentage = (callDetailsReportRequest.getDuration() - welcomeMessageDuration) * 100 / messageDuration;
+        Integer percentage = callDetailsReportRequest.getDuration() * 100 / messageDuration;
 
         return percentage < 0 ? 0 : percentage;
-    }
-
-    @Value("#{campaignProperties['welcome.message.duration']}")
-    public void setWelcomeMessageDuration(Integer welcomeMessageDuration) {
-        this.welcomeMessageDuration = welcomeMessageDuration;
     }
 }

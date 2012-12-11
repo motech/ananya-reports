@@ -40,7 +40,6 @@ public class SubscriberCallMeasureServiceTest {
     public void setUp() {
         initMocks(this);
         subscriberCallMeasureService = new SubscriberCallMeasureService(allSubscriberCallMeasures, subscriptionService, allCampaignDimensions, allDateDimensions, allTimeDimensions);
-        subscriberCallMeasureService.setWelcomeMessageDuration(60);
     }
 
     @Test
@@ -54,7 +53,7 @@ public class SubscriberCallMeasureServiceTest {
         Integer percentageListened = 50;
         String status = "DNP";
         String startTime = "01-01-2012 01-10-00";
-        String endTime = "01-01-2012 01-41-00";
+        String endTime = "01-01-2012 01-40-00";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
         CallDetailsReportRequest callDetailsReportRequest = new CallDetailsReportRequest(subscriptionId, msisdn, campaignId, serviceOption, retryCount, status, new CallDetailRecordRequest(startDateTime, endDateTime), CampaignMessageCallSource.OBD.name());
@@ -120,7 +119,7 @@ public class SubscriberCallMeasureServiceTest {
         Integer percentageListened = 50;
         String status = "DNP";
         String startTime = "01-01-2012 01-10-00";
-        String endTime = "01-01-2012 01-41-00";
+        String endTime = "01-01-2012 01-40-00";
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
         CallDetailsReportRequest callDetailsReportRequest = new CallDetailsReportRequest(subscriptionId, msisdn, campaignId, serviceOption, retryCount, status, new CallDetailRecordRequest(startDateTime, endDateTime), CampaignMessageCallSource.INBOX.name());

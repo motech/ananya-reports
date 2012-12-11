@@ -17,7 +17,6 @@
 
     <util:map id="configurationFilesMap">
         <entry key="ananyaReportsProperties"><util:properties location="classpath:ananya_reports.properties"/></entry>
-        <entry key="campaignProperties"><util:properties location="classpath:campaign.properties"/></entry>
         <entry key="postgresProperties"><util:properties location="classpath:postgres.properties"/></entry>
         <entry key="log4jProperties"><util:properties location="classpath:log4j.properties"/></entry>
 </util:map>
