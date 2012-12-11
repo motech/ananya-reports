@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.motechproject.ananya.reports.kilkari.domain.CampaignMessageCallSource;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
     private AllCampaignDimensions allCampaignDimensions;
 
     @Before
-    public void setUp() {
-        template.deleteAll(template.loadAll(SubscriberCallMeasure.class));
-        template.deleteAll(template.loadAll(Subscription.class));
-        template.deleteAll(template.loadAll(Subscriber.class));
-    }
-
     @After
-    public void tearDown() {
+    public void setUp() {
         template.deleteAll(template.loadAll(SubscriberCallMeasure.class));
         template.deleteAll(template.loadAll(Subscription.class));
         template.deleteAll(template.loadAll(Subscriber.class));
@@ -62,8 +57,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         DateTime callStartDateTime = DateTime.now();
         Long msisdn = 1234567L;
         DateTime callEndDateTime = callStartDateTime.plusMinutes(10);
-        String callSource = "OBD";
-        markForDeletion(template.save(new CampaignDimension(campaignId, 3600)));
+        String callSource = CampaignMessageCallSource.OBD.name();
+        markForDeletion(template.save(new CampaignDimension(campaignId, 3600, 2400)));
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
         OperatorDimension operator = allOperatorDimensions.fetchFor("AIRTEL");
@@ -119,8 +114,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         DateTime callStartDateTime = DateTime.now();
         Long msisdn = 1234567L;
         DateTime callEndDateTime = callStartDateTime.plusMinutes(10);
-        String callSource = "OBD";
-        markForDeletion(template.save(new CampaignDimension(campaignId, 3600)));
+        String callSource = CampaignMessageCallSource.OBD.name();
+        markForDeletion(template.save(new CampaignDimension(campaignId, 3600, 2400)));
         ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
         OperatorDimension operator = allOperatorDimensions.fetchFor("AIRTEL");
         LocationDimension location = allLocationDimensions.fetchFor("C00", "C00", "");

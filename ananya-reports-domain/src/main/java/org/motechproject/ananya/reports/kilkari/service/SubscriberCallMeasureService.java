@@ -2,6 +2,7 @@ package org.motechproject.ananya.reports.kilkari.service;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.motechproject.ananya.reports.kilkari.contract.request.CallDetailsReportRequest;
+import org.motechproject.ananya.reports.kilkari.domain.CampaignMessageCallSource;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure;
@@ -27,7 +28,8 @@ public class SubscriberCallMeasureService {
     }
 
     @Autowired
-    public SubscriberCallMeasureService(AllSubscriberCallMeasures allSubscriberCallMeasures, SubscriptionService subscriptionService, AllCampaignDimensions allCampaignDimensions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions) {
+    public SubscriberCallMeasureService(AllSubscriberCallMeasures allSubscriberCallMeasures, SubscriptionService subscriptionService,
+                                        AllCampaignDimensions allCampaignDimensions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions) {
         this.allSubscriberCallMeasures = allSubscriberCallMeasures;
         this.subscriptionService = subscriptionService;
         this.allCampaignDimensions = allCampaignDimensions;
@@ -38,12 +40,12 @@ public class SubscriberCallMeasureService {
     @Transactional
     public void createSubscriberCallDetails(CallDetailsReportRequest callDetailsReportRequest) {
         Subscription subscription = subscriptionService.fetchFor(callDetailsReportRequest.getSubscriptionId());
-
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(callDetailsReportRequest.getCampaignId());
+
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
                 callDetailsReportRequest.getStatus(),
                 callDetailsReportRequest.getDuration(),
-                getPercentageListenedTo(callDetailsReportRequest.getDuration(), campaignDimension.getMessageDuration()),
+                getPercentageListenedTo(callDetailsReportRequest, campaignDimension),
                 callDetailsReportRequest.getServiceOption(),
                 subscription,
                 subscription.getOperatorDimension(),
@@ -62,8 +64,13 @@ public class SubscriberCallMeasureService {
         allSubscriberCallMeasures.deleteFor(msisdn);
     }
 
-    private Integer getPercentageListenedTo(Integer durationListenedTo, Integer messageDuration) {
-        Integer percentage = (durationListenedTo - welcomeMessageDuration) * 100 / messageDuration;
+    private Integer getPercentageListenedTo(CallDetailsReportRequest callDetailsReportRequest, CampaignDimension campaignDimension) {
+        Integer messageDuration =
+                CampaignMessageCallSource.isOBDCall(callDetailsReportRequest.getCallSource())
+                        ? campaignDimension.getObdMessageDuration()
+                        : campaignDimension.getInboxMessageDuration();
+
+        Integer percentage = (callDetailsReportRequest.getDuration() - welcomeMessageDuration) * 100 / messageDuration;
 
         return percentage < 0 ? 0 : percentage;
     }

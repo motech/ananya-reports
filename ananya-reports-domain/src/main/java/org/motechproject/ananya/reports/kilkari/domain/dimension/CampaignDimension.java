@@ -1,5 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
+import org.motechproject.ananya.reports.kilkari.domain.CampaignMessageCallSource;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,21 +12,25 @@ public class CampaignDimension {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
-    @Column(name = "campaign_id")
+
+    @Column(name = "campaign_id", nullable = false)
     private String campaignId;
 
-    @Column(name = "message_duration")
-    private Integer messageDuration;
+    @Column(name = "obd_message_duration", nullable = false)
+    private Integer obdMessageDuration;
+
+    @Column(name = "inbox_message_duration", nullable = false)
+    private Integer inboxMessageDuration;
 
     public static final String FIND_BY_CAMPAIGN_ID = "find.by.campaign.id";
 
     public CampaignDimension() {
     }
 
-    public CampaignDimension(String campaignId, Integer messageDuration) {
+    public CampaignDimension(String campaignId, Integer obdMessageDuration, Integer inboxMessageDuration) {
         this.campaignId = campaignId;
-        this.messageDuration = messageDuration;
+        this.obdMessageDuration = obdMessageDuration;
+        this.inboxMessageDuration = inboxMessageDuration;
     }
 
     public Integer getId() {
@@ -35,7 +41,11 @@ public class CampaignDimension {
         return campaignId;
     }
 
-    public Integer getMessageDuration() {
-        return messageDuration;
+    public Integer getObdMessageDuration() {
+        return obdMessageDuration;
+    }
+
+    public Integer getInboxMessageDuration() {
+        return inboxMessageDuration;
     }
 }

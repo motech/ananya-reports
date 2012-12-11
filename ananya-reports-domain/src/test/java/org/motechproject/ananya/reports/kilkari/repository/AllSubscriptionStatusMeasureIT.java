@@ -29,6 +29,8 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
     @After
     public void setUp() {
         template.deleteAll(template.loadAll(SubscriptionStatusMeasure.class));
+        template.deleteAll(template.loadAll(Subscription.class));
+        template.deleteAll(template.loadAll(Subscriber.class));
     }
 
     @Test

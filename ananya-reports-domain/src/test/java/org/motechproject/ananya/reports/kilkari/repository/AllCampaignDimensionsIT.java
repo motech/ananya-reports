@@ -13,11 +13,13 @@ public class AllCampaignDimensionsIT extends SpringIntegrationTest{
     @Test
     public void shouldFetchForGivenCampaignId() {
         String campaignId = "12";
-        Integer messageDuration = 10;
-        markForDeletion(template.save(new CampaignDimension(campaignId, messageDuration)));
+        Integer obdMessageDuration = 20;
+        Integer inboxMessageDuration = 10;
+        markForDeletion(template.save(new CampaignDimension(campaignId, obdMessageDuration, inboxMessageDuration)));
 
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(campaignId);
 
-        assertEquals(messageDuration, campaignDimension.getMessageDuration());
+        assertEquals(obdMessageDuration, campaignDimension.getObdMessageDuration());
+        assertEquals(inboxMessageDuration, campaignDimension.getInboxMessageDuration());
     }
 }
