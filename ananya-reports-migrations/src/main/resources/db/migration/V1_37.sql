@@ -8,5 +8,5 @@ CREATE TABLE report.campaign_schedule_alerts (
     FOREIGN KEY(subscription_id) REFERENCES report.subscriptions(id),
 
     CONSTRAINT fk_schedule_alert_dimension_campaign_dimension
-    FOREIGN KEY(subscription_id) REFERENCES report.campaign_dimension(id)
+    FOREIGN KEY(campaign_id) REFERENCES report.campaign_dimension(id)
 );
