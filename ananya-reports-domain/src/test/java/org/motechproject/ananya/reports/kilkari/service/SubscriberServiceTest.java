@@ -43,9 +43,9 @@ public class SubscriberServiceTest {
 
     @Test
     public void shouldUpdateSubscriberDetails() {
-        String district = "d1";
-        String block = "b1";
-        String panchayat = "p1";
+        String district = "D1";
+        String block = "B1";
+        String panchayat = "P1";
         SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
         String subscriptionId = "abcd1234";
         DateTime createdAt = DateTime.now();

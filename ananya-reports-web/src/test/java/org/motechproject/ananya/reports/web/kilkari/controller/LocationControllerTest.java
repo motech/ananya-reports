@@ -50,9 +50,9 @@ public class LocationControllerTest {
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.JSON_CONTENT_TYPE))
-                .andExpect(content().string(new Contains("\"district\":\"mydistrict\"")))
-                .andExpect(content().string(new Contains("\"block\":\"myblock\"")))
-                .andExpect(content().string(new Contains("\"district\":\"mydistrict\"")));
+                .andExpect(content().string(new Contains("\"district\":\"MYDISTRICT\"")))
+                .andExpect(content().string(new Contains("\"block\":\"MYBLOCK\"")))
+                .andExpect(content().string(new Contains("\"district\":\"MYDISTRICT\"")));
     }
 
     @Test
