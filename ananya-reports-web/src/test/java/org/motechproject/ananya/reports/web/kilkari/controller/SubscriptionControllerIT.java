@@ -2,14 +2,16 @@ package org.motechproject.ananya.reports.web.kilkari.controller;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.motechproject.ananya.reports.web.SpringIntegrationTest;
-import org.motechproject.ananya.reports.web.util.TestUtils;
+import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.LocationResponse;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.repository.AllDateDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
+import org.motechproject.ananya.reports.web.SpringIntegrationTest;
+import org.motechproject.ananya.reports.web.util.TestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.server.MvcResult;
 
 import static org.junit.Assert.assertEquals;
@@ -96,4 +98,23 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
         assertEquals(expectedSubscriberResponse, actualSubscriberResponse);
     }
 
+    @Test
+    public void shouldCreateCampaignScheduleAlert() throws Exception {
+        createSubscriptionForTest();
+        String subscriptionId = "subscriptionId";
+        String campaignName = "campaign name";
+        DateTime scheduledAt = DateTime.now();
+        CampaignScheduleAlertRequest scheduleAlertRequest
+                = new CampaignScheduleAlertRequest(subscriptionId, campaignName, scheduledAt);
+        String scheduleAlertRequestJSON = TestUtils.toJson(scheduleAlertRequest);
+
+        mockMvc(subscriptionController)
+                .perform(post("/subscription/campaignScheduleAlert")
+                        .body(scheduleAlertRequestJSON.getBytes())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assertEquals(1, template.loadAll(CampaignScheduleAlertDetails.class).size());
+        template.deleteAll(template.loadAll(CampaignScheduleAlertDetails.class));
+    }
 }

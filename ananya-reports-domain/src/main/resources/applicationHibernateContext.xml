@@ -31,6 +31,7 @@
                 <value>org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension</value>
                 <value>org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension</value>
                 <value>org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignDimension</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignScheduleAlertDetails</value>
                 <value>org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure</value>
                 <value>org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure</value>
             </list>

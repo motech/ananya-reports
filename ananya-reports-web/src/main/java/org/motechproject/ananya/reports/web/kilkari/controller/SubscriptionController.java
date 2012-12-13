@@ -1,10 +1,12 @@
 package org.motechproject.ananya.reports.web.kilkari.controller;
 
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
+import org.motechproject.ananya.reports.kilkari.service.CampaignScheduleAlertService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
@@ -22,14 +24,16 @@ public class SubscriptionController {
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
     private SubscriptionService subscriptionService;
     private SubscriberService subscriberService;
+    private CampaignScheduleAlertService campaignScheduleAlertService;
 
     @Autowired
     public SubscriptionController(SubscriptionStatusMeasureService subscriptionStatusMeasureService,
                                   SubscriptionService subscriptionService,
-                                  SubscriberService subscriberService) {
+                                  SubscriberService subscriberService, CampaignScheduleAlertService campaignScheduleAlertService) {
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
         this.subscriptionService = subscriptionService;
         this.subscriberService = subscriberService;
+        this.campaignScheduleAlertService = campaignScheduleAlertService;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription")
@@ -73,5 +77,11 @@ public class SubscriptionController {
     public void updateSubscriptionForChangedMsisdn(@RequestParam String subscriptionId, @RequestParam String msisdn) {
         Long msisdnAsLong = Long.parseLong(msisdn);
         subscriptionService.changeMsisdnForSubscription(subscriptionId, msisdnAsLong);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/subscription/campaignScheduleAlert")
+    @ResponseBody
+    public void createCampaignScheduleAlert(@RequestBody CampaignScheduleAlertRequest campaignScheduleAlertRequest) {
+        campaignScheduleAlertService.createCampaignScheduleAlert(campaignScheduleAlertRequest);
     }
 }

@@ -7,15 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.*;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPackDimension;
+import org.motechproject.ananya.reports.kilkari.service.CampaignScheduleAlertService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
@@ -46,11 +44,13 @@ public class SubscriptionControllerTest {
     private SubscriptionService subscriptionService;
     @Mock
     private SubscriberService subscriberService;
+    @Mock
+    private CampaignScheduleAlertService campaignScheduleAlertService;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService);
+        subscriptionController = new SubscriptionController(subscriptionStatusMeasureService, subscriptionService, subscriberService, campaignScheduleAlertService);
     }
 
     @Test
@@ -219,6 +219,29 @@ public class SubscriptionControllerTest {
                 .andExpect(status().isOk());
 
         verify(subscriptionService).changeMsisdnForSubscription(subscriptionId, msisdnAsLong);
+    }
+
+    @Test
+    public void shouldCreateCampaignScheduleAlert() throws Exception {
+        String subscriptionId = "subscriptionId";
+        String campaignId = "campaignId";
+        DateTime scheduledAt = DateTime.now();
+        CampaignScheduleAlertRequest scheduleAlertRequest
+                = new CampaignScheduleAlertRequest(subscriptionId, campaignId, scheduledAt);
+        String scheduleAlertRequestJSON = TestUtils.toJson(scheduleAlertRequest);
+
+        mockMvc(subscriptionController)
+                .perform(post("/subscription/campaignScheduleAlert")
+                        .body(scheduleAlertRequestJSON.getBytes())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        ArgumentCaptor<CampaignScheduleAlertRequest> captor = ArgumentCaptor.forClass(CampaignScheduleAlertRequest.class);
+        verify(campaignScheduleAlertService).createCampaignScheduleAlert(captor.capture());
+        CampaignScheduleAlertRequest campaignScheduleAlertRequest = captor.getValue();
+        assertEquals(campaignId, campaignScheduleAlertRequest.getCampaignId());
+        assertEquals(subscriptionId, campaignScheduleAlertRequest.getSubscriptionId());
+        assertEquals(scheduledAt.getMillis(), campaignScheduleAlertRequest.getScheduledTime().getMillis());
     }
 
     private BaseMatcher<String> assertSubscriberResponse(final SubscriberResponse expectedResponse) {
