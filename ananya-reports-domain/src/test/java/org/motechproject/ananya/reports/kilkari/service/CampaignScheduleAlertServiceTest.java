@@ -11,8 +11,6 @@ import org.motechproject.ananya.reports.kilkari.contract.request.CampaignSchedul
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.repository.*;
 
-import java.sql.Timestamp;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,9 +32,8 @@ public class CampaignScheduleAlertServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        campaignScheduleAlertService = new CampaignScheduleAlertService(allCampaignScheduleAlerts
-                ,allSubscriptions
-                ,allCampaignDimensions);
+        campaignScheduleAlertService = new CampaignScheduleAlertService(allCampaignScheduleAlerts, allSubscriptions,
+                allDateDimensions, allTimeDimensions, allCampaignDimensions);
     }
 
     @Test
@@ -58,6 +55,7 @@ public class CampaignScheduleAlertServiceTest {
         CampaignScheduleAlertDetails campaignScheduleAlertDetails = captor.getValue();
         assertEquals(subscription, campaignScheduleAlertDetails.getSubscription());
         assertEquals(campaignDimension, campaignScheduleAlertDetails.getCampaignId());
-        assertEquals(new Timestamp(scheduleAlertRequest.getScheduledTime().getMillis()), campaignScheduleAlertDetails.getScheduledTime());
+        assertEquals(dateDimension, campaignScheduleAlertDetails.getDateId());
+        assertEquals(timeDimension, campaignScheduleAlertDetails.getTimeId());
     }
 }

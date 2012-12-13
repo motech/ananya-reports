@@ -17,12 +17,15 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
     private AllSubscriptions allSubscriptions;
     @Autowired
     private AllDateDimensions allDateDimensions;
+    @Autowired
+    private AllTimeDimensions allTimeDimensions;
 
     private ChannelDimension channelDimension;
     private OperatorDimension operatorDimension;
     private LocationDimension locationDimension;
     private DateTime now;
     private DateDimension dateDimension;
+    private TimeDimension timeDimension;
     private SubscriptionPackDimension subscriptionPackDimension;
     private Subscription subscription;
     private CampaignDimension campaignDimension;
@@ -37,7 +40,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
     public void shouldSaveScheduleAlertToDb() {
         setUpSubscription();
 
-        allCampaignScheduleAlerts.save(new CampaignScheduleAlertDetails(subscription, campaignDimension, DateTime.now()));
+        allCampaignScheduleAlerts.save(new CampaignScheduleAlertDetails(subscription, campaignDimension, dateDimension, timeDimension));
 
         assertEquals(1, template.loadAll(CampaignScheduleAlertDetails.class).size());
     }
@@ -57,6 +60,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
 
         now = DateTime.now();
         dateDimension = allDateDimensions.fetchFor(now);
+        timeDimension = allTimeDimensions.fetchFor(now);
 
         subscriptionPackDimension = new SubscriptionPackDimension("PCK1");
         template.save(subscriptionPackDimension);

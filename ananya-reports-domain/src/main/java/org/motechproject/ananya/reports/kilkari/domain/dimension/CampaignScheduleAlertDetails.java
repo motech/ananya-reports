@@ -1,9 +1,6 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
-import org.joda.time.DateTime;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "campaign_schedule_alerts")
@@ -22,16 +19,23 @@ public class CampaignScheduleAlertDetails {
     @JoinColumn(name = "campaign_id")
     private CampaignDimension campaignId;
 
-    @Column(name = "scheduled_time")
-    private Timestamp scheduledTime;
+    @OneToOne
+    @JoinColumn(name = "date_id")
+    private DateDimension dateId;
+
+    @OneToOne
+    @JoinColumn(name = "time_id")
+    private TimeDimension timeId;
+
 
     public CampaignScheduleAlertDetails() {
     }
 
-    public CampaignScheduleAlertDetails(Subscription subscription, CampaignDimension campaignId, DateTime scheduledTime) {
+    public CampaignScheduleAlertDetails(Subscription subscription, CampaignDimension campaignId, DateDimension dateId, TimeDimension timeId) {
         this.subscription = subscription;
         this.campaignId = campaignId;
-        this.scheduledTime = new Timestamp(scheduledTime.getMillis());
+        this.dateId = dateId;
+        this.timeId = timeId;
     }
 
     public Subscription getSubscription() {
@@ -42,7 +46,11 @@ public class CampaignScheduleAlertDetails {
         return campaignId;
     }
 
-    public Timestamp getScheduledTime() {
-        return scheduledTime;
+    public DateDimension getDateId() {
+        return dateId;
+    }
+
+    public TimeDimension getTimeId() {
+        return timeId;
     }
 }

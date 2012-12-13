@@ -4,9 +4,9 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignScheduleAlertDetails;
-import org.motechproject.ananya.reports.kilkari.repository.AllCampaignDimensions;
-import org.motechproject.ananya.reports.kilkari.repository.AllCampaignScheduleAlerts;
-import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension;
+import org.motechproject.ananya.reports.kilkari.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,25 +17,32 @@ public class CampaignScheduleAlertService {
 
     private AllCampaignScheduleAlerts allCampaignScheduleAlerts;
     private AllSubscriptions allSubscriptions;
+    private AllDateDimensions allDateDimensions;
+    private AllTimeDimensions allTimeDimensions;
     private AllCampaignDimensions allCampaignDimensions;
 
     public CampaignScheduleAlertService() {
     }
 
     @Autowired
-    public CampaignScheduleAlertService(AllCampaignScheduleAlerts allCampaignScheduleAlerts, AllSubscriptions allSubscriptions, AllCampaignDimensions allCampaignDimensions) {
+    public CampaignScheduleAlertService(AllCampaignScheduleAlerts allCampaignScheduleAlerts, AllSubscriptions allSubscriptions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions, AllCampaignDimensions allCampaignDimensions) {
         this.allCampaignScheduleAlerts = allCampaignScheduleAlerts;
         this.allSubscriptions = allSubscriptions;
+        this.allDateDimensions = allDateDimensions;
+        this.allTimeDimensions = allTimeDimensions;
         this.allCampaignDimensions = allCampaignDimensions;
     }
 
     public void createCampaignScheduleAlert(CampaignScheduleAlertRequest campaignScheduleAlertRequest) {
         DateTime scheduledTime = campaignScheduleAlertRequest.getScheduledTime();
+        DateDimension dateDimension = allDateDimensions.fetchFor(scheduledTime);
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(scheduledTime);
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(campaignScheduleAlertRequest.getCampaignId());
         CampaignScheduleAlertDetails campaignScheduleAlertDetails = new CampaignScheduleAlertDetails(
                 allSubscriptions.findBySubscriptionId(campaignScheduleAlertRequest.getSubscriptionId()),
                 campaignDimension,
-                campaignScheduleAlertRequest.getScheduledTime());
+                dateDimension,
+                timeDimension);
         allCampaignScheduleAlerts.save(campaignScheduleAlertDetails);
     }
 }
