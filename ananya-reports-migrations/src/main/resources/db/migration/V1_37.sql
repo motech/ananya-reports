@@ -1,4 +1,4 @@
-CREATE TABLE campaign_schedule_alerts (
+CREATE TABLE report.campaign_schedule_alerts (
     id serial NOT NULL,
     subscription_id Integer,
     campaign_id Integer,
