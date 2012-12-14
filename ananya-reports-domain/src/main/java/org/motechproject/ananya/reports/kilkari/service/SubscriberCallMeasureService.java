@@ -54,7 +54,7 @@ public class SubscriberCallMeasureService {
                 allDateDimensions.fetchFor(callDetailsReportRequest.getEndTime()),
                 allTimeDimensions.fetchFor(callDetailsReportRequest.getEndTime()),
                 NumberUtils.createInteger(callDetailsReportRequest.getRetryCount()),
-                callDetailsReportRequest.getCallSource()));
+                callDetailsReportRequest.getCallSource(), subscription.getSubscriptionStatus()));
     }
 
     @Transactional

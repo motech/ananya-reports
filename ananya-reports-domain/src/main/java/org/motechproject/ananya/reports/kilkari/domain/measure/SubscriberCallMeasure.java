@@ -63,12 +63,15 @@ public class SubscriberCallMeasure {
     @Column(name = "call_source")
     private String callSource;
 
+    @Column(name = "subscription_status")
+    private String subscriptionStatus;
+
     public SubscriberCallMeasure() {
     }
 
     public SubscriberCallMeasure(String callStatus, Integer duration, Integer percentageListened, String serviceOption, Subscription subscription,
                                  OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension, CampaignDimension campaignDimension,
-                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime, Integer retryCount, String callSource) {
+                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime, Integer retryCount, String callSource, String subscriptionStatus) {
         this.callStatus = callStatus;
         this.duration = duration;
         this.percentageListened = percentageListened;
@@ -83,6 +86,7 @@ public class SubscriberCallMeasure {
         this.endTime = endTime;
         this.retryCount = retryCount;
         this.callSource = callSource;
+        this.subscriptionStatus = subscriptionStatus;
     }
 
     public Integer getId() {
@@ -171,5 +175,13 @@ public class SubscriberCallMeasure {
 
     public void setCallSource(String callSource) {
         this.callSource = callSource;
+    }
+
+    public String getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(String subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
     }
 }

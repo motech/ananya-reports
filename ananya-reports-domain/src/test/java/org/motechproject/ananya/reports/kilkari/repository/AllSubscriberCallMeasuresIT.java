@@ -90,7 +90,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 endDate,
                 endTime,
                 retryCount,
-                callSource));
+                callSource, subscription.getSubscriptionStatus()));
 
         List<SubscriberCallMeasure> subscriberCallMeasures = template.loadAll(SubscriberCallMeasure.class);
         assertEquals(1, subscriberCallMeasures.size());
@@ -145,7 +145,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 endDate,
                 endTime,
                 retryCount,
-                callSource));
+                callSource, subscription.getSubscriptionStatus()));
 
         allSubscriberCallMeasures.deleteFor(msisdn);
 
