@@ -22,8 +22,15 @@ public class AllOperatorDimensionsIT extends SpringIntegrationTest{
     @Test
     public void shouldFetchByOperatorName() {
         String operator = "Airtel";
-        template.save(new OperatorDimension(operator));
+        Integer expectedStartPulse =  500;
+        Integer expectedEndPulse =  60500;
+
+        OperatorDimension operatorToSave = new OperatorDimension(operator, expectedStartPulse, expectedEndPulse);
+        template.save(operatorToSave);
+
         OperatorDimension operatorDimension = allOperatorDimensions.fetchFor("airTel");
         assertEquals(operator,operatorDimension.getOperator());
+        assertEquals(expectedStartPulse,operatorDimension.getStartPulse());
+        assertEquals(expectedEndPulse,operatorDimension.getEndPulse());
     }
 }

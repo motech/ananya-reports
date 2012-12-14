@@ -14,13 +14,23 @@ public class OperatorDimension {
 
     @Column(name = "operator")
     private String operator;
+
+    @Column(name = "start_pulse")
+    private Integer startPulse;
+
+    @Column(name = "end_pulse")
+    private Integer endPulse;
+
+
     public static final String FIND_BY_OPERATOR_NAME = "find.by.operator.name";
 
     public OperatorDimension() {
     }
 
-    public OperatorDimension(String operator) {
+    public OperatorDimension(String operator, Integer startPulse, Integer endPulse) {
         this.operator = operator;
+        this.startPulse = startPulse;
+        this.endPulse = endPulse;
     }
 
     public Integer getId() {
@@ -37,5 +47,21 @@ public class OperatorDimension {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+
+    public Integer getStartPulse() {
+        return startPulse;
+    }
+
+    public Integer getEndPulse() {
+        return endPulse;
+    }
+
+    public void setStartPulse(Integer startPulse) {
+        this.startPulse = startPulse;
+    }
+
+    public void setEndPulse(Integer endPulse) {
+        this.endPulse = endPulse;
     }
 }

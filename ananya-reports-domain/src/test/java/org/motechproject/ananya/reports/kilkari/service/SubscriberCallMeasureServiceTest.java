@@ -35,11 +35,13 @@ public class SubscriberCallMeasureServiceTest {
     private AllDateDimensions allDateDimensions;
     @Mock
     private AllTimeDimensions allTimeDimensions;
+    @Mock
+    private OperatorService operatorService;
 
     @Before
     public void setUp() {
         initMocks(this);
-        subscriberCallMeasureService = new SubscriberCallMeasureService(allSubscriberCallMeasures, subscriptionService, allCampaignDimensions, allDateDimensions, allTimeDimensions);
+        subscriberCallMeasureService = new SubscriberCallMeasureService(allSubscriberCallMeasures, subscriptionService, allCampaignDimensions, allDateDimensions, allTimeDimensions, operatorService);
     }
 
     @Test
@@ -54,6 +56,8 @@ public class SubscriberCallMeasureServiceTest {
         String status = "DNP";
         String startTime = "01-01-2012 01-10-00";
         String endTime = "01-01-2012 01-40-00";
+        Integer expectedDurationInPulse = 30;
+
         DateTime startDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(startTime);
         DateTime endDateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH-mm-ss").parseDateTime(endTime);
         CallDetailsReportRequest callDetailsReportRequest = new CallDetailsReportRequest(subscriptionId, msisdn, campaignId, serviceOption, retryCount, status, new CallDetailRecordRequest(startDateTime, endDateTime), CampaignMessageCallSource.OBD.name());
@@ -78,7 +82,7 @@ public class SubscriberCallMeasureServiceTest {
         String expectedSubscriptionStatus = "ACTIVE";
         when(mockedSubscription.getSubscriptionStatus()).thenReturn(expectedSubscriptionStatus);
         when(mockedCampaignDimension.getObdMessageDuration()).thenReturn(3600);
-
+        when(operatorService.fetchDurationInPulse(mockedOperatorDimension, 30 * 60)).thenReturn(30);
         //When
         subscriberCallMeasureService.createSubscriberCallDetails(callDetailsReportRequest);
 
@@ -109,6 +113,7 @@ public class SubscriberCallMeasureServiceTest {
         assertEquals((Integer) 2, subscriberCallMeasure.getRetryCount());
         assertEquals(CampaignMessageCallSource.OBD.name(), subscriberCallMeasure.getCallSource());
         assertEquals(expectedSubscriptionStatus, subscriberCallMeasure.getSubscriptionStatus());
+        assertEquals(expectedDurationInPulse, subscriberCallMeasure.getDurationInPulse());
     }
 
     @Test
@@ -229,7 +234,7 @@ public class SubscriberCallMeasureServiceTest {
         assertEquals(mockedStartDateDimension, subscriberCallMeasure.getEndDate());
         assertEquals(mockedStartTimeDimension, subscriberCallMeasure.getEndTime());
         assertEquals(percentageListened, subscriberCallMeasure.getPercentageListened());
-        assertEquals((Integer)0, subscriberCallMeasure.getPercentageListened());
+        assertEquals((Integer) 0, subscriberCallMeasure.getPercentageListened());
         assertEquals(callDetailsReportRequest.getStatus(), subscriberCallMeasure.getCallStatus());
         assertNull(subscriberCallMeasure.getRetryCount());
         assertEquals(CampaignMessageCallSource.OBD.name(), subscriberCallMeasure.getCallSource());

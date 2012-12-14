@@ -21,18 +21,20 @@ public class SubscriberCallMeasureService {
     private AllCampaignDimensions allCampaignDimensions;
     private AllDateDimensions allDateDimensions;
     private AllTimeDimensions allTimeDimensions;
+    private OperatorService operatorService;
 
     public SubscriberCallMeasureService() {
     }
 
     @Autowired
     public SubscriberCallMeasureService(AllSubscriberCallMeasures allSubscriberCallMeasures, SubscriptionService subscriptionService,
-                                        AllCampaignDimensions allCampaignDimensions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions) {
+                                        AllCampaignDimensions allCampaignDimensions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions, OperatorService operatorService) {
         this.allSubscriberCallMeasures = allSubscriberCallMeasures;
         this.subscriptionService = subscriptionService;
         this.allCampaignDimensions = allCampaignDimensions;
         this.allDateDimensions = allDateDimensions;
         this.allTimeDimensions = allTimeDimensions;
+        this.operatorService = operatorService;
     }
 
     @Transactional
@@ -40,6 +42,7 @@ public class SubscriberCallMeasureService {
         Subscription subscription = subscriptionService.fetchFor(callDetailsReportRequest.getSubscriptionId());
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(callDetailsReportRequest.getCampaignId());
 
+        int durationInPulse = operatorService.fetchDurationInPulse(subscription.getOperatorDimension(), callDetailsReportRequest.getDuration());
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
                 callDetailsReportRequest.getStatus(),
                 callDetailsReportRequest.getDuration(),
@@ -54,7 +57,7 @@ public class SubscriberCallMeasureService {
                 allDateDimensions.fetchFor(callDetailsReportRequest.getEndTime()),
                 allTimeDimensions.fetchFor(callDetailsReportRequest.getEndTime()),
                 NumberUtils.createInteger(callDetailsReportRequest.getRetryCount()),
-                callDetailsReportRequest.getCallSource(), subscription.getSubscriptionStatus()));
+                callDetailsReportRequest.getCallSource(), subscription.getSubscriptionStatus(), durationInPulse));
     }
 
     @Transactional

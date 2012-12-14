@@ -47,7 +47,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
 
     @Test
     public void shouldCreateSubscriberMeasure() {
-        Integer duration = 50;
+        Integer duration = 61000;
+        Integer durationInPulse = 2;
         Integer percentageListened = 90;
         String serviceOption = "HELP";
         String callStatus = "SUCCESS";
@@ -90,7 +91,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 endDate,
                 endTime,
                 retryCount,
-                callSource, subscription.getSubscriptionStatus()));
+                callSource, subscription.getSubscriptionStatus(),durationInPulse));
 
         List<SubscriberCallMeasure> subscriberCallMeasures = template.loadAll(SubscriberCallMeasure.class);
         assertEquals(1, subscriberCallMeasures.size());
@@ -100,6 +101,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         assertEquals(callStatus, actualSubscriberCallMeasure.getCallStatus());
         assertEquals(retryCount, actualSubscriberCallMeasure.getRetryCount());
         assertEquals(callSource, actualSubscriberCallMeasure.getCallSource());
+        assertEquals(durationInPulse,actualSubscriberCallMeasure.getDurationInPulse());
     }
 
     @Test
@@ -145,7 +147,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 endDate,
                 endTime,
                 retryCount,
-                callSource, subscription.getSubscriptionStatus()));
+                callSource, subscription.getSubscriptionStatus(),2));
 
         allSubscriberCallMeasures.deleteFor(msisdn);
 

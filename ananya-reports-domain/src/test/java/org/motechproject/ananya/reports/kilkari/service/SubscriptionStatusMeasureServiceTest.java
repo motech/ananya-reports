@@ -139,7 +139,7 @@ public class SubscriptionStatusMeasureServiceTest {
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
         LocationDimension locationDimension = new LocationDimension();
-        OperatorDimension operatorDimension = new OperatorDimension(operator);
+        OperatorDimension operatorDimension = new OperatorDimension(operator, 0, 60000);
 
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
 
@@ -224,7 +224,7 @@ public class SubscriptionStatusMeasureServiceTest {
         DateDimension dateDimension = new DateDimension(createdAt);
         when(allDateDimensions.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
         when(allTimeDimensions.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
-        OperatorDimension operatorDimension = new OperatorDimension(operator);
+        OperatorDimension operatorDimension = new OperatorDimension(operator, 0, 60000);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
@@ -282,7 +282,7 @@ public class SubscriptionStatusMeasureServiceTest {
         DateDimension dateDimension = new DateDimension(createdAt);
         when(allDateDimensions.fetchFor(any(DateTime.class))).thenReturn(dateDimension);
         when(allTimeDimensions.fetchFor(any(DateTime.class))).thenReturn(timeDimension);
-        OperatorDimension operatorDimension = new OperatorDimension(operator);
+        OperatorDimension operatorDimension = new OperatorDimension(operator, 0, 60000);
         when(allOperatorDimensions.fetchFor(operator)).thenReturn(operatorDimension);
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
@@ -321,7 +321,7 @@ public class SubscriptionStatusMeasureServiceTest {
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
         DateDimension mockedDateDimension = new DateDimension(new DateTime(2012, 01, 01, 10, 10));
-        OperatorDimension operatorDimension = new OperatorDimension(operator);
+        OperatorDimension operatorDimension = new OperatorDimension(operator, 0, 60000);
 
         Subscription mockedSubscription = mock(Subscription.class);
         when(mockedSubscription.getChannelDimension()).thenReturn(channelDimension);

@@ -50,7 +50,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
         template.save(channelDimension);
         markForDeletion(channelDimension);
 
-        operatorDimension = new OperatorDimension("airtel");
+        operatorDimension = new OperatorDimension("airtel", 0, 60000);
         template.save(operatorDimension);
         markForDeletion(operatorDimension);
 
