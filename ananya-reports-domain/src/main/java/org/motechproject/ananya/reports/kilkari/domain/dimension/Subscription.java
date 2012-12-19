@@ -27,6 +27,7 @@ public class Subscription {
 
     @OneToOne
     @JoinColumn(name = "old_subscription_id")
+    @Cascade(value = {CascadeType.DELETE})
     private Subscription oldSubscription;
 
     @ManyToOne

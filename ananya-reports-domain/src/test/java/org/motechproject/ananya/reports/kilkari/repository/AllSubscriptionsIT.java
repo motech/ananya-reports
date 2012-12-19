@@ -103,7 +103,6 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         Long msisdn = 1234567890L;
         Subscriber subscriber1 = new Subscriber("", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension, null);
         Subscriber subscriber2 = new Subscriber("", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension, null);
-        int weekNumber = 13;
         String subscriptionStatus = "ACTIVE";
         Subscription subscription1 = new Subscription(msisdn, subscriber1, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId1, now, now, subscriptionStatus, null);
         Subscription subscription2 = new Subscription(1234L, subscriber2, subscriptionPackDimension, channelDimension, operatorDimension, dateDimension, subscriptionId2, now, now, subscriptionStatus, null);
@@ -127,7 +126,6 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
 
         Subscription subscription = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, now, now, "ACTIVE", null);
         allSubscriptions.save(subscription);
-
 
         subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
 
