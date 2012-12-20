@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW report.status_transition_view AS
            new.status new_status,
            old.last_modified_time old_modified_time,
            new.last_modified_time new_modified_time,
-           DATE (new.last_modified_time) - DATE(old.last_modified_time) num_of_days
+           coalesce(DATE (new.last_modified_time) - DATE(old.last_modified_time), 0) num_of_days
     FROM subscription_status old
     LEFT OUTER JOIN subscription_status new ON old.RowID = new.RowID - 1 AND old.subscription_id = new.subscription_id
     ORDER BY old.subscription_id,
