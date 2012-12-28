@@ -17,7 +17,6 @@ import org.motechproject.ananya.reports.kilkari.repository.*;
 import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -202,7 +201,8 @@ public class SubscriptionStatusMeasureServiceTest {
         Integer graceCount = 4;
         DateTime createdAt = new DateTime(2012, 01, 01, 10, 10);
         Timestamp startDate = new Timestamp(createdAt.getMillis());
-        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
+        Integer weekNumber = 38;
+        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount, weekNumber);
 
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
@@ -238,7 +238,6 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertEquals(Integer.valueOf(17), subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
@@ -248,6 +247,7 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(10, (int) subscriptionStatusMeasure.getTimeDimension().getMinuteOfHour());
         assertEquals(subscriptionId, subscription.getSubscriptionId());
         assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
+        assertEquals(weekNumber, subscriptionStatusMeasure.getWeekNumber());
     }
 
     @Test
@@ -260,7 +260,8 @@ public class SubscriptionStatusMeasureServiceTest {
         DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
         DateTime startDate = new DateTime(2012, 03, 01, 10, 10);
         Timestamp startDateTimestamp = new Timestamp(startDate.getMillis());
-        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
+        Integer weekNumber = 38;
+        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount, weekNumber);
 
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
@@ -296,7 +297,6 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscription subscription = subscriptionStatusMeasure.getSubscription();
 
         assertEquals(subscriptionStatus, subscriptionStatusMeasure.getStatus());
-        assertNull(subscriptionStatusMeasure.getWeekNumber());
         assertEquals(channelDimension, subscriptionStatusMeasure.getChannelDimension());
         assertEquals(operatorDimension, subscriptionStatusMeasure.getOperatorDimension());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
@@ -306,6 +306,7 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(10, (int) subscriptionStatusMeasure.getTimeDimension().getMinuteOfHour());
         assertEquals(subscriptionId, subscription.getSubscriptionId());
         assertEquals(graceCount, subscriptionStatusMeasure.getGraceCount());
+        assertEquals(weekNumber, subscriptionStatusMeasure.getWeekNumber());
     }
 
     @Test
@@ -316,7 +317,7 @@ public class SubscriptionStatusMeasureServiceTest {
         String operator = "airtel";
         Integer graceCount = 4;
         DateTime createdAt = new DateTime(2012, 02, 01, 10, 10);
-        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount);
+        SubscriptionStateChangeRequest subscriptionStateChangeRequest = new SubscriptionStateChangeRequest(subscriptionId, subscriptionStatus, reason, createdAt, operator, graceCount, 38);
 
         ChannelDimension channelDimension = new ChannelDimension();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");

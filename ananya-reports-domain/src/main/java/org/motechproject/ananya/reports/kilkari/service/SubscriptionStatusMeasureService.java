@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
-import org.motechproject.ananya.reports.kilkari.domain.WeekNumber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.reports.kilkari.repository.*;
@@ -85,11 +84,8 @@ public class SubscriptionStatusMeasureService {
     public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
         Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
         String subscriptionStatus = subscriptionStateChangeRequest.getSubscriptionStatus();
-        String subscriptionPack = subscription.getSubscriptionPackDimension().getSubscriptionPack();
         DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
 
-        DateTime startDate = new DateTime(subscription.getStartDate());
-        Integer subscriptionWeekNumber = WeekNumber.getSubscriptionWeekNumber(startDate, createdAt, subscriptionPack, subscriptionStateChangeRequest.getSubscriptionStatus());
         DateDimension dateDimension = allDateDimensions.fetchFor(createdAt);
         TimeDimension timeDimension = allTimeDimensions.fetchFor(createdAt);
         OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator()) ?
@@ -100,7 +96,7 @@ public class SubscriptionStatusMeasureService {
             subscription.updateDetails(createdAt, subscriptionStatus);
         allSubscriptions.update(subscription);
 
-        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionWeekNumber, dateDimension, timeDimension, operatorDimension,
+        saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionStateChangeRequest.getWeekNumber(), dateDimension, timeDimension, operatorDimension,
                 subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(), createdAt);
     }
 

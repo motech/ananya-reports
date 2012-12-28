@@ -44,7 +44,7 @@ public class SubscriptionPerformanceTest extends BasePerformanceTest {
     }
 
     private SubscriptionStateChangeRequest createStateChangeRequest(SubscriptionReportRequest createRequest) {
-        return new SubscriptionStateChangeRequest(createRequest.getSubscriptionId(), "PENDING_ACTIVATION", "Any Reason", DateTime.now(), createRequest.getOperator(), 0);
+        return new SubscriptionStateChangeRequest(createRequest.getSubscriptionId(), "PENDING_ACTIVATION", "Any Reason", DateTime.now(), createRequest.getOperator(), 0, null);
     }
 
     private SubscriptionReportRequest createSubscriptionRequest() {
