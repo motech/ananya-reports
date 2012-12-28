@@ -1,5 +1,6 @@
 package org.motechproject.ananya.reports.kilkari.contract.request;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
@@ -28,6 +29,11 @@ public class CallDetailRecordRequest implements Serializable {
 
     public DateTime getEndTime() {
         return endTime;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
 
