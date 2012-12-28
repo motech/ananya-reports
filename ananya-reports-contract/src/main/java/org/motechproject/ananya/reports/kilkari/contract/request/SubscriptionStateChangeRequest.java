@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 public class SubscriptionStateChangeRequest implements Serializable {
+    private static final long serialVersionUID = 8832276651848631156L;
     @JsonProperty
     private String subscriptionId;
 

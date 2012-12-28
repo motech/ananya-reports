@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 public class CampaignScheduleAlertRequest implements Serializable {
+    private static final long serialVersionUID = -5571514413206376873L;
     @JsonProperty
     private String subscriptionId;
 

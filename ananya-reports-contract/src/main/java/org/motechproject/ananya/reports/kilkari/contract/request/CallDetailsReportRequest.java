@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 public class CallDetailsReportRequest implements Serializable {
+    private static final long serialVersionUID = -28215020898855798L;
     @JsonProperty
     private String subscriptionId;
     @JsonProperty

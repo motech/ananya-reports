@@ -8,6 +8,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.io.Serializable;
 
 public class SubscriberLocation implements Serializable {
+    private static final long serialVersionUID = 2594607857496495633L;
     @JsonProperty
     private String district;
     @JsonProperty

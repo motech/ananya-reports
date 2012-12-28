@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class CallDetailRecordRequest implements Serializable {
 
+    private static final long serialVersionUID = 7262958725223661412L;
     @JsonProperty
     private DateTime startTime;
 
