@@ -2,9 +2,11 @@ package org.motechproject.ananya.reports.kilkari.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.reports.kilkari.domain.SubscriptionStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.reports.kilkari.repository.*;
@@ -98,6 +100,21 @@ public class SubscriptionStatusMeasureService {
 
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionStateChangeRequest.getWeekNumber(), dateDimension, timeDimension, operatorDimension,
                 subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(), createdAt);
+    }
+
+    @Transactional
+    public void changeMsisdnForNewEarlySubscription(SubscriberChangeMsisdnReportRequest request) {
+        Subscription subscription = allSubscriptions.findBySubscriptionId(request.getSubscriptionId());
+        updateMsisdnOnSubscription(request, subscription);
+        DateDimension dateDimension = allDateDimensions.fetchFor(request.getCreatedAt());
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(request.getCreatedAt());
+
+        saveSubscriptionStatusMeasure(subscription, SubscriptionStatus.NEW_EARLY.name(), null, dateDimension, timeDimension, null, request.getReason(), null, request.getCreatedAt());
+    }
+
+    private void updateMsisdnOnSubscription(SubscriberChangeMsisdnReportRequest request, Subscription subscription) {
+        subscription.setMsisdn(request.getMsisdn());
+        allSubscriptions.update(subscription);
     }
 
     @Transactional

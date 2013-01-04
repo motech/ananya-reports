@@ -3,6 +3,7 @@ package org.motechproject.ananya.reports.web.kilkari.controller;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.LocationResponse;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
@@ -70,8 +71,8 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         mockMvc(subscriptionController)
                 .perform(post("/subscription/changemsisdn")
-                        .param("subscriptionId", subscriptionId)
-                        .param("msisdn", msisdn))
+                        .body(TestUtils.toJson(new SubscriberChangeMsisdnReportRequest(subscriptionId, Long.valueOf(msisdn), "reason", DateTime.now())).getBytes())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         Subscription subscriptionFromReport = allSubscriptions.findBySubscriptionId(subscriptionId);

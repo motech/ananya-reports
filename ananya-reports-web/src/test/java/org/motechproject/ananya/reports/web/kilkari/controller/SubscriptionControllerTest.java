@@ -209,16 +209,16 @@ public class SubscriptionControllerTest {
 
     @Test
     public void shouldChangeMsisdnForSubscriptionId() throws Exception {
-        String msisdn = "1234567890";
         Long msisdnAsLong = 1234567890L;
         String subscriptionId = "subscriptionId";
 
+        SubscriberChangeMsisdnReportRequest subscriberChangeMsisdnReportRequest = TestUtils.fromJson(TestUtils.toJson(new SubscriberChangeMsisdnReportRequest(subscriptionId, msisdnAsLong, "reason", DateTime.now())), SubscriberChangeMsisdnReportRequest.class);
         mockMvc(subscriptionController)
                 .perform(post("/subscription/changemsisdn")
-                        .param("subscriptionId", subscriptionId).param("msisdn", msisdn)).andExpect(status().isOk())
+                        .body(TestUtils.toJson(subscriberChangeMsisdnReportRequest).getBytes()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(subscriptionService).changeMsisdnForSubscription(subscriptionId, msisdnAsLong);
+        verify(subscriptionStatusMeasureService).changeMsisdnForNewEarlySubscription(subscriberChangeMsisdnReportRequest);
     }
 
     @Test

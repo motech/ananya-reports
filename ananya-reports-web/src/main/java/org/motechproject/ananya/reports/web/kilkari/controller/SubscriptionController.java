@@ -1,9 +1,6 @@
 package org.motechproject.ananya.reports.web.kilkari.controller;
 
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
-import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
-import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.reports.kilkari.contract.request.*;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.service.CampaignScheduleAlertService;
@@ -73,10 +70,8 @@ public class SubscriptionController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription/changemsisdn")
-    @ResponseBody
-    public void updateSubscriptionForChangedMsisdn(@RequestParam String subscriptionId, @RequestParam String msisdn) {
-        Long msisdnAsLong = Long.parseLong(msisdn);
-        subscriptionService.changeMsisdnForSubscription(subscriptionId, msisdnAsLong);
+    public void updateNewEarlySubscriptionForChangedMsisdn(@RequestBody SubscriberChangeMsisdnReportRequest subscriberChangeMsisdnReportRequest) {
+        subscriptionStatusMeasureService.changeMsisdnForNewEarlySubscription(subscriberChangeMsisdnReportRequest);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription/campaignScheduleAlert")

@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
@@ -50,7 +51,6 @@ public class SubscriptionStatusMeasureServiceTest {
         subscriptionStatusMeasureService = new SubscriptionStatusMeasureService(allSubscriptionStatusMeasure,
                 allChannelDimensions, allSubscriptionPackDimensions, allOperatorDimensions, allSubscribers,
                 subscriptionService, allSubscriptions, allDateDimensions, locationService, allTimeDimensions);
-
     }
 
     @Test
@@ -190,6 +190,38 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(subscriptionId, actualSubscription.getSubscriptionId());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
         assertEquals(operator, actualSubscription.getOperatorDimension().getOperator());
+    }
+
+    @Test
+    public void shouldRecordChangeMsisdnForNewEarlySubscription() {
+        Long oldMsisdn = 1234567890L;
+        Long newMsisdn = 9876543210L;
+        DateTime now = DateTime.now();
+        Subscription subscription = new Subscription();
+        subscription.setMsisdn(oldMsisdn);
+        String subscriptionId = "subscriptionId";
+        String expectedReason = "some random reason";
+        DateDimension expectedDateDimension = new DateDimension();
+        TimeDimension expectedTimeDimension = new TimeDimension();
+        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
+        when(allDateDimensions.fetchFor(now)).thenReturn(expectedDateDimension);
+        when(allTimeDimensions.fetchFor(now)).thenReturn(expectedTimeDimension);
+
+        subscriptionStatusMeasureService.changeMsisdnForNewEarlySubscription(new SubscriberChangeMsisdnReportRequest(subscriptionId, newMsisdn, expectedReason, now));
+
+        ArgumentCaptor<Subscription> captor = ArgumentCaptor.forClass(Subscription.class);
+        verify(allSubscriptions).update(captor.capture());
+        Subscription actualSubscription = captor.getValue();
+        assertEquals(newMsisdn, actualSubscription.getMsisdn());
+
+        ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
+        verify(allSubscriptionStatusMeasure).add(subscriptionStatusMeasureArgumentCaptor.capture());
+        SubscriptionStatusMeasure subscriptionStatusMeasure = subscriptionStatusMeasureArgumentCaptor.getValue();
+        assertEquals(subscription, subscriptionStatusMeasure.getSubscription());
+        assertEquals(expectedDateDimension, subscriptionStatusMeasure.getDateDimension());
+        assertEquals(expectedTimeDimension, subscriptionStatusMeasure.getTimeDimension());
+        assertEquals(now.getMillis(), subscriptionStatusMeasure.getLastModifiedTime().getTime());
+        assertEquals(expectedReason, subscriptionStatusMeasure.getRemarks());
     }
 
     @Test
