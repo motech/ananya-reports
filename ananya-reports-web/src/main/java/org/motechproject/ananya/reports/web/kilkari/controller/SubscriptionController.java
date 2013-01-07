@@ -70,6 +70,7 @@ public class SubscriptionController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subscription/changemsisdn")
+    @ResponseBody
     public void updateNewEarlySubscriptionForChangedMsisdn(@RequestBody SubscriberChangeMsisdnReportRequest subscriberChangeMsisdnReportRequest) {
         subscriptionStatusMeasureService.changeMsisdnForNewEarlySubscription(subscriberChangeMsisdnReportRequest);
     }
