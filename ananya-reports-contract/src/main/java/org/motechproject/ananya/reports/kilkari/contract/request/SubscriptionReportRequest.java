@@ -7,8 +7,8 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 public class SubscriptionReportRequest implements Serializable {
-
     private static final long serialVersionUID = 2121115407007087113L;
+
     private String subscriptionId;
 
     private String channel;

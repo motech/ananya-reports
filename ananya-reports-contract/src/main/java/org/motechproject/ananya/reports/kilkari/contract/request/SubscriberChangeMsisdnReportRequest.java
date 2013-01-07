@@ -5,7 +5,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
-public class SubscriberChangeMsisdnReportRequest {
+import java.io.Serializable;
+
+public class SubscriberChangeMsisdnReportRequest implements Serializable {
+    private static final long serialVersionUID = -6359303654867503687L;
     @JsonProperty
     private String subscriptionId;
     @JsonProperty
