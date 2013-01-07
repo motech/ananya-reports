@@ -25,6 +25,13 @@ public class SubscriberChangeMsisdnReportRequest {
         this.createdAt = createdAt;
     }
 
+    public SubscriberChangeMsisdnReportRequest(String subscriptionId, Long msisdn, String reason) {
+        this.subscriptionId = subscriptionId;
+        this.msisdn = msisdn;
+        this.reason = reason;
+        this.createdAt = DateTime.now();
+    }
+
     public String getSubscriptionId() {
         return subscriptionId;
     }
