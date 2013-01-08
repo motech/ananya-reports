@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class CampaignScheduleAlertService {
 
     private AllCampaignScheduleAlerts allCampaignScheduleAlerts;
@@ -20,19 +19,22 @@ public class CampaignScheduleAlertService {
     private AllDateDimensions allDateDimensions;
     private AllTimeDimensions allTimeDimensions;
     private AllCampaignDimensions allCampaignDimensions;
+    private SubscriptionService subscriptionService;
 
     public CampaignScheduleAlertService() {
     }
 
     @Autowired
-    public CampaignScheduleAlertService(AllCampaignScheduleAlerts allCampaignScheduleAlerts, AllSubscriptions allSubscriptions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions, AllCampaignDimensions allCampaignDimensions) {
+    public CampaignScheduleAlertService(AllCampaignScheduleAlerts allCampaignScheduleAlerts, AllSubscriptions allSubscriptions, AllDateDimensions allDateDimensions, AllTimeDimensions allTimeDimensions, AllCampaignDimensions allCampaignDimensions, SubscriptionService subscriptionService) {
         this.allCampaignScheduleAlerts = allCampaignScheduleAlerts;
         this.allSubscriptions = allSubscriptions;
         this.allDateDimensions = allDateDimensions;
         this.allTimeDimensions = allTimeDimensions;
         this.allCampaignDimensions = allCampaignDimensions;
+        this.subscriptionService = subscriptionService;
     }
 
+    @Transactional
     public void createCampaignScheduleAlert(CampaignScheduleAlertRequest campaignScheduleAlertRequest) {
         DateTime scheduledTime = campaignScheduleAlertRequest.getScheduledTime();
         DateDimension dateDimension = allDateDimensions.fetchFor(scheduledTime);
@@ -44,5 +46,6 @@ public class CampaignScheduleAlertService {
                 dateDimension,
                 timeDimension);
         allCampaignScheduleAlerts.save(campaignScheduleAlertDetails);
+        subscriptionService.updateLastScheduledMessageDate(campaignScheduleAlertRequest.getSubscriptionId() ,campaignScheduleAlertRequest.getScheduledTime());
     }
 }

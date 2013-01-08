@@ -1,7 +1,9 @@
 package org.motechproject.ananya.reports.kilkari.service;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
@@ -22,23 +24,6 @@ public class SubscriptionServiceTest {
     public void setup() {
         initMocks(this);
         subscriptionService = new SubscriptionService(allSubscriptions);
-    }
-
-    @Test
-    public void shouldReturnTrueIfSubscriptionAlreadyExists() throws Exception {
-        String subscriptionId = "sub11";
-        Subscription subscription = new Subscription();
-        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
-
-        assertTrue(subscriptionService.exists(subscriptionId));
-    }
-
-    @Test
-    public void shouldReturnFalseIfSubscriptionDoesNotExists() throws Exception {
-        String subscriptionId = "sub11";
-        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(null);
-
-        assertFalse(subscriptionService.exists(subscriptionId));
     }
 
     @Test
@@ -77,5 +62,20 @@ public class SubscriptionServiceTest {
         subscriptionService.deleteFor(msisdn);
 
         verify(allSubscriptions).deleteFor(msisdn);
+    }
+
+    @Test
+    public void shouldUpdateTheLastScheduledDateOnTheSubscription() {
+        Subscription expectedSubscription = new Subscription();
+        String subscriptionId = "sub";
+        DateTime now = DateTime.now();
+        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(expectedSubscription);
+
+        subscriptionService.updateLastScheduledMessageDate(subscriptionId, now);
+
+        ArgumentCaptor<Subscription> captor = ArgumentCaptor.forClass(Subscription.class);
+        verify(allSubscriptions).update(captor.capture());
+        Subscription actualSubscription = captor.getValue();
+        assertEquals(now.getMillis(), actualSubscription.getLastScheduledMessageDate().getTime());
     }
 }

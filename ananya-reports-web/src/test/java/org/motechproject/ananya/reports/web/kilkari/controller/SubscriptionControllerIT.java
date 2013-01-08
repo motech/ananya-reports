@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.server.MvcResult;
 
+import java.sql.Timestamp;
+
 import static org.junit.Assert.assertEquals;
 import static org.motechproject.ananya.reports.web.util.MVCTestUtils.mockMvc;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
@@ -52,7 +54,6 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
         String name = "name";
         String status = "ACTIVE";
         String pack = "BARI_KILKARI";
-        int weekNumber = 13;
 
         channelDimension = new ChannelDimension("channel");
         dateDimension = allDateDimensions.fetchFor(DateTime.now());
@@ -62,6 +63,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
         subscription = new Subscription(Long.parseLong(msisdn), subscriber, subscriptionPackDimension, channelDimension,
                 null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), status, null);
+        subscription.setLastScheduledMessageDate(new Timestamp(DateTime.now().getMillis()));
         saveAndMarkForDeletion(channelDimension, subscriptionPackDimension, locationDimension, subscriber, subscription);
     }
 
@@ -85,7 +87,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         SubscriberResponse expectedSubscriberResponse = new SubscriberResponse(subscriptionId, subscriber.getName(),
                 subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(), subscriber.getEstimatedDateOfDelivery(),
-                new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()));
+                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()));
 
         MvcResult result = mockMvc(subscriptionController)
                 .perform(get("/subscription/subscriber/" + subscriptionId))

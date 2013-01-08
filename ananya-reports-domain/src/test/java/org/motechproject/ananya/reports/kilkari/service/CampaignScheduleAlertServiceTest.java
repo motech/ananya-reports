@@ -27,18 +27,22 @@ public class CampaignScheduleAlertServiceTest {
     private AllTimeDimensions allTimeDimensions;
     @Mock
     private AllCampaignDimensions allCampaignDimensions;
+    @Mock
+    private SubscriptionService subscriptionService;
 
     private CampaignScheduleAlertService campaignScheduleAlertService;
 
     @Before
     public void setUp() throws Exception {
         campaignScheduleAlertService = new CampaignScheduleAlertService(allCampaignScheduleAlerts, allSubscriptions,
-                allDateDimensions, allTimeDimensions, allCampaignDimensions);
+                allDateDimensions, allTimeDimensions, allCampaignDimensions, subscriptionService);
     }
 
     @Test
     public void shouldSaveCampaignScheduleDetails() throws Exception {
-        CampaignScheduleAlertRequest scheduleAlertRequest = new CampaignScheduleAlertRequest("sid", "cid", DateTime.now());
+        DateTime lastScheduledDate = DateTime.now();
+        String subscriptionId = "sid";
+        CampaignScheduleAlertRequest scheduleAlertRequest = new CampaignScheduleAlertRequest(subscriptionId, "cid", lastScheduledDate);
         Subscription subscription = new Subscription();
         CampaignDimension campaignDimension = new CampaignDimension();
         DateDimension dateDimension = new DateDimension();
@@ -47,6 +51,7 @@ public class CampaignScheduleAlertServiceTest {
         when(allCampaignDimensions.fetchFor(scheduleAlertRequest.getCampaignId())).thenReturn(campaignDimension);
         when(allDateDimensions.fetchFor(scheduleAlertRequest.getScheduledTime())).thenReturn(dateDimension);
         when(allTimeDimensions.fetchFor(scheduleAlertRequest.getScheduledTime())).thenReturn(timeDimension);
+
         campaignScheduleAlertService.createCampaignScheduleAlert(
                 scheduleAlertRequest);
 
@@ -57,5 +62,7 @@ public class CampaignScheduleAlertServiceTest {
         assertEquals(campaignDimension, campaignScheduleAlertDetails.getCampaignId());
         assertEquals(dateDimension, campaignScheduleAlertDetails.getDateId());
         assertEquals(timeDimension, campaignScheduleAlertDetails.getTimeId());
+
+        verify(subscriptionService).updateLastScheduledMessageDate(subscriptionId, lastScheduledDate);
     }
 }

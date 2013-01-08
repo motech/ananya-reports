@@ -84,7 +84,6 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
         final Subscription[] subscriptionCapture = new Subscription[1];
 
-        when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allSubscriptions.findBySubscriptionId(oldSubscriptionId)).thenReturn(null);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);
@@ -151,7 +150,6 @@ public class SubscriptionStatusMeasureServiceTest {
 
         final Subscription[] subscriptionCapture = new Subscription[1];
 
-        when(subscriptionService.exists(subscriptionId)).thenReturn(false);
         when(allSubscriptions.findBySubscriptionId(oldSubscriptionId)).thenReturn(oldSubscription);
         when(allChannelDimensions.fetchFor(channel)).thenReturn(channelDimension);
         when(allSubscriptionPackDimensions.fetchFor(subscriptionPack)).thenReturn(subscriptionPackDimension);

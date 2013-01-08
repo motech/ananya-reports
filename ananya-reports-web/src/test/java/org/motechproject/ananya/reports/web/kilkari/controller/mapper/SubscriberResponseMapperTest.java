@@ -10,6 +10,8 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.SubscriptionPackDimension;
 
+import java.sql.Timestamp;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
@@ -28,8 +30,10 @@ public class SubscriberResponseMapperTest{
         Long msisdn = 123L;
         Integer startWeekNumber = 45;
         Integer age = 23;
+        DateTime lastScheduledDate = DateTime.now();
         Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber);
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), null);
+        subscription.setLastScheduledMessageDate(new Timestamp(lastScheduledDate.getMillis()));
         LocationResponse expectedLocation = new LocationResponse(district, block, panchayat);
 
         SubscriberResponse subscriberResponse = SubscriberResponseMapper.mapFrom(subscription);
@@ -40,6 +44,7 @@ public class SubscriberResponseMapperTest{
         assertEquals(dob, subscriberResponse.getDateOfBirth());
         assertEquals(edd, subscriberResponse.getExpectedDateOfDelivery());
         assertEquals(expectedLocation, subscriberResponse.getLocationResponse());
+        assertEquals(lastScheduledDate.getMillis(), subscriberResponse.getLastScheduledMessageDate().getMillis());
     }
 
     @Test
@@ -50,6 +55,7 @@ public class SubscriberResponseMapperTest{
         SubscriberResponse subscriberResponse = SubscriberResponseMapper.mapFrom(subscription);
 
         assertNull(subscriberResponse.getLocationResponse());
+        assertNull(subscriberResponse.getLastScheduledMessageDate());
     }
 }
 

@@ -58,6 +58,9 @@ public class Subscription {
     @Column(name = "subscription_status")
     private String subscriptionStatus;
 
+    @Column(name = "last_scheduled_message_date")
+    private Timestamp lastScheduledMessageDate;
+
     public Subscription() {
     }
 
@@ -126,6 +129,10 @@ public class Subscription {
         return startDate;
     }
 
+    public Timestamp getLastScheduledMessageDate() {
+        return lastScheduledMessageDate;
+    }
+
     public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
@@ -141,5 +148,9 @@ public class Subscription {
 
     public void setMsisdn(Long msisdn) {
         this.msisdn = msisdn;
+    }
+
+    public void setLastScheduledMessageDate(Timestamp lastScheduledMessageDate) {
+        this.lastScheduledMessageDate = lastScheduledMessageDate;
     }
 }

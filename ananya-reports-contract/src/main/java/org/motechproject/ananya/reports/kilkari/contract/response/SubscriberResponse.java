@@ -16,17 +16,20 @@ public class SubscriberResponse {
 
     private DateTime expectedDateOfDelivery;
 
+    private DateTime lastScheduledMessageDate;
+
     private LocationResponse locationResponse;
 
     public SubscriberResponse() {
     }
 
-    public SubscriberResponse(String subscriptionId, String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery, LocationResponse locationResponse) {
+    public SubscriberResponse(String subscriptionId, String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery, DateTime lastScheduledMessageDate, LocationResponse locationResponse) {
         this.subscriptionId = subscriptionId;
         this.beneficiaryName = beneficiaryName;
         this.beneficiaryAge = beneficiaryAge;
         this.dateOfBirth = dateOfBirth;
         this.expectedDateOfDelivery = expectedDateOfDelivery;
+        this.lastScheduledMessageDate = lastScheduledMessageDate;
         this.locationResponse = locationResponse;
     }
 
@@ -79,5 +82,9 @@ public class SubscriberResponse {
                 .append(this.expectedDateOfDelivery)
                 .append(locationResponse)
                 .hashCode();
+    }
+
+    public DateTime getLastScheduledMessageDate() {
+        return lastScheduledMessageDate;
     }
 }
