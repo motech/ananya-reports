@@ -65,4 +65,13 @@ public class CampaignScheduleAlertServiceTest {
 
         verify(subscriptionService).updateLastScheduledMessageDate(subscriptionId, lastScheduledDate);
     }
+
+    @Test
+    public void shouldDeleteCampaginScheduleAlerts(){
+        Long msisdn = 123456790L;
+
+        campaignScheduleAlertService.deleteFor(msisdn);
+
+        verify(allCampaignScheduleAlerts).deleteFor(msisdn);
+    }
 }

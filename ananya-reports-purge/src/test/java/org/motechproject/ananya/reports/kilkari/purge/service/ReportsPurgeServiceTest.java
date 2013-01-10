@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.motechproject.ananya.reports.kilkari.service.CampaignScheduleAlertService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberCallMeasureService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
@@ -25,6 +26,8 @@ public class ReportsPurgeServiceTest {
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
     @Mock
     private SubscriptionService subscriptionService;
+    @Mock
+    private CampaignScheduleAlertService campaignScheduleAlertService;
 
     private ReportsPurgeService reportsPurgeService;
     private File tempFile;
@@ -32,7 +35,7 @@ public class ReportsPurgeServiceTest {
 
     @Before
     public void setUp() throws IOException {
-        reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
+        reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService, campaignScheduleAlertService);
         tempFile = File.createTempFile("tmp", "txt");
         tempFile.deleteOnExit();
         filePath = tempFile.getAbsolutePath();
@@ -52,17 +55,20 @@ public class ReportsPurgeServiceTest {
 
         reportsPurgeService.purgeSubscriptionData(filePath);
 
-        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
+        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, campaignScheduleAlertService, subscriptionService);
         order.verify(subscriberCallMeasureService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn1AsLong);
+        order.verify(campaignScheduleAlertService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionService).deleteFor(msisdn1AsLong);
 
         order.verify(subscriberCallMeasureService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn2AsLong);
+        order.verify(campaignScheduleAlertService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionService).deleteFor(msisdn2AsLong);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);
+        verifyNoMoreInteractions(campaignScheduleAlertService);
         verifyNoMoreInteractions(subscriptionService);
     }
 
@@ -83,17 +89,20 @@ public class ReportsPurgeServiceTest {
 
         reportsPurgeService.purgeSubscriptionData(filePath);
 
-        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
+        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, campaignScheduleAlertService, subscriptionService);
         order.verify(subscriberCallMeasureService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn1AsLong);
+        order.verify(campaignScheduleAlertService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionService).deleteFor(msisdn1AsLong);
 
         order.verify(subscriberCallMeasureService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn2AsLong);
+        order.verify(campaignScheduleAlertService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionService).deleteFor(msisdn2AsLong);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);
+        verifyNoMoreInteractions(campaignScheduleAlertService);
         verifyNoMoreInteractions(subscriptionService);
     }
 
@@ -113,17 +122,20 @@ public class ReportsPurgeServiceTest {
 
         reportsPurgeService.purgeSubscriptionData(filePath);
 
-        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService);
+        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, campaignScheduleAlertService, subscriptionService);
         order.verify(subscriberCallMeasureService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn1AsLong);
+        order.verify(campaignScheduleAlertService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionService).deleteFor(msisdn1AsLong);
 
         order.verify(subscriberCallMeasureService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn2AsLong);
+        order.verify(campaignScheduleAlertService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionService).deleteFor(msisdn2AsLong);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);
+        verifyNoMoreInteractions(campaignScheduleAlertService);
         verifyNoMoreInteractions(subscriptionService);
     }
 }

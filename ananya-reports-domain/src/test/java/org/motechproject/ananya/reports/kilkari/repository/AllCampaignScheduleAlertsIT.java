@@ -45,6 +45,22 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
         assertEquals(1, template.loadAll(CampaignScheduleAlertDetails.class).size());
     }
 
+    @Test
+    public void shouldDeleteCampaignScheduleAlertsGivenASubscriptionId(){
+        setUpSubscription();
+
+        allCampaignScheduleAlerts.deleteFor(subscription.getMsisdn());
+
+        assertEquals(0, template.loadAll(CampaignScheduleAlertDetails.class).size());
+    }
+
+    @Test
+    public void shouldNotThrowExceptionsIfThereAreNoCMAForAGivenMsisdn(){
+        allCampaignScheduleAlerts.deleteFor(1234567890L);
+
+        assertEquals(0, template.loadAll(CampaignScheduleAlertDetails.class).size());
+    }
+
     private void setUpSubscription() {
         channelDimension = new ChannelDimension("IVR");
         template.save(channelDimension);
@@ -75,7 +91,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
         Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension,
                 locationDimension, dateDimension, operatorDimension, null);
         String subscriptionStatus = "ACTIVE";
-        Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
+        subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
                 operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null);
         template.save(subscriber);
         template.save(subscription);

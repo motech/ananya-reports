@@ -1,6 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.purge.service;
 
 import org.apache.commons.io.FileUtils;
+import org.motechproject.ananya.reports.kilkari.service.CampaignScheduleAlertService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriberCallMeasureService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionService;
 import org.motechproject.ananya.reports.kilkari.service.SubscriptionStatusMeasureService;
@@ -19,13 +20,15 @@ public class ReportsPurgeService {
     private SubscriberCallMeasureService subscriberCallMeasureService;
     private SubscriptionStatusMeasureService subscriptionStatusMeasureService;
     private SubscriptionService subscriptionService;
+    private CampaignScheduleAlertService campaignScheduleAlertService;
     private final Logger logger = LoggerFactory.getLogger(ReportsPurgeService.class);
 
     @Autowired
-    public ReportsPurgeService(SubscriberCallMeasureService subscriberCallMeasureService, SubscriptionStatusMeasureService subscriptionStatusMeasureService, SubscriptionService subscriptionService) {
+    public ReportsPurgeService(SubscriberCallMeasureService subscriberCallMeasureService, SubscriptionStatusMeasureService subscriptionStatusMeasureService, SubscriptionService subscriptionService, CampaignScheduleAlertService campaignScheduleAlertService) {
         this.subscriberCallMeasureService = subscriberCallMeasureService;
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
         this.subscriptionService = subscriptionService;
+        this.campaignScheduleAlertService = campaignScheduleAlertService;
     }
 
     public void purgeSubscriptionData(String filePath) throws IOException {
@@ -58,6 +61,7 @@ public class ReportsPurgeService {
         }
         subscriberCallMeasureService.deleteFor(msisdnInLong);
         subscriptionStatusMeasureService.deleteFor(msisdnInLong);
+        campaignScheduleAlertService.deleteFor(msisdnInLong);
         subscriptionService.deleteFor(msisdnInLong);
         logger.info("Finished purging report records for msisdn: " + msisdn);
     }

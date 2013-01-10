@@ -48,4 +48,8 @@ public class CampaignScheduleAlertService {
         allCampaignScheduleAlerts.save(campaignScheduleAlertDetails);
         subscriptionService.updateLastScheduledMessageDate(campaignScheduleAlertRequest.getSubscriptionId() ,campaignScheduleAlertRequest.getScheduledTime());
     }
+
+    public void deleteFor(Long msisdn) {
+        allCampaignScheduleAlerts.deleteFor(msisdn);
+    }
 }
