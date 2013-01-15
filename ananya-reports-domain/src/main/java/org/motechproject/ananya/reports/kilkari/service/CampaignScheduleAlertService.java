@@ -49,6 +49,7 @@ public class CampaignScheduleAlertService {
         subscriptionService.updateLastScheduledMessageDate(campaignScheduleAlertRequest.getSubscriptionId() ,campaignScheduleAlertRequest.getScheduledTime());
     }
 
+    @Transactional
     public void deleteFor(Long msisdn) {
         allCampaignScheduleAlerts.deleteFor(msisdn);
     }
