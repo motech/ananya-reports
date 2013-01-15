@@ -118,4 +118,9 @@ public class SubscriptionReportRequestBuilder {
         this.startWeekNumber = startWeekNumber;
         return this;
     }
+
+    public SubscriptionReportRequestBuilder withOldSubscriptionId(String oldSubscriptionId){
+        this.oldSubscriptionId = oldSubscriptionId;
+        return this;
+    }
 }
