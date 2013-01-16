@@ -2,18 +2,25 @@ package org.motechproject.ananya.reports.testdata;
 
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.*;
-import org.motechproject.ananya.reports.testdata.contract.request.builder.SubscriptionReportRequestBuilder;
-import org.motechproject.ananya.reports.testdata.contract.request.builder.SubscriptionStateChangeRequestBuilder;
+import org.motechproject.ananya.reports.testdata.contract.SubscriptionData;
+import org.motechproject.ananya.reports.testdata.contract.SubscriptionReportRequestBuilder;
+import org.motechproject.ananya.reports.testdata.contract.SubscriptionStateChangeRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract  class BaseFactory {
+
+public abstract  class BaseTest {
+
+    @Autowired
+    private TestDataFactory testDataFactory;
+
     protected void simulateDeactivationFlow(SubscriptionData subscriptionData) {
         String operator = subscriptionData.getOperator();
         String packname = subscriptionData.getPackname();
         DateTime startTime = subscriptionData.getStartTime();
 
         SubscriptionReportRequest subscriptionReportRequest = subscriptionData.getChannel() == 0 ?
-                buildSubscriptionReportRequestForIVR(operator, packname) : buildSubscriptionReportRequestForCC(operator,packname);
-        TestDataFactory testDataFactory = new TestDataFactory();
+                buildSubscriptionReportRequestForIVR(operator, packname, startTime) : buildSubscriptionReportRequestForCC(operator,packname, startTime);
+
         testDataFactory.addSubscription(subscriptionReportRequest);
 
         SubscriptionStateChangeRequest activate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -53,8 +60,8 @@ public abstract  class BaseFactory {
         DateTime startTime = subscriptionData.getStartTime();
 
         SubscriptionReportRequest subscriptionReportRequest = subscriptionData.getChannel() == 0 ?
-                buildSubscriptionReportRequestForIVR(operator, packname) : buildSubscriptionReportRequestForCC(operator,packname);
-        TestDataFactory testDataFactory = new TestDataFactory();
+                buildSubscriptionReportRequestForIVR(operator, packname, startTime) : buildSubscriptionReportRequestForCC(operator,packname, startTime);
+
         testDataFactory.addSubscription(subscriptionReportRequest);
 
         SubscriptionStateChangeRequest activate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -91,9 +98,9 @@ public abstract  class BaseFactory {
         DateTime startTime = subscriptionData.getStartTime();
 
         SubscriptionReportRequest subscriptionReportRequest = subscriptionData.getChannel() == 0 ?
-                buildSubscriptionReportRequestForIVR(operator, packname) :
-                buildSubscriptionReportRequestForCC(operator, packname);
-        TestDataFactory testDataFactory = new TestDataFactory();
+                buildSubscriptionReportRequestForIVR(operator, packname, startTime) :
+                buildSubscriptionReportRequestForCC(operator, packname, startTime);
+
         testDataFactory.addSubscription(subscriptionReportRequest);
 
         for (int i = 0; i < 64; i++) {
@@ -108,6 +115,9 @@ public abstract  class BaseFactory {
             CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
             CallDetailsReportRequest message = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), currentWeek, "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
             testDataFactory.doOBDCall(message);
+
+            CallDetailsReportRequest inboxRequest = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), currentWeek, "HANGUP", "0", "SUCCESS", callDetailRecord, "INBOX");
+            testDataFactory.doOBDCall(inboxRequest);
         }
 
         SubscriptionStateChangeRequest activate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -121,8 +131,8 @@ public abstract  class BaseFactory {
         DateTime startTime = subscriptionData.getStartTime();
 
         SubscriptionReportRequest subscriptionReportRequest = subscriptionData.getChannel() == 0 ?
-                buildSubscriptionReportRequestForIVR(operator, packname) : buildSubscriptionReportRequestForCC(operator,packname);
-        TestDataFactory testDataFactory = new TestDataFactory();
+                buildSubscriptionReportRequestForIVR(operator, packname, startTime) : buildSubscriptionReportRequestForCC(operator,packname, startTime);
+
         testDataFactory.addSubscription(subscriptionReportRequest);
 
         SubscriptionStateChangeRequest activate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -140,8 +150,9 @@ public abstract  class BaseFactory {
         DateTime startTime = subscriptionData.getStartTime();
 
         SubscriptionReportRequest subscriptionReportRequest = subscriptionData.getChannel() == 0 ?
-                buildSubscriptionReportRequestForIVR(operator, packname) : buildSubscriptionReportRequestForCC(operator,packname);
-        TestDataFactory testDataFactory = new TestDataFactory();
+                buildSubscriptionReportRequestForIVR(operator, packname, startTime) :
+                buildSubscriptionReportRequestForCC(operator,packname, startTime);
+
         testDataFactory.addSubscription(subscriptionReportRequest);
 
         SubscriptionStateChangeRequest activate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -167,11 +178,44 @@ public abstract  class BaseFactory {
         testDataFactory.changeSubscriptionStatus(activateNewSubscription);
     }
 
-    private SubscriptionReportRequest buildSubscriptionReportRequestForCC(String operator, String pack) {
-        return new SubscriptionReportRequestBuilder().withChannel("CONTACT_CENTER").withStatus("NEW_EARLY").withEstimatedDateOfDelivery(DateTime.now().plusMonths(5)).withOperator(operator).withPack(pack).build();
+    protected void simulateChangeSubscriptionPack(SubscriptionData subscriptionData){
+        String operator = subscriptionData.getOperator();
+        String packname = subscriptionData.getPackname();
+        DateTime startTime = subscriptionData.getStartTime();
+
+        SubscriptionReportRequest subscriptionReportRequest = subscriptionData.getChannel() == 0 ?
+                buildSubscriptionReportRequestForIVR(operator, packname, startTime) : buildSubscriptionReportRequestForCC(operator,packname, startTime);
+        testDataFactory.addSubscription(subscriptionReportRequest);
+
+        SubscriptionStateChangeRequest activate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
+                withSubscriptionStatus("ACTIVE").withOperator(operator).build();
+        testDataFactory.changeSubscriptionStatus(activate);
+
+        CampaignScheduleAlertRequest firstAlert = new CampaignScheduleAlertRequest(subscriptionReportRequest.getSubscriptionId(), "WEEK1", startTime.plusDays(1));
+        testDataFactory.scheduleCampaignAlert(firstAlert);
+
+        CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
+        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        testDataFactory.doOBDCall(firstMessage);
+
+        SubscriptionData randomSubscriptionData = SubscriptionData.getRandomSubscriptionData();
+        SubscriptionReportRequest changeRequest = new SubscriptionReportRequestBuilder().withChannel("CONTACT_CENTER").withStatus("NEW_EARLY").withEstimatedDateOfDelivery(DateTime.now().plusMonths(5)).withOperator(operator).withPack(randomSubscriptionData.getPackname()).withOldSubscriptionId(subscriptionReportRequest.getSubscriptionId()).build();
+        testDataFactory.addSubscription(changeRequest);
+
+        SubscriptionStateChangeRequest deactivate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).withSubscriptionStatus("DEACTIVATED")
+                .withOperator(operator).withWeekNumber(7).build();
+        testDataFactory.changeSubscriptionStatus(deactivate);
+
+        SubscriptionStateChangeRequest activateNewSubscription = new SubscriptionStateChangeRequestBuilder(changeRequest.getSubscriptionId()).
+                withSubscriptionStatus("ACTIVE").withOperator(operator).build();
+        testDataFactory.changeSubscriptionStatus(activateNewSubscription);
     }
 
-    private SubscriptionReportRequest buildSubscriptionReportRequestForIVR(String operator, String pack) {
-        return new SubscriptionReportRequestBuilder().withChannel("IVR").withStatus("NEW").withOperator(operator).withPack(pack).build();
+    private SubscriptionReportRequest buildSubscriptionReportRequestForCC(String operator, String pack, DateTime startDate) {
+        return new SubscriptionReportRequestBuilder().withChannel("CONTACT_CENTER").withStatus("NEW_EARLY").withEstimatedDateOfDelivery(DateTime.now().plusMonths(5)).withOperator(operator).withPack(pack).withCreatedAt(startDate).build();
+    }
+
+    private SubscriptionReportRequest buildSubscriptionReportRequestForIVR(String operator, String pack, DateTime startDate) {
+        return new SubscriptionReportRequestBuilder().withChannel("IVR").withStatus("NEW").withOperator(operator).withPack(pack).withStartDate(startDate).build();
     }
 }

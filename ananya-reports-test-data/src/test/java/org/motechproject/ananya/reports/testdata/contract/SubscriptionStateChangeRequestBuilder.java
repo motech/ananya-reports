@@ -1,4 +1,4 @@
-package org.motechproject.ananya.reports.testdata.contract.request.builder;
+package org.motechproject.ananya.reports.testdata.contract;
 
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;

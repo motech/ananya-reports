@@ -3,11 +3,12 @@ package org.motechproject.ananya.reports.testdata;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.motechproject.ananya.reports.testdata.contract.SubscriptionData;
 import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(RandomUnitTestRunner.class)
 @ContextConfiguration("classpath:applicationReportsTestDataContext.xml")
-public class TestDataFactoryTest extends BaseFactory {
+public class SubscriptionsTest extends BaseTest {
     @Test
     public void shouldCreateActivatedWithSomeSuspensionsSubscription() {
         simulateActivationWithSuspension(SubscriptionData.getRandomSubscriptionData());
@@ -35,7 +36,7 @@ public class TestDataFactoryTest extends BaseFactory {
 
     @Test
     public void shouldChangePack(){
-        simulateChangeSubscriptionSchedule(SubscriptionData.getRandomSubscriptionData());
+        simulateChangeSubscriptionPack(SubscriptionData.getRandomSubscriptionData());
     }
 }
 

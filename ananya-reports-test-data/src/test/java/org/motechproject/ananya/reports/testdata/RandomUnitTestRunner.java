@@ -1,14 +1,14 @@
 package org.motechproject.ananya.reports.testdata;
 
-import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RandomUnitTestRunner  extends BlockJUnit4ClassRunner {
+public class RandomUnitTestRunner  extends SpringJUnit4ClassRunner {
     private final long totalSubscriptions = 1L;
 
     public RandomUnitTestRunner(Class<?> klass) throws InitializationError {

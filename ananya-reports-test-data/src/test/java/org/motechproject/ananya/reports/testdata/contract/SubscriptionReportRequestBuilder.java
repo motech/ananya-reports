@@ -1,4 +1,4 @@
-package org.motechproject.ananya.reports.testdata.contract.request.builder;
+package org.motechproject.ananya.reports.testdata.contract;
 
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -37,7 +37,12 @@ public class SubscriptionReportRequestBuilder {
         this.ageOfBeneficiary = 25;
         this.createdAt = DateTime.now();
         this.subscriptionStatus = "NEW";
-        this.location = new SubscriberLocation("testDistrict", "testBlock", "testPanchayat");
+
+        String testDistrict = "testDistrict"+RandomStringUtils.randomNumeric(100);
+        String testBlock = "testBlock"+RandomStringUtils.randomNumeric(100);
+        String testPanchayat = "testPanchayat"+RandomStringUtils.randomNumeric(100);
+
+        this.location = new SubscriberLocation(testDistrict, testBlock, testPanchayat);
         this.startDate = DateTime.now() ;
         this.oldSubscriptionId = null;
         this.reason = "Script data";

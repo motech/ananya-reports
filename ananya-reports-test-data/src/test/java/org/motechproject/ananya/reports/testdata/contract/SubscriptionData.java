@@ -1,4 +1,4 @@
-package org.motechproject.ananya.reports.testdata;
+package org.motechproject.ananya.reports.testdata.contract;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.joda.time.DateTime;
