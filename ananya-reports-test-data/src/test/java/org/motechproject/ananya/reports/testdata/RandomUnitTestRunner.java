@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RandomUnitTestRunner  extends SpringJUnit4ClassRunner {
-    private final long totalSubscriptions = 1L;
+    private final long totalSubscriptions = 358798L;
 
     public RandomUnitTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
