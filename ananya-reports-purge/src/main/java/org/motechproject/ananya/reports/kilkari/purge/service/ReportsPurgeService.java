@@ -50,12 +50,12 @@ public class ReportsPurgeService {
             return;
         }
 
-        logger.info("Started purging report records for msisdn: " + msisdn);
+        logger.info(String.format("Started purging report records for msisdn: %s", msisdn));
         Long msisdnInLong;
         try{
             msisdnInLong = Long.valueOf(msisdn);
         }catch (Exception e){
-            logger.info("Invalid non numeric msisdn: " + msisdn);
+            logger.error(String.format("Invalid non numeric msisdn: %s. Skipping it.", msisdn));
             return;
 
         }
@@ -63,6 +63,6 @@ public class ReportsPurgeService {
         subscriptionStatusMeasureService.deleteFor(msisdnInLong);
         campaignScheduleAlertService.deleteFor(msisdnInLong);
         subscriptionService.deleteFor(msisdnInLong);
-        logger.info("Finished purging report records for msisdn: " + msisdn);
+        logger.info(String.format("Finished purging report records for msisdn: %s", msisdn));
     }
 }
