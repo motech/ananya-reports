@@ -20,9 +20,9 @@ public class LocationServiceIT extends SpringIntegrationTest {
 
     @Test
     public void shouldFetchLocationDimensionForGivenDistrictBlockAndPanchayat() {
-        String district = "DISTRICT";
-        String block = "BLOCK";
-        String panchayat="PANCHAYAT";
+        String district = "District";
+        String block = "Block";
+        String panchayat="Panchayat";
 
         LocationDimension existingLocationDimension = new LocationDimension("district", "block", "panchayat", "VALID");
         template.save(existingLocationDimension);

@@ -38,21 +38,20 @@ public class LocationControllerTest {
         locationController = new LocationController(locationService);
     }
 
-
     @Test
     public void shouldReturnLocationDetailsBasedOnQuery() throws Exception {
-        String district = "mydistrict";
-        String block="myblock";
-        String panchayat="mypanchayat";
+        String district = "Mydistrict";
+        String block="Myblock";
+        String panchayat="Mypanchayat";
 
         when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
         mockMvc(locationController)
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.JSON_CONTENT_TYPE))
-                .andExpect(content().string(new Contains("\"district\":\"MYDISTRICT\"")))
-                .andExpect(content().string(new Contains("\"block\":\"MYBLOCK\"")))
-                .andExpect(content().string(new Contains("\"district\":\"MYDISTRICT\"")));
+                .andExpect(content().string(new Contains("\"district\":\"Mydistrict\"")))
+                .andExpect(content().string(new Contains("\"block\":\"Myblock\"")))
+                .andExpect(content().string(new Contains("\"panchayat\":\"Mypanchayat\"")));
     }
 
     @Test

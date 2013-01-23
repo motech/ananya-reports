@@ -1,6 +1,6 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.motechproject.ananya.reports.kilkari.domain.LocationStatus;
@@ -44,9 +44,9 @@ public class LocationDimension {
     }
 
     public LocationDimension(String district, String block, String panchayat, String status) {
-        this.district = StringUtils.upperCase(district);
-        this.block = StringUtils.upperCase(block);
-        this.panchayat = StringUtils.upperCase(panchayat);
+        this.district = WordUtils.capitalizeFully(district);
+        this.block = WordUtils.capitalizeFully(block);
+        this.panchayat = WordUtils.capitalizeFully(panchayat);
         this.status = status;
     }
 
