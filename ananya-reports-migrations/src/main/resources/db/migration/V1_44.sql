@@ -1,0 +1,1 @@
+UPDATE report.location_dimension SET district = initcap(district), block = initcap(block), panchayat=initcap(panchayat);
