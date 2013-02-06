@@ -1,6 +1,5 @@
 package org.motechproject.ananya.reports.kilkari.service;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.motechproject.ananya.reports.kilkari.contract.request.CallDetailsReportRequest;
 import org.motechproject.ananya.reports.kilkari.domain.CampaignMessageCallSource;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignDimension;
@@ -56,7 +55,6 @@ public class SubscriberCallMeasureService {
                 allTimeDimensions.fetchFor(callDetailsReportRequest.getStartTime()),
                 allDateDimensions.fetchFor(callDetailsReportRequest.getEndTime()),
                 allTimeDimensions.fetchFor(callDetailsReportRequest.getEndTime()),
-                NumberUtils.createInteger(callDetailsReportRequest.getRetryCount()),
                 callDetailsReportRequest.getCallSource(), subscription.getSubscriptionStatus(), durationInPulse));
     }
 

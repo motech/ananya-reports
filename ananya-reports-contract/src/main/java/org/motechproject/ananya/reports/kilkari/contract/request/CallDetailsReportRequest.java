@@ -18,8 +18,6 @@ public class CallDetailsReportRequest implements Serializable {
     @JsonProperty
     private String serviceOption;
     @JsonProperty
-    private String retryCount;
-    @JsonProperty
     private String status;
     @JsonProperty
     private CallDetailRecordRequest callDetailRecord;
@@ -27,12 +25,11 @@ public class CallDetailsReportRequest implements Serializable {
     private String callSource;
 
 
-    public CallDetailsReportRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String retryCount, String status, CallDetailRecordRequest callDetailRecord, String callSource) {
+    public CallDetailsReportRequest(String subscriptionId, String msisdn, String campaignId, String serviceOption, String status, CallDetailRecordRequest callDetailRecord, String callSource) {
         this.subscriptionId = subscriptionId;
         this.msisdn = msisdn;
         this.campaignId = campaignId;
         this.serviceOption = serviceOption;
-        this.retryCount = retryCount;
         this.status = status;
         this.callSource = callSource;
         this.callDetailRecord = callDetailRecord;
@@ -74,11 +71,6 @@ public class CallDetailsReportRequest implements Serializable {
     @JsonIgnore
     public String getSubscriptionId() {
         return subscriptionId;
-    }
-
-    @JsonIgnore
-    public String getRetryCount() {
-        return retryCount;
     }
 
     @JsonIgnore

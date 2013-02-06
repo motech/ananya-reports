@@ -1,0 +1,1 @@
+ALTER TABLE report.subscriber_call_measure DROP COLUMN retry_count;

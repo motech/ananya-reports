@@ -20,9 +20,6 @@ public class SubscriberCallMeasure {
     @Column(name = "call_status")
     private String callStatus;
 
-    @Column(name = "retry_count")
-    private Integer retryCount;
-
     @Column(name = "duration")
     private Integer duration;
 
@@ -74,7 +71,7 @@ public class SubscriberCallMeasure {
 
     public SubscriberCallMeasure(String callStatus, Integer duration, Integer percentageListened, String serviceOption, Subscription subscription,
                                  OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension, CampaignDimension campaignDimension,
-                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime, Integer retryCount, String callSource,
+                                 DateDimension startDate, TimeDimension startTime, DateDimension endDate, TimeDimension endTime, String callSource,
                                  String subscriptionStatus, Integer durationInPulse) {
         this.callStatus = callStatus;
         this.duration = duration;
@@ -88,7 +85,6 @@ public class SubscriberCallMeasure {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
-        this.retryCount = retryCount;
         this.callSource = callSource;
         this.subscriptionStatus = subscriptionStatus;
         this.durationInPulse = durationInPulse;
@@ -112,14 +108,6 @@ public class SubscriberCallMeasure {
 
     public String getCallStatus() {
         return callStatus;
-    }
-
-    public Integer getRetryCount() {
-        return retryCount;
-    }
-
-    public void setRetryCount(Integer retryCount) {
-        this.retryCount = retryCount;
     }
 
     public Integer getDuration() {

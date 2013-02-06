@@ -31,7 +31,7 @@ public abstract  class BaseTest {
         testDataFactory.scheduleCampaignAlert(firstAlert);
 
         CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
-        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "SUCCESS", callDetailRecord, "OBD");
         testDataFactory.doOBDCall(firstMessage);
 
         SubscriptionStateChangeRequest renew = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -46,7 +46,7 @@ public abstract  class BaseTest {
                 withCreatedAt(startTime.plusDays(6)).withOperator(operator).withWeekNumber(7).build();
         testDataFactory.changeSubscriptionStatus(activateAgain);
 
-        CallDetailsReportRequest secondMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        CallDetailsReportRequest secondMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "SUCCESS", callDetailRecord, "OBD");
         testDataFactory.doOBDCall(secondMessage);
 
         SubscriptionStateChangeRequest deactivate = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).withSubscriptionStatus("DEACTIVATED").
@@ -72,7 +72,7 @@ public abstract  class BaseTest {
         testDataFactory.scheduleCampaignAlert(firstAlert);
 
         CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
-        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "SUCCESS", callDetailRecord, "OBD");
         testDataFactory.doOBDCall(firstMessage);
 
         SubscriptionStateChangeRequest renew = new SubscriptionStateChangeRequestBuilder(subscriptionReportRequest.getSubscriptionId()).
@@ -87,7 +87,7 @@ public abstract  class BaseTest {
                 withCreatedAt(startTime.plusDays(6)).withOperator(operator).withWeekNumber(7).build();
         testDataFactory.changeSubscriptionStatus(activateAgain);
 
-        CallDetailsReportRequest secondMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        CallDetailsReportRequest secondMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "SUCCESS", callDetailRecord, "OBD");
         testDataFactory.doOBDCall(secondMessage);
     }
 
@@ -113,10 +113,10 @@ public abstract  class BaseTest {
             testDataFactory.scheduleCampaignAlert(alert);
 
             CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
-            CallDetailsReportRequest message = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), currentWeek, "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+            CallDetailsReportRequest message = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), currentWeek, "HANGUP", "SUCCESS", callDetailRecord, "OBD");
             testDataFactory.doOBDCall(message);
 
-            CallDetailsReportRequest inboxRequest = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), currentWeek, "HANGUP", "0", "SUCCESS", callDetailRecord, "INBOX");
+            CallDetailsReportRequest inboxRequest = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), currentWeek, "HANGUP", "SUCCESS", callDetailRecord, "INBOX");
             testDataFactory.doOBDCall(inboxRequest);
         }
 
@@ -163,7 +163,7 @@ public abstract  class BaseTest {
         testDataFactory.scheduleCampaignAlert(firstAlert);
 
         CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
-        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "SUCCESS", callDetailRecord, "OBD");
         testDataFactory.doOBDCall(firstMessage);
 
         SubscriptionReportRequest changeRequest = new SubscriptionReportRequestBuilder().withChannel("CONTACT_CENTER").withStatus("NEW_EARLY").withEstimatedDateOfDelivery(DateTime.now().plusMonths(5)).withOperator(operator).withPack(packname).withOldSubscriptionId(subscriptionReportRequest.getSubscriptionId()).build();
@@ -195,7 +195,7 @@ public abstract  class BaseTest {
         testDataFactory.scheduleCampaignAlert(firstAlert);
 
         CallDetailRecordRequest callDetailRecord = new CallDetailRecordRequest(startTime, startTime.plusMinutes(5));
-        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "0", "SUCCESS", callDetailRecord, "OBD");
+        CallDetailsReportRequest firstMessage = new CallDetailsReportRequest(subscriptionReportRequest.getSubscriptionId(), String.valueOf(subscriptionReportRequest.getMsisdn()), "WEEK1", "HANGUP", "SUCCESS", callDetailRecord, "OBD");
         testDataFactory.doOBDCall(firstMessage);
 
         SubscriptionData randomSubscriptionData = SubscriptionData.getRandomSubscriptionData();

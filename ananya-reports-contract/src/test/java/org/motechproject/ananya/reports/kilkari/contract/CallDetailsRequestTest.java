@@ -11,7 +11,7 @@ public class CallDetailsRequestTest {
 
     @Test
     public void shouldGetDuration() {
-        Integer actualDuration = new CallDetailsReportRequest("subscriptionId", "9876543210", "1", "HELP", "2", "SUCCESS", new CallDetailRecordRequest(DateTime.now(), DateTime.now().plusMinutes(2)), "OBD").getDuration();
+        Integer actualDuration = new CallDetailsReportRequest("subscriptionId", "9876543210", "1", "HELP", "SUCCESS", new CallDetailRecordRequest(DateTime.now(), DateTime.now().plusMinutes(2)), "OBD").getDuration();
         assertEquals((Integer) 120, actualDuration);
     }
 }
