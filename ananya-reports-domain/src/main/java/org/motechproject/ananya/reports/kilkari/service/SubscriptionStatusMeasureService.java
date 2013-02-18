@@ -10,6 +10,8 @@ import org.motechproject.ananya.reports.kilkari.domain.SubscriptionStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.reports.kilkari.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ public class SubscriptionStatusMeasureService {
     private AllSubscribers allSubscribers;
     private LocationService locationService;
     private AllTimeDimensions allTimeDimensions;
+
+    private static final Logger logger = LoggerFactory.getLogger(SubscriptionStatusMeasureService.class);
 
     public SubscriptionStatusMeasureService() {
     }
@@ -96,6 +100,11 @@ public class SubscriptionStatusMeasureService {
         subscription.setOperatorDimension(operatorDimension);
         if (new Timestamp(createdAt.getMillis()).compareTo(subscription.getLastModifiedTime()) != -1)
             subscription.updateDetails(createdAt, subscriptionStatus);
+        else
+            logger.warn(String.format("Subscription %s cannot be updated to latest status. It is an older record\n " +
+                    "Last modified time of subscription: %s\n " +
+                    "Current time: %s",
+                    subscription.getSubscriptionId(), subscription.getLastModifiedTime().toString(), createdAt.toDateTime().toString()));
         allSubscriptions.update(subscription);
 
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionStateChangeRequest.getWeekNumber(), dateDimension, timeDimension, operatorDimension,
