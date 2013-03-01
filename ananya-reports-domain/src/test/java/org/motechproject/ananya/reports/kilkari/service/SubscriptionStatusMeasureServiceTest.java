@@ -71,16 +71,17 @@ public class SubscriptionStatusMeasureServiceTest {
         String reason = "some reason";
         String oldSubscriptionId = null;
         Integer startWeekNumber = 33;
+        DateTime createdAt = new DateTime(2012, 01, 01, 10, 10);
 
         SubscriberLocation subscriberLocation = new SubscriberLocation(district, block, panchayat);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack
-                , name, age, new DateTime(2012, 01, 01, 10, 10), "NEW", edd, dob, subscriberLocation, operator, startDate, oldSubscriptionId, reason, startWeekNumber);
+                , name, age, createdAt, "NEW", edd, dob, subscriberLocation, operator, startDate, oldSubscriptionId, reason, startWeekNumber);
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
         LocationDimension locationDimension = new LocationDimension();
 
-        Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null, startWeekNumber);
+        Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null, startWeekNumber, createdAt);
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
         final Subscription[] subscriptionCapture = new Subscription[1];
 
@@ -133,6 +134,7 @@ public class SubscriptionStatusMeasureServiceTest {
         String reason = "some reason";
         Integer startWeekNumber = 33;
         Integer newStartWeekNumber = 36;
+        DateTime createdAt = new DateTime(2012, 01, 01, 10, 10);
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -141,12 +143,12 @@ public class SubscriptionStatusMeasureServiceTest {
 
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension(subscriptionPack);
 
-        Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null, startWeekNumber);
+        Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null, startWeekNumber, createdAt.minusDays(5));
         String oldSubscriptionId = "oldSubscriptionId";
         Subscription oldSubscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
                 dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, null, null,
-                new DateTime(2012, 01, 01, 10, 10), "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason, newStartWeekNumber);
+                createdAt, "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason, newStartWeekNumber);
 
         final Subscription[] subscriptionCapture = new Subscription[1];
 
@@ -175,6 +177,7 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(newDob, actualSubscriber.getDateOfBirth());
         assertEquals(locationDimension, actualSubscriber.getLocationDimension());
         assertEquals(newStartWeekNumber, actualSubscriber.getStartWeekNumber());
+        assertEquals(createdAt, new DateTime(actualSubscriber.getLastModifiedTime()));
 
         ArgumentCaptor<SubscriptionStatusMeasure> captor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         verify(allSubscriptionStatusMeasure).add(captor.capture());

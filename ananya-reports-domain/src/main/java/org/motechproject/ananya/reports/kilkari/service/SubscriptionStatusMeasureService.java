@@ -137,13 +137,13 @@ public class SubscriptionStatusMeasureService {
 
     private Subscriber createNewSubscriber(SubscriptionReportRequest subscriptionReportRequest, ChannelDimension channelDimension, DateDimension dateDimension, LocationDimension locationDimension) {
         return new Subscriber(subscriptionReportRequest.getName(), subscriptionReportRequest.getAgeOfBeneficiary(), subscriptionReportRequest.getEstimatedDateOfDelivery(),
-                subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null, subscriptionReportRequest.getStartWeekNumber());
+                subscriptionReportRequest.getDateOfBirth(), channelDimension, locationDimension, dateDimension, null, subscriptionReportRequest.getStartWeekNumber(), subscriptionReportRequest.getCreatedAt());
     }
 
     private Subscriber fetchExistingSubscriber(SubscriptionReportRequest subscriptionReportRequest, Subscription oldSubscription) {
         Subscriber subscriber;
         subscriber = oldSubscription.getSubscriber();
-        subscriber.updateSubscriptionDates(subscriptionReportRequest.getEstimatedDateOfDelivery(), subscriptionReportRequest.getDateOfBirth(), subscriptionReportRequest.getStartWeekNumber());
+        subscriber.updateSubscriptionDates(subscriptionReportRequest.getEstimatedDateOfDelivery(), subscriptionReportRequest.getDateOfBirth(), subscriptionReportRequest.getStartWeekNumber(), subscriptionReportRequest.getCreatedAt());
         return subscriber;
     }
 

@@ -133,7 +133,7 @@ public class SubscriptionControllerTest {
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
         int startWeekNumber = 33;
-        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber);
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
@@ -194,7 +194,7 @@ public class SubscriptionControllerTest {
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null,
-                new LocationDimension(district, block, panchayat, "VALID"), null, null, null);
+                new LocationDimension(district, block, panchayat, "VALID"), null, null, null, DateTime.now());
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
                 null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
 

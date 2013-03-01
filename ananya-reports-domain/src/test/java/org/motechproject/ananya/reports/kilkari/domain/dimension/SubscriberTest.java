@@ -14,11 +14,10 @@ public class SubscriberTest {
         String block = "b1";
         String panchayat = "p1";
         SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
-        long msisdn = 1234567890L;
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, null, DateTime.now());
         DateDimension expectedDateDimension = new DateDimension();
         LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, "VALID");
 
@@ -29,6 +28,7 @@ public class SubscriberTest {
         assertEquals(beneficiaryName, subscriber.getName());
         assertEquals(expectedDateDimension, subscriber.getDateDimension());
         assertEquals(expectedLocationDimension, subscriber.getLocationDimension());
+        assertEquals(createdAt, new DateTime(subscriber.getLastModifiedTime()));
     }
 
     @Test
@@ -39,13 +39,16 @@ public class SubscriberTest {
         DateTime newDob = DateTime.now().minusYears(1);
         Integer startWeekNumber = 33;
         Integer newStartWeekNumber = 38;
+        DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
+        DateTime newLastModifiedTime = DateTime.now();
 
-        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber);
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
 
-        subscriber.updateSubscriptionDates(newEdd, newDob, newStartWeekNumber);
+        subscriber.updateSubscriptionDates(newEdd, newDob, newStartWeekNumber, newLastModifiedTime);
 
         assertEquals(newEdd, subscriber.getEstimatedDateOfDelivery());
         assertEquals(newDob, subscriber.getDateOfBirth());
         assertEquals(newStartWeekNumber, subscriber.getStartWeekNumber());
+        assertEquals(newLastModifiedTime, new DateTime(subscriber.getLastModifiedTime()));
     }
 }

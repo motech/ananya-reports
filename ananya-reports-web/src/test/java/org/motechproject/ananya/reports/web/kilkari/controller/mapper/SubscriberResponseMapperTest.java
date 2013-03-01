@@ -31,7 +31,7 @@ public class SubscriberResponseMapperTest{
         Integer startWeekNumber = 45;
         Integer age = 23;
         DateTime lastScheduledDate = DateTime.now();
-        Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber);
+        Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), null);
         subscription.setLastScheduledMessageDate(new Timestamp(lastScheduledDate.getMillis()));
         LocationResponse expectedLocation = new LocationResponse(district, block, panchayat);
@@ -49,7 +49,7 @@ public class SubscriberResponseMapperTest{
 
     @Test
     public void shouldHandleEmptyLocationDimension() {
-        Subscriber subscriber = new Subscriber("name", 23, null, null, null, null, null, null, 22);
+        Subscriber subscriber = new Subscriber("name", 23, null, null, null, null, null, null, 22, DateTime.now());
         Subscription subscription = new Subscription(123L, subscriber, new SubscriptionPackDimension("BARI_KILKARI"), null, null, null, "subscriptionId", DateTime.now(), DateTime.now(), SubscriptionStatus.ACTIVE.name(), null);
 
         SubscriberResponse subscriberResponse = SubscriberResponseMapper.mapFrom(subscription);

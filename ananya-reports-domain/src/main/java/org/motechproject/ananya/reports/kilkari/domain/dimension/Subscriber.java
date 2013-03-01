@@ -7,6 +7,7 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberRepor
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "subscribers")
@@ -48,12 +49,15 @@ public class Subscriber {
     @Column(name = "start_week_number")
     private Integer startWeekNumber;
 
+    @Column(name = "last_modified_time")
+    private Timestamp lastModifiedTime;
+
     public Subscriber() {
     }
 
     public Subscriber(String name, Integer ageOfBeneficiary, DateTime estimatedDateOfDelivery,
                       DateTime dateOfBirth, ChannelDimension channelDimension, LocationDimension locationDimension,
-                      DateDimension dateDimension, OperatorDimension operatorDimension, Integer startWeekNumber) {
+                      DateDimension dateDimension, OperatorDimension operatorDimension, Integer startWeekNumber, DateTime lastModifiedTime) {
         this.name = name;
         this.ageOfBeneficiary = ageOfBeneficiary;
         this.startWeekNumber = startWeekNumber;
@@ -63,6 +67,7 @@ public class Subscriber {
         this.locationDimension = locationDimension;
         this.dateDimension = dateDimension;
         this.operatorDimension = operatorDimension;
+        this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
     }
 
     public Integer getId() {
@@ -105,11 +110,23 @@ public class Subscriber {
         return dateDimension;
     }
 
+    public Timestamp getLastModifiedTime() {
+        return lastModifiedTime;
+    }
+
     public void updateWith(SubscriberReportRequest subscriberReportRequest, LocationDimension locationDimension, DateDimension dateDimension) {
         ageOfBeneficiary = subscriberReportRequest.getBeneficiaryAge();
         name = subscriberReportRequest.getBeneficiaryName();
         this.dateDimension = dateDimension;
         this.locationDimension = locationDimension;
+        lastModifiedTime = new Timestamp(subscriberReportRequest.getCreatedAt().getMillis());
+    }
+
+    public void updateSubscriptionDates(DateTime edd, DateTime dob, Integer startWeekNumber, DateTime lastModifiedTime) {
+        this.startWeekNumber = startWeekNumber;
+        estimatedDateOfDelivery = convertToDate(edd);
+        dateOfBirth = convertToDate(dob);
+        this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
     }
 
     private Date convertToDate(DateTime dateTime) {
@@ -118,12 +135,6 @@ public class Subscriber {
 
     private DateTime convertToDateTime(Date date) {
         return date != null ? new DateTime(date) : null;
-    }
-
-    public void updateSubscriptionDates(DateTime edd, DateTime dob, Integer startWeekNumber) {
-        this.startWeekNumber = startWeekNumber;
-        estimatedDateOfDelivery = convertToDate(edd);
-        dateOfBirth = convertToDate(dob);
     }
 
     @Override

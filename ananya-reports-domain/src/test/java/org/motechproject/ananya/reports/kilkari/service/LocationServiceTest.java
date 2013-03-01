@@ -66,7 +66,7 @@ public class LocationServiceTest {
         assertEquals(alternateLocation, locationDimension);
     }
 
-     @Test
+    @Test
     public void shouldReturnNullIfTheLocationDoesNotExist() {
         LocationDimension locationDimension = locationService.digDeepAndFetchFor("mydistrict", "myblock", "mypanchayat");
 
@@ -96,7 +96,7 @@ public class LocationServiceTest {
         LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name());
         LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name());
         ArrayList<Subscriber> subscribers = new ArrayList<>();
-        subscribers.add(new Subscriber("name", null, null, null, null, expectedOldLocationDimension, null, null, null));
+        subscribers.add(new Subscriber("name", null, null, null, null, expectedOldLocationDimension, null, null, null, new DateTime(lastModifiedTime)));
         when(locationService.digDeepAndFetchFor("d", "b", "p")).thenReturn(expectedOldLocationDimension);
         when(allSubscribers.findByLocation(expectedOldLocationDimension)).thenReturn(subscribers);
 
@@ -132,7 +132,7 @@ public class LocationServiceTest {
         LocationDimension expectedOldLocationDimension = new LocationDimension("d", "b", "p", LocationStatus.INVALID.name());
         LocationDimension expectedNewLocationDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.VALID.name());
         ArrayList<Subscriber> subscribers = new ArrayList<>();
-        subscribers.add(new Subscriber("name", null, null, null, null, expectedOldLocationDimension, null, null, null));
+        subscribers.add(new Subscriber("name", null, null, null, null, expectedOldLocationDimension, null, null, null, new DateTime(lastModifiedTime)));
         when(allLocationDimensions.fetchFor("d", "b", "p")).thenReturn(expectedOldLocationDimension);
         when(allLocationDimensions.fetchFor("d1", "b1", "p1")).thenReturn(expectedNewLocationDimension);
         when(allSubscribers.findByLocation(expectedOldLocationDimension)).thenReturn(subscribers);

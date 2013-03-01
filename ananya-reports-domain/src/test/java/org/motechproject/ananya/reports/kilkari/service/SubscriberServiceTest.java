@@ -51,7 +51,7 @@ public class SubscriberServiceTest {
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID"), null, null, null);
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID"), null, null, null, createdAt.minusDays(5));
         DateDimension expectedDateDimension = new DateDimension();
         Subscription subscription = mock(Subscription.class);
 
@@ -73,5 +73,6 @@ public class SubscriberServiceTest {
         assertEquals(block, actualSubscriber.getLocationDimension().getBlock());
         assertEquals(panchayat, actualSubscriber.getLocationDimension().getPanchayat());
         assertEquals(expectedDateDimension, actualSubscriber.getDateDimension());
+        assertEquals(createdAt, new DateTime(actualSubscriber.getLastModifiedTime()));
     }
 }

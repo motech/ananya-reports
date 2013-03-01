@@ -89,7 +89,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
         String subscriptionId = "sub11";
         Long msisdn = 123L;
         Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension,
-                locationDimension, dateDimension, operatorDimension, null);
+                locationDimension, dateDimension, operatorDimension, null, DateTime.now());
         String subscriptionStatus = "ACTIVE";
         subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
                 operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null);
