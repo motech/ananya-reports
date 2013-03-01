@@ -1,12 +1,10 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
@@ -133,7 +131,7 @@ public class Subscription {
         return lastScheduledMessageDate;
     }
 
-    public void updateDetails(DateTime lastModifiedTime, String subscriptionStatus) {
+    public void updateStatus(DateTime lastModifiedTime, String subscriptionStatus) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
     }
@@ -146,7 +144,8 @@ public class Subscription {
         this.subscriber = subscriber;
     }
 
-    public void setMsisdn(Long msisdn) {
+    public void updateMsisdn(Long msisdn, DateTime lastModifiedTime) {
+        this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.msisdn = msisdn;
     }
 

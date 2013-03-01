@@ -99,7 +99,7 @@ public class SubscriptionStatusMeasureService {
         subscription.getSubscriber().setOperatorDimension(operatorDimension);
         subscription.setOperatorDimension(operatorDimension);
         if (new Timestamp(createdAt.getMillis()).compareTo(subscription.getLastModifiedTime()) != -1)
-            subscription.updateDetails(createdAt, subscriptionStatus);
+            subscription.updateStatus(createdAt, subscriptionStatus);
         else
             logger.warn(String.format("Subscription %s cannot be updated to latest status. It is an older record\n " +
                     "Last modified time of subscription: %s\n " +
@@ -122,7 +122,7 @@ public class SubscriptionStatusMeasureService {
     }
 
     private void updateMsisdnOnSubscription(SubscriberChangeMsisdnReportRequest request, Subscription subscription) {
-        subscription.setMsisdn(request.getMsisdn());
+        subscription.updateMsisdn(request.getMsisdn(), request.getCreatedAt());
         allSubscriptions.update(subscription);
     }
 

@@ -196,7 +196,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Long newMsisdn = 9876543210L;
         DateTime now = DateTime.now();
         Subscription subscription = new Subscription();
-        subscription.setMsisdn(oldMsisdn);
+        subscription.updateMsisdn(oldMsisdn, now.minusDays(2));
         String subscriptionId = "subscriptionId";
         String expectedReason = "some random reason";
         DateDimension expectedDateDimension = new DateDimension();
@@ -211,6 +211,7 @@ public class SubscriptionStatusMeasureServiceTest {
         verify(allSubscriptions).update(captor.capture());
         Subscription actualSubscription = captor.getValue();
         assertEquals(newMsisdn, actualSubscription.getMsisdn());
+        assertEquals(now, new DateTime(actualSubscription.getLastModifiedTime().getTime()));
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
         verify(allSubscriptionStatusMeasure).add(subscriptionStatusMeasureArgumentCaptor.capture());
@@ -259,7 +260,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
 
-        verify(mockedSubscription, never()).updateDetails(any(DateTime.class), anyString());
+        verify(mockedSubscription, never()).updateStatus(any(DateTime.class), anyString());
         verify(allSubscriptions).update(mockedSubscription);
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
@@ -318,7 +319,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         subscriptionStatusMeasureService.update(subscriptionStateChangeRequest);
 
-        verify(mockedSubscription).updateDetails(createdAt, subscriptionStatus);
+        verify(mockedSubscription).updateStatus(createdAt, subscriptionStatus);
         verify(allSubscriptions).update(mockedSubscription);
 
         ArgumentCaptor<SubscriptionStatusMeasure> subscriptionStatusMeasureArgumentCaptor = ArgumentCaptor.forClass(SubscriptionStatusMeasure.class);
