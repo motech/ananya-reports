@@ -62,7 +62,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, null, null, DateTime.now());
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
         subscription = new Subscription(Long.parseLong(msisdn), subscriber, subscriptionPackDimension, channelDimension,
-                null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), status, null);
+                null, dateDimension, subscriptionId, DateTime.now().plusDays(5), DateTime.now(), status, null);
         subscription.setLastScheduledMessageDate(new Timestamp(DateTime.now().getMillis()));
         saveAndMarkForDeletion(channelDimension, subscriptionPackDimension, locationDimension, subscriber, subscription);
     }
@@ -87,7 +87,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         SubscriberResponse expectedSubscriberResponse = new SubscriberResponse(subscriptionId, subscriber.getName(),
                 subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(), subscriber.getEstimatedDateOfDelivery(),
-                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()));
+                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()), new DateTime(subscription.getLastModifiedTime()));
 
         MvcResult result = mockMvc(subscriptionController)
                 .perform(get("/subscription/subscriber/" + subscriptionId))

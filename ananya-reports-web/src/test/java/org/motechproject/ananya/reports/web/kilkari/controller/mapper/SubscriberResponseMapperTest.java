@@ -17,7 +17,7 @@ import static junit.framework.Assert.assertNull;
 
 public class SubscriberResponseMapperTest{
     @Test
-    public void shouldMapFromSubscriptionStatusMeasureToSubscriberResponse() {
+    public void shouldMapFromSubscriptionToSubscriberResponseWithLatestModifiedTime() {
         DateTime edd = DateTime.now();
         DateTime dob = DateTime.now().minusYears(23);
         String subscriptionId = "subscriptionId";
@@ -31,8 +31,10 @@ public class SubscriberResponseMapperTest{
         Integer startWeekNumber = 45;
         Integer age = 23;
         DateTime lastScheduledDate = DateTime.now();
-        Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
-        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status.name(), null);
+        DateTime subscriberModifiedTime = DateTime.now().plusDays(5);
+        DateTime subscriptionModifiedTime = DateTime.now();
+        Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber, subscriberModifiedTime);
+        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, subscriptionModifiedTime, DateTime.now(), status.name(), null);
         subscription.setLastScheduledMessageDate(new Timestamp(lastScheduledDate.getMillis()));
         LocationResponse expectedLocation = new LocationResponse(district, block, panchayat);
 
@@ -45,6 +47,7 @@ public class SubscriberResponseMapperTest{
         assertEquals(edd, subscriberResponse.getExpectedDateOfDelivery());
         assertEquals(expectedLocation, subscriberResponse.getLocationResponse());
         assertEquals(lastScheduledDate.getMillis(), subscriberResponse.getLastScheduledMessageDate().getMillis());
+        assertEquals(subscriberModifiedTime, subscriberResponse.getLastUpdatedTime());
     }
 
     @Test

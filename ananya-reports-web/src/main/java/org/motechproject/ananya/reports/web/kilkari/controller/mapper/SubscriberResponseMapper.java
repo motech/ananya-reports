@@ -7,6 +7,8 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimensi
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 
+import java.sql.Timestamp;
+
 public class SubscriberResponseMapper {
     public static SubscriberResponse mapFrom(Subscription subscription) {
         Subscriber subscriber = subscription.getSubscriber();
@@ -17,6 +19,12 @@ public class SubscriberResponseMapper {
         DateTime lastScheduledMessageDate = subscription.getLastScheduledMessageDate() != null ? new DateTime(subscription.getLastScheduledMessageDate().getTime()) : null;
 
         return new SubscriberResponse(subscription.getSubscriptionId(), subscriber.getName(), subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(),
-                subscriber.getEstimatedDateOfDelivery(), lastScheduledMessageDate, locationResponse);
+                subscriber.getEstimatedDateOfDelivery(), lastScheduledMessageDate, locationResponse, max(subscription.getLastModifiedTime(), subscriber.getLastModifiedTime()));
+    }
+
+    private static DateTime max(Timestamp subscriptionModifiedTime, Timestamp subscriberModifiedTime) {
+        return subscriptionModifiedTime.after(subscriberModifiedTime)
+                ? new DateTime(subscriptionModifiedTime)
+                : new DateTime(subscriberModifiedTime);
     }
 }

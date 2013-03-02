@@ -20,10 +20,12 @@ public class SubscriberResponse {
 
     private LocationResponse locationResponse;
 
+    private DateTime lastUpdatedTime;
+
     public SubscriberResponse() {
     }
 
-    public SubscriberResponse(String subscriptionId, String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery, DateTime lastScheduledMessageDate, LocationResponse locationResponse) {
+    public SubscriberResponse(String subscriptionId, String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery, DateTime lastScheduledMessageDate, LocationResponse locationResponse, DateTime lastUpdatedTime) {
         this.subscriptionId = subscriptionId;
         this.beneficiaryName = beneficiaryName;
         this.beneficiaryAge = beneficiaryAge;
@@ -31,6 +33,7 @@ public class SubscriberResponse {
         this.expectedDateOfDelivery = expectedDateOfDelivery;
         this.lastScheduledMessageDate = lastScheduledMessageDate;
         this.locationResponse = locationResponse;
+        this.lastUpdatedTime = lastUpdatedTime;
     }
 
     public String getSubscriptionId() {
@@ -55,6 +58,10 @@ public class SubscriberResponse {
 
     public LocationResponse getLocationResponse() {
         return locationResponse;
+    }
+
+    public DateTime getLastUpdatedTime() {
+        return lastUpdatedTime;
     }
 
     @Override
