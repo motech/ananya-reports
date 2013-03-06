@@ -15,9 +15,9 @@ import java.sql.Timestamp;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-public class SubscriberResponseMapperTest{
+public class SubscriberResponseMapperTest {
     @Test
-    public void shouldMapFromSubscriptionToSubscriberResponseWithLatestModifiedTime() {
+    public void shouldMapFromSubscriptionToSubscriberResponse() {
         DateTime edd = DateTime.now();
         DateTime dob = DateTime.now().minusYears(23);
         String subscriptionId = "subscriptionId";
@@ -47,7 +47,8 @@ public class SubscriberResponseMapperTest{
         assertEquals(edd, subscriberResponse.getExpectedDateOfDelivery());
         assertEquals(expectedLocation, subscriberResponse.getLocationResponse());
         assertEquals(lastScheduledDate.getMillis(), subscriberResponse.getLastScheduledMessageDate().getMillis());
-        assertEquals(subscriberModifiedTime, subscriberResponse.getLastUpdatedTime());
+        assertEquals(subscriptionModifiedTime, subscriberResponse.getLastUpdatedTimeForSubscription());
+        assertEquals(subscriberModifiedTime, subscriberResponse.getLastUpdatedTimeForBeneficiary());
     }
 
     @Test
