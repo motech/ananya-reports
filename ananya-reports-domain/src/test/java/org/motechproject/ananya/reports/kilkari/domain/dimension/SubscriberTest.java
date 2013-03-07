@@ -6,6 +6,7 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocat
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SubscriberTest {
     @Test
@@ -32,23 +33,71 @@ public class SubscriberTest {
     }
 
     @Test
-    public void shouldUpdateSubscriberWithEddDob() {
+    public void shouldUpdateSubscriberDatesIfDobIsDifferent() {
         DateTime oldEdd = DateTime.now().plus(42);
         DateTime oldDob = DateTime.now().minusYears(3);
-        DateTime newEdd = DateTime.now().plus(32);
         DateTime newDob = DateTime.now().minusYears(1);
         Integer startWeekNumber = 33;
-        Integer newStartWeekNumber = 38;
         DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
         DateTime newLastModifiedTime = DateTime.now();
-
         Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
 
-        subscriber.updateSubscriptionDates(newEdd, newDob, newStartWeekNumber, newLastModifiedTime);
+        subscriber.updateSubscriptionDates(oldEdd, newDob, startWeekNumber, newLastModifiedTime);
 
-        assertEquals(newEdd, subscriber.getEstimatedDateOfDelivery());
+        assertEquals(oldEdd, subscriber.getEstimatedDateOfDelivery());
         assertEquals(newDob, subscriber.getDateOfBirth());
+        assertEquals(startWeekNumber, subscriber.getStartWeekNumber());
+        assertEquals(newLastModifiedTime, new DateTime(subscriber.getLastModifiedTime()));
+    }
+
+    @Test
+    public void shouldUpdateSubscriberDatesIfEddIsDifferentAndNull() {
+        DateTime oldEdd = DateTime.now().plus(42);
+        DateTime oldDob = DateTime.now().minusYears(3);
+        Integer startWeekNumber = 33;
+        DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
+        DateTime newLastModifiedTime = DateTime.now();
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
+
+        subscriber.updateSubscriptionDates(null, oldDob, startWeekNumber, newLastModifiedTime);
+
+        assertNull(subscriber.getEstimatedDateOfDelivery());
+        assertEquals(oldDob, subscriber.getDateOfBirth());
+        assertEquals(startWeekNumber, subscriber.getStartWeekNumber());
+        assertEquals(newLastModifiedTime, new DateTime(subscriber.getLastModifiedTime()));
+    }
+
+    @Test
+    public void shouldUpdateSubscriberDatesIfStartWeekNumberIsDifferentAndNull() {
+        DateTime oldEdd = DateTime.now().plus(42);
+        DateTime oldDob = DateTime.now().minusYears(3);
+        Integer oldStartWeekNumber = 38;
+        Integer newStartWeekNumber = 64;
+        DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
+        DateTime newLastModifiedTime = DateTime.now();
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, oldStartWeekNumber, oldLastModifiedTime);
+
+        subscriber.updateSubscriptionDates(oldEdd, oldDob, newStartWeekNumber, newLastModifiedTime);
+
+        assertEquals(oldEdd, subscriber.getEstimatedDateOfDelivery());
+        assertEquals(oldDob, subscriber.getDateOfBirth());
         assertEquals(newStartWeekNumber, subscriber.getStartWeekNumber());
         assertEquals(newLastModifiedTime, new DateTime(subscriber.getLastModifiedTime()));
+    }
+
+    @Test
+    public void shouldNotUpdateSubscriberDateIfRequestIsNotDifferent() {
+        DateTime edd = DateTime.now().plus(42);
+        DateTime dob = DateTime.now().minusYears(3);
+        Integer startWeekNumber = 33;
+        DateTime lastModifiedTime = DateTime.now().minusDays(5);
+        Subscriber subscriber = new Subscriber("oldName", 23, edd, dob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, lastModifiedTime);
+
+        subscriber.updateSubscriptionDates(edd, dob, startWeekNumber, lastModifiedTime);
+
+        assertEquals(edd, subscriber.getEstimatedDateOfDelivery());
+        assertEquals(dob, subscriber.getDateOfBirth());
+        assertEquals(startWeekNumber, subscriber.getStartWeekNumber());
+        assertEquals(lastModifiedTime, new DateTime(subscriber.getLastModifiedTime()));
     }
 }

@@ -123,10 +123,22 @@ public class Subscriber {
     }
 
     public void updateSubscriptionDates(DateTime edd, DateTime dob, Integer startWeekNumber, DateTime lastModifiedTime) {
+        if (isNotUpdatable(edd, dob, startWeekNumber))
+            return;
         this.startWeekNumber = startWeekNumber;
         estimatedDateOfDelivery = convertToDate(edd);
         dateOfBirth = convertToDate(dob);
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
+    }
+
+    private boolean isNotUpdatable(DateTime edd, DateTime dob, Integer startWeekNumber) {
+        return isEqualDate(convertToDate(edd), this.estimatedDateOfDelivery)
+                && isEqualDate(convertToDate(dob), this.dateOfBirth)
+                && (startWeekNumber == null ? this.startWeekNumber == null : startWeekNumber.equals(this.startWeekNumber));
+    }
+
+    private boolean isEqualDate(Date date1, Date date2) {
+        return date1 == null ? date2 == null : date1.equals(date2);
     }
 
     private Date convertToDate(DateTime dateTime) {
