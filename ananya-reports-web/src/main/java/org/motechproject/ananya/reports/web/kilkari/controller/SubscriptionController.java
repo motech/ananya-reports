@@ -80,4 +80,10 @@ public class SubscriptionController {
     public void createCampaignScheduleAlert(@RequestBody CampaignScheduleAlertRequest campaignScheduleAlertRequest) {
         campaignScheduleAlertService.createCampaignScheduleAlert(campaignScheduleAlertRequest);
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/subscription/{subscriptionId}/changecampaign")
+    @ResponseBody
+    public void updateCampaign(@RequestBody CampaignChangeReportRequest campaignChangeReportRequest, @PathVariable String subscriptionId) {
+        subscriptionService.updateMessageCampaign(campaignChangeReportRequest, subscriptionId);
+    }
 }

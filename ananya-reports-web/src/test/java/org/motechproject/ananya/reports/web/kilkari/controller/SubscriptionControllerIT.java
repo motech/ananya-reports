@@ -2,10 +2,12 @@ package org.motechproject.ananya.reports.web.kilkari.controller;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.motechproject.ananya.reports.kilkari.contract.request.CampaignChangeReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.response.LocationResponse;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.repository.AllDateDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
@@ -19,8 +21,7 @@ import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
 import static org.motechproject.ananya.reports.web.util.MVCTestUtils.mockMvc;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
@@ -119,5 +120,23 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         assertEquals(1, template.loadAll(CampaignScheduleAlertDetails.class).size());
         template.deleteAll(template.loadAll(CampaignScheduleAlertDetails.class));
+    }
+
+    @Test
+    public void shouldUpdateCampaignChange() throws Exception {
+        createSubscriptionForTest();
+        DateTime createdAt = DateTime.now();
+        String messageCampaignPack = MessageCampaignPack.INFANT_DEATH.name();
+        CampaignChangeReportRequest request = new CampaignChangeReportRequest(messageCampaignPack, createdAt);
+
+        mockMvc(subscriptionController)
+                .perform(put("/subscription/" + subscription.getSubscriptionId() + "/changecampaign")
+                        .body(TestUtils.toJson(request).getBytes())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Subscription actualSubscription = allSubscriptions.findBySubscriptionId(subscription.getSubscriptionId());
+        assertEquals(messageCampaignPack, actualSubscription.getMessageCampaignPack());
+        assertEquals(createdAt, new DateTime(actualSubscription.getLastModifiedTime()));
     }
 }

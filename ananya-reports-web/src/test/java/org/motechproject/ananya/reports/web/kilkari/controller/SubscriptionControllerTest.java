@@ -9,6 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.contract.request.*;
 import org.motechproject.ananya.reports.kilkari.contract.response.SubscriberResponse;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -242,6 +244,25 @@ public class SubscriptionControllerTest {
         assertEquals(campaignId, campaignScheduleAlertRequest.getCampaignId());
         assertEquals(subscriptionId, campaignScheduleAlertRequest.getSubscriptionId());
         assertEquals(scheduledAt.getMillis(), campaignScheduleAlertRequest.getScheduledTime().getMillis());
+    }
+
+    @Test
+    public void shouldUpdateTheCampaign() throws Exception {
+        String subscriptionId = "subscriptionId";
+        CampaignChangeReportRequest request = new CampaignChangeReportRequest(MessageCampaignPack.INFANT_DEATH.name(), DateTime.now());
+
+        mockMvc(subscriptionController)
+                .perform(put("/subscription/" + subscriptionId + "/changecampaign")
+                        .body(TestUtils.toJson(request).getBytes())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ArgumentCaptor<CampaignChangeReportRequest> argumentCaptor = ArgumentCaptor.forClass(CampaignChangeReportRequest.class);
+        verify(subscriptionService).updateMessageCampaign(argumentCaptor.capture(), eq(subscriptionId));
+        CampaignChangeReportRequest actualRequest = argumentCaptor.getValue();
+        assertEquals(request.getMessageCampaignPack(), actualRequest.getMessageCampaignPack());
+        assertEquals(request.getCreatedAt().getMillis(), actualRequest.getCreatedAt().getMillis());
     }
 
     private BaseMatcher<String> assertSubscriberResponse(final SubscriberResponse expectedResponse) {

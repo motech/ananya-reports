@@ -1,6 +1,8 @@
 package org.motechproject.ananya.reports.kilkari.service;
 
 import org.joda.time.DateTime;
+import org.motechproject.ananya.reports.kilkari.contract.request.CampaignChangeReportRequest;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +56,14 @@ public class SubscriptionService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Transactional
+    public void updateMessageCampaign(CampaignChangeReportRequest campaignChangeReportRequest, String subscriptionId) {
+        Subscription subscription = allSubscriptions.findBySubscriptionId(subscriptionId);
+        if (subscription == null)
+            return;
+        subscription.updateMessageCampaignPack(MessageCampaignPack.from(campaignChangeReportRequest.getMessageCampaignPack()), campaignChangeReportRequest.getCreatedAt());
+        allSubscriptions.update(subscription);
     }
 }

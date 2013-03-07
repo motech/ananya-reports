@@ -78,7 +78,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
         dateDimension = allDateDimensions.fetchFor(now);
         timeDimension = allTimeDimensions.fetchFor(now);
 
-        subscriptionPackDimension = new SubscriptionPackDimension("PCK1");
+        subscriptionPackDimension = new SubscriptionPackDimension("NANHI_KILKARI");
         template.save(subscriptionPackDimension);
         markForDeletion(subscriptionPackDimension);
 

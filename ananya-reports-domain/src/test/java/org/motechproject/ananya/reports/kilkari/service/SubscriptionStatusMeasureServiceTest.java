@@ -11,6 +11,7 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChang
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
 import org.motechproject.ananya.reports.kilkari.repository.*;
@@ -110,11 +111,12 @@ public class SubscriptionStatusMeasureServiceTest {
         SubscriptionStatusMeasure subscriptionStatusMeasure = captor.getValue();
         assertEquals(subscriptionId, subscriptionStatusMeasure.getSubscription().getSubscriptionId());
         assertEquals(dateDimension, subscriptionStatusMeasure.getDateDimension());
+        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
 
         Subscription subscription = subscriptionCapture[0];
         assertEquals(new Timestamp(startDate.getMillis()), subscription.getStartDate());
         assertEquals(subscriptionId, subscription.getSubscriptionId());
-        assertEquals(reason, subscriptionStatusMeasure.getRemarks());
+        assertEquals(MessageCampaignPack.NAVJAAT_KILKARI.name(), subscription.getMessageCampaignPack());
     }
 
     @Test
@@ -191,6 +193,7 @@ public class SubscriptionStatusMeasureServiceTest {
         assertEquals(subscriptionId, actualSubscription.getSubscriptionId());
         assertEquals(reason, subscriptionStatusMeasure.getRemarks());
         assertEquals(operator, actualSubscription.getOperatorDimension().getOperator());
+        assertEquals(MessageCampaignPack.NAVJAAT_KILKARI.name(), actualSubscription.getMessageCampaignPack());
     }
 
     @Test

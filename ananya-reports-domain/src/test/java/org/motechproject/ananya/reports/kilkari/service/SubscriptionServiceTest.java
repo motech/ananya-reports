@@ -5,13 +5,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.motechproject.ananya.reports.kilkari.contract.request.CampaignChangeReportRequest;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -77,5 +79,31 @@ public class SubscriptionServiceTest {
         verify(allSubscriptions).update(captor.capture());
         Subscription actualSubscription = captor.getValue();
         assertEquals(now.getMillis(), actualSubscription.getLastScheduledMessageDate().getTime());
+    }
+
+    @Test
+    public void shouldUpdateMessageCampaignPackForASubscription() {
+        String subscriptionId = "subscriptionId";
+        DateTime createdAt = DateTime.now();
+        CampaignChangeReportRequest request = new CampaignChangeReportRequest(MessageCampaignPack.MISCARRIAGE.name(), createdAt);
+        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(new Subscription());
+
+        subscriptionService.updateMessageCampaign(request, subscriptionId);
+
+        ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor.forClass(Subscription.class);
+        verify(allSubscriptions).update(subscriptionArgumentCaptor.capture());
+        Subscription actualSubscription = subscriptionArgumentCaptor.getValue();
+        assertEquals(MessageCampaignPack.MISCARRIAGE.name(), actualSubscription.getMessageCampaignPack());
+        assertEquals(createdAt, new DateTime(actualSubscription.getLastModifiedTime()));
+    }
+
+    @Test
+    public void shouldNotUpdateMessageCampaignPackIfSubscriptionDoesNotExist() {
+        String subscriptionId = "subscriptionId";
+        when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(null);
+
+        subscriptionService.updateMessageCampaign(new CampaignChangeReportRequest(MessageCampaignPack.INFANT_DEATH.name(), DateTime.now()), subscriptionId);
+
+        verify(allSubscriptions, never()).update(any(Subscription.class));
     }
 }

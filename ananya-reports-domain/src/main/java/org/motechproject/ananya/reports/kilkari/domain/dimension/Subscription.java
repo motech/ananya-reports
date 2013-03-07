@@ -3,6 +3,7 @@ package org.motechproject.ananya.reports.kilkari.domain.dimension;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -59,6 +60,9 @@ public class Subscription {
     @Column(name = "last_scheduled_message_date")
     private Timestamp lastScheduledMessageDate;
 
+    @Column(name = "message_campaign_pack")
+    private String messageCampaignPack;
+
     public Subscription() {
     }
 
@@ -77,6 +81,7 @@ public class Subscription {
         this.startDate = new Timestamp(startDate.getMillis());
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
+        this.messageCampaignPack = MessageCampaignPack.from(subscriptionPackDimension.getSubscriptionPack()).name();
     }
 
     public Integer getId() {
@@ -131,22 +136,23 @@ public class Subscription {
         return lastScheduledMessageDate;
     }
 
+    public String getMessageCampaignPack() {
+        return messageCampaignPack;
+    }
+
     public void updateStatus(DateTime lastModifiedTime, String subscriptionStatus) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
     }
 
-    public Subscription getOldSubscription() {
-        return oldSubscription;
-    }
-
-    public void setSubscriber(Subscriber subscriber) {
-        this.subscriber = subscriber;
-    }
-
     public void updateMsisdn(Long msisdn, DateTime lastModifiedTime) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.msisdn = msisdn;
+    }
+
+    public void updateMessageCampaignPack(MessageCampaignPack messageCampaignPack, DateTime lastModifiedTime) {
+        this.messageCampaignPack = messageCampaignPack.name();
+        this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
     }
 
     public void setLastScheduledMessageDate(Timestamp lastScheduledMessageDate) {

@@ -51,7 +51,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         now = DateTime.now();
         dateDimension = allDateDimensions.fetchFor(now);
 
-        subscriptionPackDimension = new SubscriptionPackDimension("PCK1");
+        subscriptionPackDimension = new SubscriptionPackDimension("NAVJAAT_KILKARI");
         template.save(subscriptionPackDimension);
         markForDeletion(subscriptionPackDimension);
     }
