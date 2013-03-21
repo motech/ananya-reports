@@ -13,10 +13,10 @@ public class AllDateDimensions {
     private static final DateTimeZone ISTTimeZone = DateTimeZone.forID("Asia/Calcutta");
 
     public DateDimension fetchFor(DateTime dateTime) {
-        DateTime dateWithTimeZone = dateTime.withZone(ISTTimeZone);
+        DateTime dateTimeInIST = dateTime.withZone(ISTTimeZone);
         return (DateDimension) template.getUniqueResult(
                 DateDimension.FIND_BY_DAY_MONTH_YEAR,
                 new String[]{"year", "month", "day"},
-                new Object[]{dateWithTimeZone.getYear(), dateWithTimeZone.getMonthOfYear(), dateWithTimeZone.getDayOfYear()});
+                new Object[]{dateTimeInIST.getYear(), dateTimeInIST.getMonthOfYear(), dateTimeInIST.getDayOfYear()});
     }
 }

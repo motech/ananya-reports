@@ -15,10 +15,10 @@ public class AllDateDimensionsIT extends SpringIntegrationTest {
 
     @Test
     public void shouldFetchDateDimensionInISTForGivenDateTime() {
-        DateTime now = new DateTime(2012, 7, 26, 0, 0).withZone(DateTimeZone.UTC);
-        int expectedDayOfYear = now.withZone(DateTimeZone.forID("Asia/Calcutta")).getDayOfYear();
+        DateTime date = new DateTime(2012, 7, 26, 0, 0).withZone(DateTimeZone.UTC);
+        int expectedDayOfYear = date.withZone(DateTimeZone.forID("Asia/Calcutta")).getDayOfYear();
 
-        DateDimension dateDimension = allDateDimensions.fetchFor(now);
+        DateDimension dateDimension = allDateDimensions.fetchFor(date);
 
         assertEquals(expectedDayOfYear, (int) dateDimension.getDay());
     }

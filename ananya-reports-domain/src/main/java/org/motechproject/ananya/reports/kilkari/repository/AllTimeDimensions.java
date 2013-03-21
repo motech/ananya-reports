@@ -13,9 +13,9 @@ public class AllTimeDimensions {
     private static final DateTimeZone ISTTimeZone = DateTimeZone.forID("Asia/Calcutta");
 
     public TimeDimension fetchFor(DateTime dateTime) {
-        DateTime dateWithTimeZone = dateTime.withZone(ISTTimeZone);
-        int hourOfDay = dateWithTimeZone.getHourOfDay();
-        int minuteOfHour = dateWithTimeZone.getMinuteOfHour();
+        DateTime dateTimeInIST = dateTime.withZone(ISTTimeZone);
+        int hourOfDay = dateTimeInIST.getHourOfDay();
+        int minuteOfHour = dateTimeInIST.getMinuteOfHour();
 
         return (TimeDimension) template.getUniqueResult(
                 TimeDimension.FIND_BY_HOUR_AND_MINUTE,
