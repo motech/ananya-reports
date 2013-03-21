@@ -1,6 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.repository;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,17 +10,13 @@ import org.springframework.stereotype.Repository;
 public class AllDateDimensions {
     @Autowired
     private DataAccessTemplate template;
-
-    public DateDimension makeFor(DateTime dateTime) {
-        DateDimension dateDimension = new DateDimension(dateTime);
-        template.save(dateDimension);
-        return dateDimension;
-    }
+    private static final DateTimeZone ISTTimeZone = DateTimeZone.forID("Asia/Calcutta");
 
     public DateDimension fetchFor(DateTime dateTime) {
+        DateTime dateWithTimeZone = dateTime.withZone(ISTTimeZone);
         return (DateDimension) template.getUniqueResult(
                 DateDimension.FIND_BY_DAY_MONTH_YEAR,
                 new String[]{"year", "month", "day"},
-                new Object[]{dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfYear()});
+                new Object[]{dateWithTimeZone.getYear(), dateWithTimeZone.getMonthOfYear(), dateWithTimeZone.getDayOfYear()});
     }
 }
