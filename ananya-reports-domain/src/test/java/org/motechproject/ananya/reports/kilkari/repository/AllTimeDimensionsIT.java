@@ -1,6 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.repository;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,14 @@ public class AllTimeDimensionsIT extends SpringIntegrationTest {
     private AllTimeDimensions allTimeDimensions;
 
     @Test
-    public void shouldFetchTimeDimensionForGivenDateTime() {
-        DateTime now = DateTime.now();
-        Integer hourOfDay = now.getHourOfDay();
-        Integer minuteOfHour = now.getMinuteOfHour();
+    public void shouldFetchTimeDimensionInISTForGivenDateTime() {
+        DateTime now = DateTime.now().withZone(DateTimeZone.UTC);
+        Integer expectedHourOfDay = now.withZone(DateTimeZone.forID("Asia/Calcutta")).getHourOfDay();
+        Integer expectedMinuteOfHour = now.withZone(DateTimeZone.forID("Asia/Calcutta")).getMinuteOfHour();
 
         TimeDimension timeDimension = allTimeDimensions.fetchFor(now);
 
-        assertEquals(hourOfDay, timeDimension.getHourOfDay());
-        assertEquals(minuteOfHour, timeDimension.getMinuteOfHour());
+        assertEquals(expectedHourOfDay, timeDimension.getHourOfDay());
+        assertEquals(expectedMinuteOfHour, timeDimension.getMinuteOfHour());
     }
 }
