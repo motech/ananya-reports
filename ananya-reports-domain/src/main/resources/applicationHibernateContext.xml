@@ -34,6 +34,7 @@
                 <value>org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignScheduleAlertDetails</value>
                 <value>org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure</value>
                 <value>org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure</value>
+                <value>org.motechproject.ananya.reports.kilkari.domain.SubscriberCareRequest</value>
             </list>
         </property>
 
@@ -52,6 +53,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>
