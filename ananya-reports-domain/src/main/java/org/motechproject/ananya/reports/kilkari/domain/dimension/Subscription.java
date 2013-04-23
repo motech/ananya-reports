@@ -1,7 +1,5 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 
@@ -21,12 +19,10 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "subscriber_id", nullable = false)
-    @Cascade(value = {CascadeType.DELETE})
     private Subscriber subscriber;
 
     @OneToOne
     @JoinColumn(name = "old_subscription_id")
-    @Cascade(value = {CascadeType.DELETE})
     private Subscription oldSubscription;
 
     @ManyToOne

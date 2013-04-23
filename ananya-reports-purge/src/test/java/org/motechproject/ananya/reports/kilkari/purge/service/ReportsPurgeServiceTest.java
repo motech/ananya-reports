@@ -59,12 +59,12 @@ public class ReportsPurgeServiceTest {
         order.verify(subscriberCallMeasureService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn1AsLong);
         order.verify(campaignScheduleAlertService).deleteFor(msisdn1AsLong);
-        order.verify(subscriptionService).deleteFor(msisdn1AsLong);
+        order.verify(subscriptionService).deleteCascade(msisdn1AsLong);
 
         order.verify(subscriberCallMeasureService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn2AsLong);
         order.verify(campaignScheduleAlertService).deleteFor(msisdn2AsLong);
-        order.verify(subscriptionService).deleteFor(msisdn2AsLong);
+        order.verify(subscriptionService).deleteCascade(msisdn2AsLong);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);
@@ -93,12 +93,12 @@ public class ReportsPurgeServiceTest {
         order.verify(subscriberCallMeasureService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn1AsLong);
         order.verify(campaignScheduleAlertService).deleteFor(msisdn1AsLong);
-        order.verify(subscriptionService).deleteFor(msisdn1AsLong);
+        order.verify(subscriptionService).deleteCascade(msisdn1AsLong);
 
         order.verify(subscriberCallMeasureService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn2AsLong);
         order.verify(campaignScheduleAlertService).deleteFor(msisdn2AsLong);
-        order.verify(subscriptionService).deleteFor(msisdn2AsLong);
+        order.verify(subscriptionService).deleteCascade(msisdn2AsLong);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);
@@ -126,12 +126,12 @@ public class ReportsPurgeServiceTest {
         order.verify(subscriberCallMeasureService).deleteFor(msisdn1AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn1AsLong);
         order.verify(campaignScheduleAlertService).deleteFor(msisdn1AsLong);
-        order.verify(subscriptionService).deleteFor(msisdn1AsLong);
+        order.verify(subscriptionService).deleteCascade(msisdn1AsLong);
 
         order.verify(subscriberCallMeasureService).deleteFor(msisdn2AsLong);
         order.verify(subscriptionStatusMeasureService).deleteFor(msisdn2AsLong);
         order.verify(campaignScheduleAlertService).deleteFor(msisdn2AsLong);
-        order.verify(subscriptionService).deleteFor(msisdn2AsLong);
+        order.verify(subscriptionService).deleteCascade(msisdn2AsLong);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);

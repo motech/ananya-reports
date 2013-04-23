@@ -8,15 +8,14 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.LocationDimension;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscriber;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.repository.AllDateDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscribers;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -74,5 +73,22 @@ public class SubscriberServiceTest {
         assertEquals(panchayat, actualSubscriber.getLocationDimension().getPanchayat());
         assertEquals(expectedDateDimension, actualSubscriber.getDateDimension());
         assertEquals(createdAt, new DateTime(actualSubscriber.getLastModifiedTime()));
+    }
+
+    @Test
+    public void shouldDeleteSubscribers() {
+        Subscriber subscriber1 = new Subscriber();
+        Set<Subscription> subscriptions = new HashSet<>();
+        SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("BARI_KILKARI");
+        Subscription subscription1 = new Subscription(1L, subscriber1, subscriptionPackDimension, null, null, null, null, DateTime.now(), DateTime.now(), "NEW", null);
+        subscriptions.add(subscription1);
+        Subscription subscription2 = new Subscription(1L, subscriber1, subscriptionPackDimension, null, null, null, null, DateTime.now(), DateTime.now(), "NEW", null);
+        subscriptions.add(subscription2);
+        HashSet<Subscriber> expectedSubscribers = new HashSet<>();
+        expectedSubscribers.add(subscriber1);
+
+        subscriberService.deleteFor(subscriptions);
+
+        verify(allSubscribers).delete(expectedSubscribers);
     }
 }

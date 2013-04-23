@@ -4,14 +4,14 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.contract.request.CampaignChangeReportRequest;
 import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -20,12 +20,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class SubscriptionServiceTest {
     @Mock
     private AllSubscriptions allSubscriptions;
+    @Mock
+    private SubscriberService subscriberService;
     private SubscriptionService subscriptionService;
 
     @Before
     public void setup() {
         initMocks(this);
-        subscriptionService = new SubscriptionService(allSubscriptions);
+        subscriptionService = new SubscriptionService(allSubscriptions, subscriberService);
     }
 
     @Test
@@ -58,12 +60,20 @@ public class SubscriptionServiceTest {
     }
 
     @Test
-    public void shouldDeleteAllSubscriptionsForAGivenMsisdn() {
+    public void shouldDeleteAllSubscriptionsForAGivenMsisdnAlongWithSubscribers() {
         Long msisdn = 1234L;
+        List<Subscription> subscriptionList = Arrays.asList(new Subscription());
+        when(allSubscriptions.findByMsisdn(msisdn)).thenReturn(subscriptionList);
+        Set<Subscription> deletedSubscriptions = new LinkedHashSet<>();
+        deletedSubscriptions.add(new Subscription());
+        when(allSubscriptions.deleteCascade(subscriptionList)).thenReturn(deletedSubscriptions);
 
-        subscriptionService.deleteFor(msisdn);
+        subscriptionService.deleteCascade(msisdn);
 
-        verify(allSubscriptions).deleteFor(msisdn);
+        InOrder order = inOrder(allSubscriptions, subscriberService);
+        order.verify(allSubscriptions).findByMsisdn(msisdn);
+        order.verify(allSubscriptions).deleteCascade(subscriptionList);
+        order.verify(subscriberService).deleteFor(deletedSubscriptions);
     }
 
     @Test

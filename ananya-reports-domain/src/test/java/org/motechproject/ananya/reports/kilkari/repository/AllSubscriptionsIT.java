@@ -8,10 +8,9 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class AllSubscriptionsIT extends SpringIntegrationTest {
 
@@ -78,25 +77,6 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
     }
 
     @Test
-    public void shouldDeleteSubscriptionAndSubscriberByMsisdn() {
-        String subscriptionId = "sub11";
-        Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension,
-                locationDimension, dateDimension, operatorDimension, null, DateTime.now());
-        int weekNumber = 13;
-        String subscriptionStatus = "ACTIVE";
-        Long msisdn = 123L;
-        Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null);
-        template.save(subscriber);
-        template.save(subscription);
-
-        allSubscriptions.deleteFor(msisdn);
-
-        assertTrue(template.loadAll(Subscription.class).isEmpty());
-        assertTrue(template.loadAll(Subscriber.class).isEmpty());
-    }
-
-    @Test
     public void shouldFindByMsisdn() {
         String subscriptionId1 = "sub11";
         String subscriptionId2 = "sub12";
@@ -134,5 +114,26 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
 
         Subscription updatedSubscription = allSubscriptions.findBySubscriptionId(subscriptionId);
         assertEquals("airtel", updatedSubscription.getOperatorDimension().getOperator());
+    }
+
+    @Test
+    public void shouldDeleteAllTheReferencingSubscriptionsAlso_GivenASubscription() {
+        Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension, null, DateTime.now());
+        template.save(subscriber);
+        Subscription subscription1 = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId1", now, now, "ACTIVE", null);
+        allSubscriptions.save(subscription1);
+        Subscription subscription2 = new Subscription(1234L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId2", now, now, "ACTIVE", subscription1);
+        allSubscriptions.save(subscription2);
+        Subscription subscription3 = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId3", now, now, "ACTIVE", subscription2);
+        allSubscriptions.save(subscription3);
+        Set<Subscription> expectedSubscriptions = new LinkedHashSet<>();
+        expectedSubscriptions.add(subscription3);
+        expectedSubscriptions.add(subscription2);
+        expectedSubscriptions.add(subscription1);
+
+        Set<Subscription> actualDeletedSubscriptions = allSubscriptions.deleteCascade(Arrays.asList(subscription1));
+
+        assertEquals(0, template.loadAll(Subscription.class).size());
+        assertEquals(expectedSubscriptions, actualDeletedSubscriptions);
     }
 }

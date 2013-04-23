@@ -6,7 +6,9 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class AllSubscriptions {
@@ -33,12 +35,30 @@ public class AllSubscriptions {
         return subscription;
     }
 
-    public void deleteFor(Long msisdn) {
-        List<Subscription> subscriptions = findByMsisdn(msisdn);
-        template.deleteAll(subscriptions);
-    }
-
     public void update(Subscription subscription) {
         template.update(subscription);
+    }
+
+    public Set<Subscription> deleteCascade(List<Subscription> subscriptions) {
+        Set<Subscription> subscriptionsToDelete = new LinkedHashSet<>();
+        populateSubscriptionsToDelete(subscriptions, subscriptionsToDelete);
+        template.deleteAll(subscriptionsToDelete);
+        return subscriptionsToDelete;
+    }
+
+    private void populateSubscriptionsToDelete(List<Subscription> subscriptions, Set<Subscription> subscriptionsToDelete) {
+        if (subscriptions.isEmpty())
+            return;
+        for (Subscription subscription : subscriptions) {
+            List<Subscription> newSubscriptions = findByOldSubscription(subscription);
+            populateSubscriptionsToDelete(newSubscriptions, subscriptionsToDelete);
+            subscriptionsToDelete.add(subscription);
+        }
+    }
+
+    private List<Subscription> findByOldSubscription(Subscription subscription) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Subscription.class);
+        criteria.add(Restrictions.eq("oldSubscription", subscription));
+        return template.findByCriteria(criteria);
     }
 }
