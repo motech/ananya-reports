@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class AllSubscribers {
@@ -35,5 +36,9 @@ public class AllSubscribers {
 
     public void saveOrUpdateAll(List<Subscriber> subscriberList) {
         template.saveOrUpdateAll(subscriberList);
+    }
+
+    public void delete(Set<Subscriber> subscribersToDelete) {
+        template.deleteAll(subscribersToDelete);
     }
 }

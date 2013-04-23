@@ -11,18 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SubscriptionService {
 
     private AllSubscriptions allSubscriptions;
 
+    private SubscriberService subscriberService;
+
     public SubscriptionService() {
     }
 
     @Autowired
-    public SubscriptionService(AllSubscriptions allSubscriptions) {
+    public SubscriptionService(AllSubscriptions allSubscriptions, SubscriberService subscriberService) {
         this.allSubscriptions = allSubscriptions;
+        this.subscriberService = subscriberService;
     }
 
     public Subscription makeFor(Subscription subscription) {
@@ -40,8 +44,10 @@ public class SubscriptionService {
     }
 
     @Transactional
-    public void deleteFor(Long msisdn) {
-        allSubscriptions.deleteFor(msisdn);
+    public void deleteCascade(Long msisdn) {
+        List<Subscription> subscriptions = findByMsisdn(msisdn.toString());
+        Set<Subscription> deletedSubscriptions = allSubscriptions.deleteCascade(subscriptions);
+        subscriberService.deleteFor(deletedSubscriptions);
     }
 
     public void updateLastScheduledMessageDate(String subscriptionId, DateTime lastScheduledMessageDate) {

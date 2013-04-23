@@ -62,7 +62,7 @@ public class ReportsPurgeService {
         subscriberCallMeasureService.deleteFor(msisdnInLong);
         subscriptionStatusMeasureService.deleteFor(msisdnInLong);
         campaignScheduleAlertService.deleteFor(msisdnInLong);
-        subscriptionService.deleteFor(msisdnInLong);
+        subscriptionService.deleteCascade(msisdnInLong);
         logger.info(String.format("Finished purging report records for msisdn: %s", msisdn));
     }
 }
