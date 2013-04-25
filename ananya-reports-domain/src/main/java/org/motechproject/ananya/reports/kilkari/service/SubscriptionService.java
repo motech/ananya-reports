@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -40,14 +41,13 @@ public class SubscriptionService {
 
     @Transactional
     public List<Subscription> findByMsisdn(String msisdn) {
-        return allSubscriptions.findByMsisdn(tryParse(msisdn));
+        Long msisdnAsLong = tryParse(msisdn);
+        return msisdnAsLong != null ? allSubscriptions.findByMsisdn(msisdnAsLong) : Collections.EMPTY_LIST;
     }
 
-    @Transactional
-    public void deleteCascade(Long msisdn) {
-        List<Subscription> subscriptions = findByMsisdn(msisdn.toString());
-        Set<Subscription> deletedSubscriptions = allSubscriptions.deleteCascade(subscriptions);
-        subscriberService.deleteFor(deletedSubscriptions);
+    public Set<Subscription> getAllRelatedSubscriptions(String msisdn) {
+        List<Subscription> subscriptions = findByMsisdn(msisdn);
+        return allSubscriptions.getAllRelatedSubscriptions(subscriptions);
     }
 
     public void updateLastScheduledMessageDate(String subscriptionId, DateTime lastScheduledMessageDate) {
@@ -71,5 +71,10 @@ public class SubscriptionService {
             return;
         subscription.updateMessageCampaignPack(MessageCampaignPack.from(campaignChangeReportRequest.getMessageCampaignPack()), campaignChangeReportRequest.getCreatedAt());
         allSubscriptions.update(subscription);
+    }
+
+    @Transactional
+    public void deleteAll(Set<Subscription> subscriptions) {
+        allSubscriptions.deleteAll(subscriptions);
     }
 }

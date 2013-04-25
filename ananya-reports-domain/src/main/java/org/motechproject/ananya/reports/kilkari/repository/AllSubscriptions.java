@@ -39,20 +39,19 @@ public class AllSubscriptions {
         template.update(subscription);
     }
 
-    public Set<Subscription> deleteCascade(List<Subscription> subscriptions) {
-        Set<Subscription> subscriptionsToDelete = new LinkedHashSet<>();
-        populateSubscriptionsToDelete(subscriptions, subscriptionsToDelete);
-        template.deleteAll(subscriptionsToDelete);
-        return subscriptionsToDelete;
+    public Set<Subscription> getAllRelatedSubscriptions(List<Subscription> subscriptions) {
+        Set<Subscription> allRelatedSubscriptions = new LinkedHashSet<>();
+        populateAllReferencedSubscriptions(subscriptions, allRelatedSubscriptions);
+        return allRelatedSubscriptions;
     }
 
-    private void populateSubscriptionsToDelete(List<Subscription> subscriptions, Set<Subscription> subscriptionsToDelete) {
+    private void populateAllReferencedSubscriptions(List<Subscription> subscriptions, Set<Subscription> allSubscriptions) {
         if (subscriptions.isEmpty())
             return;
         for (Subscription subscription : subscriptions) {
             List<Subscription> newSubscriptions = findByOldSubscription(subscription);
-            populateSubscriptionsToDelete(newSubscriptions, subscriptionsToDelete);
-            subscriptionsToDelete.add(subscription);
+            populateAllReferencedSubscriptions(newSubscriptions, allSubscriptions);
+            allSubscriptions.add(subscription);
         }
     }
 
@@ -60,5 +59,9 @@ public class AllSubscriptions {
         DetachedCriteria criteria = DetachedCriteria.forClass(Subscription.class);
         criteria.add(Restrictions.eq("oldSubscription", subscription));
         return template.findByCriteria(criteria);
+    }
+
+    public void deleteAll(Set<Subscription> subscriptions) {
+        template.deleteAll(subscriptions);
     }
 }

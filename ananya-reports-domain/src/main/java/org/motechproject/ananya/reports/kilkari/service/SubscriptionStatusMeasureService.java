@@ -127,8 +127,8 @@ public class SubscriptionStatusMeasureService {
     }
 
     @Transactional
-    public void deleteFor(Long msisdn) {
-        allSubscriptionStatusMeasure.deleteFor(msisdn);
+    public void deleteFor(Subscription subscription) {
+        allSubscriptionStatusMeasure.deleteFor(subscription);
     }
 
     private boolean isRequestForChangeSubscription(Subscription oldSubscription) {

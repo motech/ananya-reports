@@ -60,7 +60,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
     }
 
     @Test
-    public void shouldDeleteAllSubscriptionStatusMeasuresForAGivenMsisdn() {
+    public void shouldDeleteAllSubscriptionStatusMeasuresForAGivenSubscription() {
         String subscriptionPack = "NAVJAAT_KILKARI";
         String subscriptionId = "subscriptionId";
         DateTime createdAt = DateTime.now();
@@ -80,7 +80,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
         template.save(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, createdAt));
 
-        allSubscriptionStatusMeasure.deleteFor(msisdn);
+        allSubscriptionStatusMeasure.deleteFor(subscription);
 
         List<SubscriptionStatusMeasure> subscriptionStatusMeasures = template.loadAll(SubscriptionStatusMeasure.class);
         assertEquals(0, subscriptionStatusMeasures.size());

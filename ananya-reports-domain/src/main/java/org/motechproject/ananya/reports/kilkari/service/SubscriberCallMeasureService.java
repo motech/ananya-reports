@@ -59,8 +59,8 @@ public class SubscriberCallMeasureService {
     }
 
     @Transactional
-    public void deleteFor(Long msisdn) {
-        allSubscriberCallMeasures.deleteFor(msisdn);
+    public void deleteFor(Subscription subscription) {
+        allSubscriberCallMeasures.deleteFor(subscription);
     }
 
     private Integer getPercentageListenedTo(CallDetailsReportRequest callDetailsReportRequest, CampaignDimension campaignDimension) {

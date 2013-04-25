@@ -46,17 +46,17 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
     }
 
     @Test
-    public void shouldDeleteCampaignScheduleAlertsGivenASubscriptionId(){
+    public void shouldDeleteCampaignScheduleAlertsGivenASubscription(){
         setUpSubscription();
 
-        allCampaignScheduleAlerts.deleteFor(subscription.getMsisdn());
+        allCampaignScheduleAlerts.deleteFor(subscription);
 
         assertEquals(0, template.loadAll(CampaignScheduleAlertDetails.class).size());
     }
 
     @Test
-    public void shouldNotThrowExceptionsIfThereAreNoCMAForAGivenMsisdn(){
-        allCampaignScheduleAlerts.deleteFor(1234567890L);
+    public void shouldNotThrowExceptionsIfThereAreNoCMAForAGivenSubscription(){
+        allCampaignScheduleAlerts.deleteFor(subscription);
 
         assertEquals(0, template.loadAll(CampaignScheduleAlertDetails.class).size());
     }

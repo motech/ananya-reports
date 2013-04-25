@@ -17,5 +17,10 @@
             <artifactId>ananya-reports-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.motechproject.ananya.reports</groupId>
+            <artifactId>ananya-reports-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.motechproject.ananya.reports.kilkari.contract.request.CampaignChangeReportRequest;
 import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
@@ -14,6 +13,7 @@ import org.motechproject.ananya.reports.kilkari.repository.AllSubscriptions;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -60,20 +60,13 @@ public class SubscriptionServiceTest {
     }
 
     @Test
-    public void shouldDeleteAllSubscriptionsForAGivenMsisdnAlongWithSubscribers() {
-        Long msisdn = 1234L;
-        List<Subscription> subscriptionList = Arrays.asList(new Subscription());
-        when(allSubscriptions.findByMsisdn(msisdn)).thenReturn(subscriptionList);
-        Set<Subscription> deletedSubscriptions = new LinkedHashSet<>();
-        deletedSubscriptions.add(new Subscription());
-        when(allSubscriptions.deleteCascade(subscriptionList)).thenReturn(deletedSubscriptions);
+    public void shouldIgnoreInvalidMsisdnStringWhenFindingSubscriptionsByMsisdn() {
+        String msisdn = "aragorn";
 
-        subscriptionService.deleteCascade(msisdn);
+        List<Subscription> actualSubscriptionList = subscriptionService.findByMsisdn(msisdn);
 
-        InOrder order = inOrder(allSubscriptions, subscriberService);
-        order.verify(allSubscriptions).findByMsisdn(msisdn);
-        order.verify(allSubscriptions).deleteCascade(subscriptionList);
-        order.verify(subscriberService).deleteFor(deletedSubscriptions);
+        verify(allSubscriptions, never()).findByMsisdn(anyLong());
+        assertTrue(actualSubscriptionList.isEmpty());
     }
 
     @Test
@@ -115,5 +108,32 @@ public class SubscriptionServiceTest {
         subscriptionService.updateMessageCampaign(new CampaignChangeReportRequest(MessageCampaignPack.INFANT_DEATH.name(), DateTime.now()), subscriptionId);
 
         verify(allSubscriptions, never()).update(any(Subscription.class));
+    }
+
+    @Test
+    public void shouldGetAllRelatedSubscriptionsGivenAnMsisdn() {
+        String msisdn = "1234567890";
+        Long msisdnAsLong = Long.valueOf(msisdn);
+        List<Subscription> subscriptions = Arrays.asList(new Subscription());
+        when(allSubscriptions.findByMsisdn(msisdnAsLong)).thenReturn(subscriptions);
+        Set<Subscription> expectedRelatedSubscriptions = new LinkedHashSet<>();
+        expectedRelatedSubscriptions.add(new Subscription());
+        when(allSubscriptions.getAllRelatedSubscriptions(subscriptions)).thenReturn(expectedRelatedSubscriptions);
+
+        Set<Subscription> actualRelatedSubscriptions = subscriptionService.getAllRelatedSubscriptions(msisdn);
+
+        verify(allSubscriptions).findByMsisdn(msisdnAsLong);
+        verify(allSubscriptions).getAllRelatedSubscriptions(subscriptions);
+        assertEquals(expectedRelatedSubscriptions, actualRelatedSubscriptions);
+    }
+
+    @Test
+    public void shouldDeleteGivenSetOfSubscriptions() {
+        HashSet<Subscription> subscriptions = new HashSet<>();
+        subscriptions.add(new Subscription());
+
+        subscriptionService.deleteAll(subscriptions);
+
+        verify(allSubscriptions).deleteAll(subscriptions);
     }
 }
