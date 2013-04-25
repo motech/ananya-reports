@@ -68,10 +68,10 @@ public class CampaignScheduleAlertServiceTest {
 
     @Test
     public void shouldDeleteCampaginScheduleAlerts(){
-        Long msisdn = 123456790L;
+        Subscription subscription = new Subscription();
 
-        campaignScheduleAlertService.deleteFor(msisdn);
+        campaignScheduleAlertService.deleteFor(subscription);
 
-        verify(allCampaignScheduleAlerts).deleteFor(msisdn);
+        verify(allCampaignScheduleAlerts).deleteFor(subscription);
     }
 }

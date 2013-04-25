@@ -391,11 +391,11 @@ public class SubscriptionStatusMeasureServiceTest {
     }
 
     @Test
-    public void shouldDeleteSubscriptionStatusMeasuresForAGivenMsisdn() {
-        Long msisdn = 1234L;
+    public void shouldDeleteSubscriptionStatusMeasuresForAGivenSubscription() {
+        Subscription subscription = new Subscription();
 
-        subscriptionStatusMeasureService.deleteFor(msisdn);
+        subscriptionStatusMeasureService.deleteFor(subscription);
 
-        verify(allSubscriptionStatusMeasure).deleteFor(msisdn);
+        verify(allSubscriptionStatusMeasure).deleteFor(subscription);
     }
 }

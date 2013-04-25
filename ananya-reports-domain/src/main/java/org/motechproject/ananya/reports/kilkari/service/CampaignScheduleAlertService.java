@@ -2,10 +2,7 @@ package org.motechproject.ananya.reports.kilkari.service;
 
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.CampaignScheduleAlertRequest;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignDimension;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.CampaignScheduleAlertDetails;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
-import org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +47,7 @@ public class CampaignScheduleAlertService {
     }
 
     @Transactional
-    public void deleteFor(Long msisdn) {
-        allCampaignScheduleAlerts.deleteFor(msisdn);
+    public void deleteFor(Subscription subscription) {
+        allCampaignScheduleAlerts.deleteFor(subscription);
     }
 }

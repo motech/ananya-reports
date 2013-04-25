@@ -238,11 +238,11 @@ public class SubscriberCallMeasureServiceTest {
     }
 
     @Test
-    public void shouldDeleteAllCallMeasuresForAGivenMsisdn() {
-        Long msisdn = 1234L;
+    public void shouldDeleteAllCallMeasuresForAGivenSubscription() {
+        Subscription subscription = new Subscription();
 
-        subscriberCallMeasureService.deleteFor(msisdn);
+        subscriberCallMeasureService.deleteFor(subscription);
 
-        verify(allSubscriberCallMeasures).deleteFor(msisdn);
+        verify(allSubscriberCallMeasures).deleteFor(subscription);
     }
 }

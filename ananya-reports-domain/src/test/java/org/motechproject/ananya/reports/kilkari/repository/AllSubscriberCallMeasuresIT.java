@@ -103,12 +103,11 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
     }
 
     @Test
-    public void shouldRemoveAllMeasuresForAnMsisdn() {
+    public void shouldRemoveAllMeasuresForASubscription() {
         Integer duration = 50;
         Integer percentageListened = 90;
         String serviceOption = "HELP";
         String callStatus = "SUCCESS";
-        Integer retryCount = 2;
         String campaignId = "week1";
         DateTime subscriberCreatedDateTime = DateTime.now().minusMonths(1);
         DateTime callStartDateTime = DateTime.now();
@@ -146,7 +145,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
                 endTime,
                 callSource, subscription.getSubscriptionStatus(),2));
 
-        allSubscriberCallMeasures.deleteFor(msisdn);
+        allSubscriberCallMeasures.deleteFor(subscription);
 
         List<SubscriberCallMeasure> subscriberCallMeasures = template.loadAll(SubscriberCallMeasure.class);
         assertTrue(subscriberCallMeasures.isEmpty());

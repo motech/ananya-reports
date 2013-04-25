@@ -116,8 +116,9 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         assertEquals("airtel", updatedSubscription.getOperatorDimension().getOperator());
     }
 
+
     @Test
-    public void shouldDeleteAllTheReferencingSubscriptionsAlso_GivenASubscription() {
+    public void shouldGetAllTheReferencingSubscriptionsAlso_GivenASubscription() {
         Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension, null, DateTime.now());
         template.save(subscriber);
         Subscription subscription1 = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId1", now, now, "ACTIVE", null);
@@ -131,9 +132,25 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         expectedSubscriptions.add(subscription2);
         expectedSubscriptions.add(subscription1);
 
-        Set<Subscription> actualDeletedSubscriptions = allSubscriptions.deleteCascade(Arrays.asList(subscription1));
+        Set<Subscription> actualRelatedSubscriptions = allSubscriptions.getAllRelatedSubscriptions(Arrays.asList(subscription1));
+
+        assertEquals(expectedSubscriptions, actualRelatedSubscriptions);
+    }
+
+    @Test
+    public void shouldDeleteGivenSetOfSubscriptions(){
+        Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension, locationDimension, dateDimension, operatorDimension, null, DateTime.now());
+        template.save(subscriber);
+        Subscription subscription1 = new Subscription(123L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId1", now, now, "ACTIVE", null);
+        allSubscriptions.save(subscription1);
+        Subscription subscription2 = new Subscription(1234L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId2", now, now, "ACTIVE", subscription1);
+        allSubscriptions.save(subscription2);
+        HashSet<Subscription> subscriptions = new HashSet<>();
+        subscriptions.add(subscription1);
+        subscriptions.add(subscription2);
+
+        allSubscriptions.deleteAll(subscriptions);
 
         assertEquals(0, template.loadAll(Subscription.class).size());
-        assertEquals(expectedSubscriptions, actualDeletedSubscriptions);
     }
 }
