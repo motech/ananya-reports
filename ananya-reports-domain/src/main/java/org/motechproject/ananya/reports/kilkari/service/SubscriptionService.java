@@ -45,6 +45,7 @@ public class SubscriptionService {
         return msisdnAsLong != null ? allSubscriptions.findByMsisdn(msisdnAsLong) : Collections.EMPTY_LIST;
     }
 
+    @Transactional
     public Set<Subscription> getAllRelatedSubscriptions(String msisdn) {
         List<Subscription> subscriptions = findByMsisdn(msisdn);
         return allSubscriptions.getAllRelatedSubscriptions(subscriptions);
