@@ -84,7 +84,9 @@ public class ReportsPurgeService {
             return;
         }
 
-        String filePath = inputFile.getParent() + "/purged_msisdns";
+        String parentDirectory = inputFile.getParent();
+        parentDirectory = parentDirectory == null ? System.getProperty("user.dir") : parentDirectory;
+        String filePath = parentDirectory + "/purged_msisdns";
         logger.info(String.format("Writing purged msisdns to file %s", filePath));
         File outputFile = new File(filePath);
         FileUtils.writeLines(outputFile, purgedMsisdns);
