@@ -1,5 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.purge.service;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.commons.io.FileUtils;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.service.*;
@@ -33,20 +35,16 @@ public class ReportsPurgeService {
     }
 
     public void purgeSubscriptionData(String filePath) throws IOException {
-        List<String> msisdnList = readFile(filePath);
+        File inputFile = new File(filePath);
+        List<String> msisdnList = FileUtils.readLines(inputFile);
 
         Set<Subscription> allSubscriptionsToPurge = findAllSubscriptionsToPurge(msisdnList);
-
         for (Subscription subscription : allSubscriptionsToPurge) {
             purgeMeasuresFor(subscription);
         }
-
         purgeDimensions(allSubscriptionsToPurge);
-    }
 
-    private List<String> readFile(String filePath) throws IOException {
-        File inputFile = new File(filePath);
-        return FileUtils.readLines(inputFile);
+        writePurgedMsisdnsToFile(allSubscriptionsToPurge, inputFile);
     }
 
     private Set<Subscription> findAllSubscriptionsToPurge(List<String> msisdnList) {
@@ -69,5 +67,26 @@ public class ReportsPurgeService {
     private void purgeDimensions(Set<Subscription> allSubscriptionsToPurge) {
         subscriptionService.deleteAll(allSubscriptionsToPurge);
         subscriberService.deleteFor(allSubscriptionsToPurge);
+    }
+
+    private void writePurgedMsisdnsToFile(Set<Subscription> allSubscriptionsToPurge, File inputFile) throws IOException {
+        Set<String> purgedMsisdns = new LinkedHashSet<>();
+        CollectionUtils.collect(allSubscriptionsToPurge, new Transformer() {
+            @Override
+            public Object transform(Object input) {
+                Subscription subscription = (Subscription) input;
+                return subscription.getMsisdn();
+            }
+        }, purgedMsisdns);
+
+        if (purgedMsisdns.isEmpty()) {
+            logger.info("No msisdns purged to write it to a file.");
+            return;
+        }
+
+        String filePath = inputFile.getParent() + "/purged_msisdns";
+        logger.info(String.format("Writing purged msisdns to file %s", filePath));
+        File outputFile = new File(filePath);
+        FileUtils.writeLines(outputFile, purgedMsisdns);
     }
 }

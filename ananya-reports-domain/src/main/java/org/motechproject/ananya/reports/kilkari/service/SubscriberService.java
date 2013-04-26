@@ -46,6 +46,7 @@ public class SubscriberService {
         allSubscribers.save(subscriber);
     }
 
+    @Transactional
     public void deleteFor(Set<Subscription> subscriptions) {
         Set<Subscriber> subscribersToDelete = new HashSet<>();
         for (Subscription subscription : subscriptions) {
