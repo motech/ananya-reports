@@ -1,5 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 
@@ -153,5 +155,15 @@ public class Subscription {
 
     public void setLastScheduledMessageDate(Timestamp lastScheduledMessageDate) {
         this.lastScheduledMessageDate = lastScheduledMessageDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
