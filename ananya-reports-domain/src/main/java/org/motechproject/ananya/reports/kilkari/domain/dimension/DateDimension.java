@@ -1,5 +1,7 @@
 package org.motechproject.ananya.reports.kilkari.domain.dimension;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -100,5 +102,15 @@ public class DateDimension {
                 && this.week.equals(time.getWeekOfWeekyear())
                 && this.month.equals(time.getMonthOfYear())
                 && this.year.equals(time.getYear());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
