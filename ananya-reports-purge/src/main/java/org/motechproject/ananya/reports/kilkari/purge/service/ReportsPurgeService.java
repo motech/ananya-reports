@@ -23,15 +23,19 @@ public class ReportsPurgeService {
     private SubscriptionService subscriptionService;
     private CampaignScheduleAlertService campaignScheduleAlertService;
     private SubscriberService subscriberService;
+    private SubscriberCareHelpService subscriberCareHelpService;
     private final Logger logger = LoggerFactory.getLogger(ReportsPurgeService.class);
 
     @Autowired
-    public ReportsPurgeService(SubscriberCallMeasureService subscriberCallMeasureService, SubscriptionStatusMeasureService subscriptionStatusMeasureService, SubscriptionService subscriptionService, CampaignScheduleAlertService campaignScheduleAlertService, SubscriberService subscriberService) {
+    public ReportsPurgeService(SubscriberCallMeasureService subscriberCallMeasureService, SubscriptionStatusMeasureService subscriptionStatusMeasureService,
+                               SubscriptionService subscriptionService, CampaignScheduleAlertService campaignScheduleAlertService,
+                               SubscriberService subscriberService, SubscriberCareHelpService subscriberCareHelpService) {
         this.subscriberCallMeasureService = subscriberCallMeasureService;
         this.subscriptionStatusMeasureService = subscriptionStatusMeasureService;
         this.subscriptionService = subscriptionService;
         this.campaignScheduleAlertService = campaignScheduleAlertService;
         this.subscriberService = subscriberService;
+        this.subscriberCareHelpService = subscriberCareHelpService;
     }
 
     public void purgeSubscriptionData(String filePath) throws IOException {
@@ -58,15 +62,17 @@ public class ReportsPurgeService {
     }
 
     private void purgeMeasuresFor(Subscription subscription) {
-        logger.info(String.format("Purging report records for msisdn: %s", subscription.getMsisdn()));
+        logger.info(String.format("Purging report measure records for msisdn: %s", subscription.getMsisdn()));
         subscriberCallMeasureService.deleteFor(subscription);
         subscriptionStatusMeasureService.deleteFor(subscription);
         campaignScheduleAlertService.deleteFor(subscription);
     }
 
     private void purgeDimensions(Set<Subscription> allSubscriptionsToPurge) {
+        logger.info("Purging report dimension records");
         subscriptionService.deleteAll(allSubscriptionsToPurge);
         subscriberService.deleteFor(allSubscriptionsToPurge);
+        subscriberCareHelpService.deleteFor(allSubscriptionsToPurge);
     }
 
     private void writePurgedMsisdnsToFile(Set<Subscription> allSubscriptionsToPurge, File inputFile) throws IOException {
@@ -80,7 +86,7 @@ public class ReportsPurgeService {
         }, purgedMsisdns);
 
         if (purgedMsisdns.isEmpty()) {
-            logger.info("No msisdns purged to write it to a file.");
+            logger.info("No msisdns purged to write it in a file.");
             return;
         }
 

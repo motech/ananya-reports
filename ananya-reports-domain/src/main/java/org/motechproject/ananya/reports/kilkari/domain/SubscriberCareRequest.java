@@ -1,6 +1,8 @@
 package org.motechproject.ananya.reports.kilkari.domain;
 
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.ChannelDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension;
@@ -15,7 +17,7 @@ public class SubscriberCareRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "msisdn")
-    private Long msisdn;
+    private String msisdn;
     @Column(name = "reason")
     private String reason;
     @ManyToOne
@@ -32,7 +34,7 @@ public class SubscriberCareRequest {
     }
 
     public SubscriberCareRequest(Long msisdn, String reason, ChannelDimension channelDimension, DateDimension dateDimension, TimeDimension timeDimension) {
-        this.msisdn = msisdn;
+        this.msisdn = msisdn != null ? String.valueOf(msisdn) : null;
         this.reason = reason;
         this.channelDimension = channelDimension;
         this.dateDimension = dateDimension;
@@ -43,7 +45,7 @@ public class SubscriberCareRequest {
         return id;
     }
 
-    public Long getMsisdn() {
+    public String getMsisdn() {
         return msisdn;
     }
 
@@ -62,4 +64,15 @@ public class SubscriberCareRequest {
     public TimeDimension getTimeDimension() {
         return timeDimension;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
 }

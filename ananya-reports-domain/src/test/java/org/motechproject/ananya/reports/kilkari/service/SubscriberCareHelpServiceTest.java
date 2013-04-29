@@ -10,15 +10,18 @@ import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberCareR
 import org.motechproject.ananya.reports.kilkari.domain.SubscriberCareRequest;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.ChannelDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
+import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension;
 import org.motechproject.ananya.reports.kilkari.repository.AllChannelDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllDateDimensions;
 import org.motechproject.ananya.reports.kilkari.repository.AllSubscriberCareHelpRequest;
 import org.motechproject.ananya.reports.kilkari.repository.AllTimeDimensions;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class SubscriberCareHelpServiceTest {
@@ -57,10 +60,30 @@ public class SubscriberCareHelpServiceTest {
         ArgumentCaptor<SubscriberCareRequest> subscriberCareRequestArgumentCaptor = ArgumentCaptor.forClass(SubscriberCareRequest.class);
         verify(allSubscriberCareHelpRequest).createFor(subscriberCareRequestArgumentCaptor.capture());
         SubscriberCareRequest actualRequest = subscriberCareRequestArgumentCaptor.getValue();
-        assertEquals(new Long(1234567890), actualRequest.getMsisdn());
+        assertEquals("1234567890", actualRequest.getMsisdn());
         assertEquals(reason, actualRequest.getReason());
         assertEquals(channelDimension, actualRequest.getChannelDimension());
         assertEquals(expectedDateDimension, actualRequest.getDateDimension());
         assertEquals(expectedTimeDimension, actualRequest.getTimeDimension());
+    }
+
+    @Test
+    public void shouldDeleteAllSubscriberCareRequestsForGivenSubscriptions() {
+        Long msisdn = 1234567890L;
+        HashSet<Subscription> subscriptions = new HashSet<>();
+        Subscription mockedSubscription = mock(Subscription.class);
+        subscriptions.add(mockedSubscription);
+        SubscriberCareRequest careRequest = new SubscriberCareRequest(msisdn, "reason", null, null, null);
+        HashSet<SubscriberCareRequest> expectedCareRequestToBeDeleted = new HashSet<>();
+        expectedCareRequestToBeDeleted.add(careRequest);
+        when(mockedSubscription.getMsisdn()).thenReturn(msisdn);
+        when(allSubscriberCareHelpRequest.findByMsisdn(msisdn.toString())).thenReturn(Arrays.asList(careRequest));
+
+        subscriberCareHelpService.deleteFor(subscriptions);
+
+        verify(allSubscriberCareHelpRequest).findByMsisdn(msisdn.toString());
+        verify(allSubscriberCareHelpRequest, times(1)).findByMsisdn(anyString());
+        verify(allSubscriberCareHelpRequest).deleteAll(expectedCareRequestToBeDeleted);
+        verifyNoMoreInteractions(allSubscriberCareHelpRequest);
     }
 }

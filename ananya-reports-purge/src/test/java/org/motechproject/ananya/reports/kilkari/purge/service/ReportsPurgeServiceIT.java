@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.motechproject.ananya.reports.kilkari.domain.SubscriberCareRequest;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriberCallMeasure;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
@@ -63,6 +64,7 @@ public class ReportsPurgeServiceIT {
         assertTrue(template.loadAll(CampaignScheduleAlertDetails.class).isEmpty());
         assertTrue(template.loadAll(Subscription.class).isEmpty());
         assertTrue(template.loadAll(Subscriber.class).isEmpty());
+        assertTrue(template.loadAll(SubscriberCareRequest.class).isEmpty());
     }
 
     private String setUpFile() throws IOException {
@@ -104,5 +106,8 @@ public class ReportsPurgeServiceIT {
         template.save(new CampaignScheduleAlertDetails(subscription1, campaignDimension, dateDimension, timeDimension));
         template.save(new CampaignScheduleAlertDetails(subscription2, campaignDimension, dateDimension, timeDimension));
         template.save(new CampaignScheduleAlertDetails(subscription3, campaignDimension, dateDimension, timeDimension));
+        template.save(new SubscriberCareRequest(msisdnToPurge, "Reason 1", channelDimension, dateDimension, timeDimension));
+        template.save(new SubscriberCareRequest(msisdnToPurge, "Reason 1", channelDimension, dateDimension, timeDimension));
+        template.save(new SubscriberCareRequest(msisdnToPurge, "Reason 2", channelDimension, dateDimension, timeDimension));
     }
 }
