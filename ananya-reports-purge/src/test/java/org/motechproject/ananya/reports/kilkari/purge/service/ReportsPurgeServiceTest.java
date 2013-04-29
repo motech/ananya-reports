@@ -32,6 +32,8 @@ public class ReportsPurgeServiceTest {
     private CampaignScheduleAlertService campaignScheduleAlertService;
     @Mock
     private SubscriberService subscriberService;
+    @Mock
+    private SubscriberCareHelpService subscriberCareHelpService;
 
     private ReportsPurgeService reportsPurgeService;
     private File tempFile;
@@ -39,7 +41,7 @@ public class ReportsPurgeServiceTest {
 
     @Before
     public void setUp() throws IOException {
-        reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService, campaignScheduleAlertService, subscriberService);
+        reportsPurgeService = new ReportsPurgeService(subscriberCallMeasureService, subscriptionStatusMeasureService, subscriptionService, campaignScheduleAlertService, subscriberService, subscriberCareHelpService);
         tempFile = File.createTempFile("tmp", "txt");
         tempFile.deleteOnExit();
         filePath = tempFile.getAbsolutePath();
@@ -72,7 +74,7 @@ public class ReportsPurgeServiceTest {
 
         reportsPurgeService.purgeSubscriptionData(filePath);
 
-        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, campaignScheduleAlertService, subscriptionService, subscriberService);
+        InOrder order = inOrder(subscriberCallMeasureService, subscriptionStatusMeasureService, campaignScheduleAlertService, subscriptionService, subscriberService, subscriberCareHelpService);
 
         order.verify(subscriptionService).getAllRelatedSubscriptions(msisdn1);
         order.verify(subscriptionService).getAllRelatedSubscriptions(msisdn2);
@@ -82,12 +84,14 @@ public class ReportsPurgeServiceTest {
         verifyOrderedMeasureDeletion(order, subscription2);
         order.verify(subscriptionService).deleteAll(expectedSubscriptions);
         order.verify(subscriberService).deleteFor(expectedSubscriptions);
+        order.verify(subscriberCareHelpService).deleteFor(expectedSubscriptions);
 
         verifyNoMoreInteractions(subscriberCallMeasureService);
         verifyNoMoreInteractions(subscriptionStatusMeasureService);
         verifyNoMoreInteractions(campaignScheduleAlertService);
         verifyNoMoreInteractions(subscriptionService);
         verifyNoMoreInteractions(subscriberService);
+        verifyNoMoreInteractions(subscriberCareHelpService);
     }
 
     private void verifyOrderedMeasureDeletion(InOrder order, Subscription subscription) {

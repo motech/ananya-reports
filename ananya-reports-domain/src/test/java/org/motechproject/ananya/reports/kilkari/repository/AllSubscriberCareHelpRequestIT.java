@@ -10,9 +10,11 @@ import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.TimeDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class AllSubscriberCareHelpRequestIT extends SpringIntegrationTest {
 
@@ -33,7 +35,7 @@ public class AllSubscriberCareHelpRequestIT extends SpringIntegrationTest {
 
     @Test
     public void shouldSaveHelpRequest() {
-        long msisdn = 1234567890L;
+        Long msisdn = 1234567890L;
         String reason = "HELP";
         String channel = "ivr";
         DateTime now = DateTime.now();
@@ -46,10 +48,44 @@ public class AllSubscriberCareHelpRequestIT extends SpringIntegrationTest {
 
         List<SubscriberCareRequest> subscriberCareRequests = template.loadAll(SubscriberCareRequest.class);
         assertEquals(1, subscriberCareRequests.size());
-        assertEquals(new Long(msisdn), subscriberCareRequest.getMsisdn());
+        assertEquals(msisdn.toString(), subscriberCareRequest.getMsisdn());
         assertEquals(channelDimension.getChannel(), subscriberCareRequest.getChannelDimension().getChannel());
         assertEquals(reason, subscriberCareRequest.getReason());
         assertEquals(dateDimension, subscriberCareRequest.getDateDimension());
         assertEquals(timeDimension, subscriberCareRequest.getTimeDimension());
+    }
+
+    @Test
+    public void shouldFindByMsisdn() {
+        Long msisdn = 1234567890L;
+        String reason = "HELP";
+        String channel = "ivr";
+        DateTime now = DateTime.now();
+        ChannelDimension channelDimension = allChannelDimensions.fetchFor(channel);
+        DateDimension dateDimension = allDateDimensions.fetchFor(now);
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(now);
+        SubscriberCareRequest subscriberCareRequest = new SubscriberCareRequest(msisdn, reason, channelDimension, dateDimension, timeDimension);
+        template.save(subscriberCareRequest);
+
+        List<SubscriberCareRequest> actualCareRequests = allSubscriberCareHelpRequest.findByMsisdn(msisdn.toString());
+
+        assertEquals(1, actualCareRequests.size());
+        assertEquals(subscriberCareRequest, actualCareRequests.get(0));
+    }
+
+    @Test
+    public void shouldDeleteAllSubscriberCareRequests() {
+        DateTime now = DateTime.now();
+        HashSet<SubscriberCareRequest> subscriberCareRequests = new HashSet<>();
+        ChannelDimension channelDimension = allChannelDimensions.fetchFor("ivr");
+        DateDimension dateDimension = allDateDimensions.fetchFor(now);
+        TimeDimension timeDimension = allTimeDimensions.fetchFor(now);
+        subscriberCareRequests.add(new SubscriberCareRequest(1234567890L, "reason", channelDimension, dateDimension, timeDimension));
+        subscriberCareRequests.add(new SubscriberCareRequest(1234567891L, "reason", channelDimension, dateDimension, timeDimension));
+        template.saveOrUpdateAll(subscriberCareRequests);
+
+        allSubscriberCareHelpRequest.deleteAll(subscriberCareRequests);
+
+        assertTrue(template.loadAll(SubscriberCareRequest.class).isEmpty());
     }
 }
