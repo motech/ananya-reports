@@ -3,6 +3,7 @@ package org.motechproject.ananya.reports.kilkari.contract.request;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 public class LocationRequest {
+    private String state;
     private String district;
     private String block;
     private String panchayat;
@@ -10,10 +11,15 @@ public class LocationRequest {
     public LocationRequest() {
     }
 
-    public LocationRequest(String district, String block, String panchayat) {
+    public LocationRequest(String state, String district, String block, String panchayat) {
+        this.state = state;
         this.district = district;
         this.block = block;
         this.panchayat = panchayat;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public String getDistrict() {
@@ -36,7 +42,8 @@ public class LocationRequest {
     @Override
     public String toString() {
         return "LocationRequest{" +
-                "district='" + district +
+                "state='" + state +
+                "', district='" + district +
                 "', block='" + block +
                 "', panchayat='" + panchayat +
                 "'}";

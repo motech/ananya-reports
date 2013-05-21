@@ -11,16 +11,17 @@ import static org.junit.Assert.assertNull;
 public class SubscriberTest {
     @Test
     public void shouldUpdateSubscriberWithGivenDetails() {
+        String state = "s1";
         String district = "d1";
         String block = "b1";
         String panchayat = "p1";
-        SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
+        SubscriberLocation location = new SubscriberLocation(state, district, block, panchayat);
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, null, DateTime.now());
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension(state, "D1", "B1", "P1", "VALID"), null, null, null, DateTime.now());
         DateDimension expectedDateDimension = new DateDimension();
-        LocationDimension expectedLocationDimension = new LocationDimension(district, block, panchayat, "VALID");
+        LocationDimension expectedLocationDimension = new LocationDimension(state, district, block, panchayat, "VALID");
 
         subscriber.updateWith(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge,
                 location), expectedLocationDimension, expectedDateDimension);
@@ -40,7 +41,7 @@ public class SubscriberTest {
         Integer startWeekNumber = 33;
         DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
         DateTime newLastModifiedTime = DateTime.now();
-        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("S1", "D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
 
         subscriber.updateSubscriptionDates(oldEdd, newDob, startWeekNumber, newLastModifiedTime);
 
@@ -57,7 +58,7 @@ public class SubscriberTest {
         Integer startWeekNumber = 33;
         DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
         DateTime newLastModifiedTime = DateTime.now();
-        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("S1", "D1", "B1", "P1", "VALID"), null, null, startWeekNumber, oldLastModifiedTime);
 
         subscriber.updateSubscriptionDates(null, oldDob, startWeekNumber, newLastModifiedTime);
 
@@ -75,7 +76,7 @@ public class SubscriberTest {
         Integer newStartWeekNumber = 64;
         DateTime oldLastModifiedTime = DateTime.now().minusDays(5);
         DateTime newLastModifiedTime = DateTime.now();
-        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, oldStartWeekNumber, oldLastModifiedTime);
+        Subscriber subscriber = new Subscriber("oldName", 23, oldEdd, oldDob, null, new LocationDimension("S1", "D1", "B1", "P1", "VALID"), null, null, oldStartWeekNumber, oldLastModifiedTime);
 
         subscriber.updateSubscriptionDates(oldEdd, oldDob, newStartWeekNumber, newLastModifiedTime);
 
@@ -91,7 +92,7 @@ public class SubscriberTest {
         DateTime dob = DateTime.now().minusYears(3);
         Integer startWeekNumber = 33;
         DateTime lastModifiedTime = DateTime.now().minusDays(5);
-        Subscriber subscriber = new Subscriber("oldName", 23, edd, dob, null, new LocationDimension("D1", "B1", "P1", "VALID"), null, null, startWeekNumber, lastModifiedTime);
+        Subscriber subscriber = new Subscriber("oldName", 23, edd, dob, null, new LocationDimension("S1", "D1", "B1", "P1", "VALID"), null, null, startWeekNumber, lastModifiedTime);
 
         subscriber.updateSubscriptionDates(edd, dob, startWeekNumber, lastModifiedTime);
 

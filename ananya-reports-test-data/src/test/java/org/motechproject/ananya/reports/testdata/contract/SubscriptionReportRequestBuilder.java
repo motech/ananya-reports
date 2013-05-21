@@ -38,11 +38,12 @@ public class SubscriptionReportRequestBuilder {
         this.createdAt = DateTime.now();
         this.subscriptionStatus = "NEW";
 
+        String testState = "testState"+RandomStringUtils.randomNumeric(100);
         String testDistrict = "testDistrict"+RandomStringUtils.randomNumeric(100);
         String testBlock = "testBlock"+RandomStringUtils.randomNumeric(100);
         String testPanchayat = "testPanchayat"+RandomStringUtils.randomNumeric(100);
 
-        this.location = new SubscriberLocation(testDistrict, testBlock, testPanchayat);
+        this.location = new SubscriberLocation(testState, testDistrict, testBlock, testPanchayat);
         this.startDate = DateTime.now() ;
         this.oldSubscriptionId = null;
         this.reason = "Script data";
@@ -94,16 +95,6 @@ public class SubscriptionReportRequestBuilder {
         return this;
     }
 
-    public SubscriptionReportRequestBuilder withDateOfBirth(DateTime dateOfBirth){
-        this.dateOfBirth = dateOfBirth;
-        return this;
-    }
-
-    public SubscriptionReportRequestBuilder withLocation(String district, String block, String panchayat){
-        this.location = new SubscriberLocation(district, block, panchayat);
-        return this;
-    }
-
     public SubscriptionReportRequestBuilder withOperator(String operator){
         this.operator = operator;
         return this;
@@ -111,16 +102,6 @@ public class SubscriptionReportRequestBuilder {
 
     public SubscriptionReportRequestBuilder withStartDate(DateTime startDate){
         this.startDate = startDate;
-        return this;
-    }
-
-    public SubscriptionReportRequestBuilder withReason(String reason){
-        this.reason = reason;
-        return this;
-    }
-
-    public SubscriptionReportRequestBuilder withStartWeekNumber(Integer startWeekNumber){
-        this.startWeekNumber = startWeekNumber;
         return this;
     }
 
