@@ -63,7 +63,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
 
         ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
         OperatorDimension operator = allOperatorDimensions.fetchFor("AIRTEL");
-        LocationDimension location = allLocationDimensions.fetchFor("C00", "C00", "");
+        LocationDimension location = allLocationDimensions.fetchFor("C00", "C00", "C00", "");
         DateDimension subscriberCreatedDate = allDateDimensions.fetchFor(subscriberCreatedDateTime);
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor("bari_kilkari");
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(campaignId);
@@ -117,7 +117,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         markForDeletion(template.save(new CampaignDimension(campaignId, 3600, 2400)));
         ChannelDimension channelDimension = allChannelDimensions.fetchFor("IVR");
         OperatorDimension operator = allOperatorDimensions.fetchFor("AIRTEL");
-        LocationDimension location = allLocationDimensions.fetchFor("C00", "C00", "");
+        LocationDimension location = allLocationDimensions.fetchFor("C00", "C00", "C00", "");
         DateDimension subscriberCreatedDate = allDateDimensions.fetchFor(subscriberCreatedDateTime);
         SubscriptionPackDimension subscriptionPackDimension = allSubscriptionPackDimensions.fetchFor("bari_kilkari");
         CampaignDimension campaignDimension = allCampaignDimensions.fetchFor(campaignId);

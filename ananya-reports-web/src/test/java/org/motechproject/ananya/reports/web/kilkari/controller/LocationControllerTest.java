@@ -45,11 +45,16 @@ public class LocationControllerTest {
         String block="Myblock";
         String panchayat="Mypanchayat";
 
-        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
+        when(locationService.digDeepAndFetchFor(state, district, block, panchayat)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
         mockMvc(locationController)
-                .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
+                .perform(get("/location")
+                        .param("state", state)
+                        .param("district", district)
+                        .param("block", block)
+                        .param("panchayat", panchayat))
                 .andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.JSON_CONTENT_TYPE))
+                .andExpect(content().string(new Contains("\"state\":\"Mystate\"")))
                 .andExpect(content().string(new Contains("\"district\":\"Mydistrict\"")))
                 .andExpect(content().string(new Contains("\"block\":\"Myblock\"")))
                 .andExpect(content().string(new Contains("\"panchayat\":\"Mypanchayat\"")));
@@ -62,7 +67,7 @@ public class LocationControllerTest {
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
+        when(locationService.digDeepAndFetchFor(state, district, block, panchayat)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
         mockMvc(locationController)
                 .perform(get("/location"))
                 .andExpect(status().isNotFound())
@@ -108,8 +113,9 @@ public class LocationControllerTest {
         String district = "mydistrict";
         String block="myblock";
         String panchayat="mypanchayat";
+        String state="mystate";
 
-        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(null);
+        when(locationService.digDeepAndFetchFor(state, district, block, panchayat)).thenReturn(null);
         mockMvc(locationController)
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isNotFound())
