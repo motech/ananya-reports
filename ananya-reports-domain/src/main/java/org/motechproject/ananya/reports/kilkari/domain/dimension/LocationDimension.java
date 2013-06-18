@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "location_dimension")
-@NamedQuery(name = LocationDimension.FIND_BY_STATE_DISTRICT_BLOCK_AND_PANCHAYAT, query = "select l from LocationDimension l where UPPER(l.state)=:state and  UPPER(l.district)=:district and UPPER(l.block)=:block and UPPER(l.panchayat)=:panchayat")
+@NamedQuery(name = LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT, query = "select l from LocationDimension l where UPPER(l.district)=:district and UPPER(l.block)=:block and UPPER(l.panchayat)=:panchayat")
 public class LocationDimension {
 
-    public static final String FIND_BY_STATE_DISTRICT_BLOCK_AND_PANCHAYAT = "find.by.district.block.and.panchayat";
+    public static final String FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT = "find.by.district.block.and.panchayat";
 
     @Id
     @Column(name = "id")

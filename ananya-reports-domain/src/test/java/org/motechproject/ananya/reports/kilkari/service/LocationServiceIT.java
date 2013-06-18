@@ -23,12 +23,12 @@ public class LocationServiceIT extends SpringIntegrationTest {
         String district = "District";
         String block = "Block";
         String panchayat="Panchayat";
-        String state = "state";
-        LocationDimension existingLocationDimension = new LocationDimension(state, "district", "block", "panchayat", "VALID");
+
+        LocationDimension existingLocationDimension = new LocationDimension("state", "district", "block", "panchayat", "VALID");
         template.save(existingLocationDimension);
         markForDeletion(existingLocationDimension);
 
-        LocationDimension locationDimension = locationService.digDeepAndFetchFor(state, district, block, panchayat);
+        LocationDimension locationDimension = locationService.digDeepAndFetchFor(district, block, panchayat);
         assertEquals(district,locationDimension.getDistrict());
         assertEquals(block,locationDimension.getBlock());
         assertEquals(panchayat,locationDimension.getPanchayat());

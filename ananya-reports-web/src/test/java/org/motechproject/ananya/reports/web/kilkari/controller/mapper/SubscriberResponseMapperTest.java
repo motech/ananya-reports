@@ -37,7 +37,7 @@ public class SubscriberResponseMapperTest {
         Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(state, district, block, panchayat, "VALID"), null, null, startWeekNumber, subscriberModifiedTime);
         Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, subscriptionModifiedTime, DateTime.now(), status.name(), null);
         subscription.setLastScheduledMessageDate(new Timestamp(lastScheduledDate.getMillis()));
-        LocationResponse expectedLocation = new LocationResponse(state, district, block, panchayat);
+        LocationResponse expectedLocation = new LocationResponse(district, block, panchayat);
 
         SubscriberResponse subscriberResponse = SubscriberResponseMapper.mapFrom(subscription);
 
