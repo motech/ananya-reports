@@ -8,8 +8,7 @@ public class LocationDimensionTest{
 
     @Test
     public void shouldConvertLocationDetailsToUpperCase(){
-        LocationDimension dimension = new LocationDimension("state", "DISTRICT", "block", "panchayat one","VALID");
-        assertEquals("State", dimension.getState());
+        LocationDimension dimension = new LocationDimension("DISTRICT", "block", "panchayat one","VALID");
         assertEquals("District", dimension.getDistrict());
         assertEquals("Block", dimension.getBlock());
         assertEquals("Panchayat One", dimension.getPanchayat());

@@ -65,7 +65,6 @@ public class SubscriptionStatusMeasureServiceTest {
         String subscriptionPack = "NAVJAAT_KILKARI";
         DateTime edd = DateTime.now().minusMonths(4);
         DateTime dob = DateTime.now().minusMonths(8);
-        String state = "state";
         String district = "district";
         String block = "block";
         String panchayat = "panchayat";
@@ -75,7 +74,7 @@ public class SubscriptionStatusMeasureServiceTest {
         Integer startWeekNumber = 33;
         DateTime createdAt = new DateTime(2012, 01, 01, 10, 10);
 
-        SubscriberLocation subscriberLocation = new SubscriberLocation(state, district, block, panchayat);
+        SubscriberLocation subscriberLocation = new SubscriberLocation(district, block, panchayat);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack
                 , name, age, createdAt, "NEW", edd, dob, subscriberLocation, operator, startDate, oldSubscriptionId, reason, startWeekNumber);
 

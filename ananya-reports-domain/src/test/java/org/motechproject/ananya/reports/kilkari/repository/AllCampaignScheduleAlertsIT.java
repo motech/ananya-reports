@@ -70,7 +70,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
         template.save(operatorDimension);
         markForDeletion(operatorDimension);
 
-        locationDimension = new LocationDimension("state", "district", "block", "panchayat", "VALID");
+        locationDimension = new LocationDimension("district", "block", "panchayat", "VALID");
         template.save(locationDimension);
         markForDeletion(locationDimension);
 

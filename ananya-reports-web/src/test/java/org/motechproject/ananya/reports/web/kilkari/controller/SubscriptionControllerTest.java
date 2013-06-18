@@ -128,7 +128,6 @@ public class SubscriptionControllerTest {
         DateTime dob = DateTime.now().minusYears(23);
         String subscriptionId = "subscriptionId";
         String name = "name";
-        String state = "S1";
         String district = "D1";
         String block = "B1";
         String panchayat = "P1";
@@ -136,7 +135,7 @@ public class SubscriptionControllerTest {
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
         int startWeekNumber = 33;
-        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(state, district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
+        Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
@@ -156,11 +155,10 @@ public class SubscriptionControllerTest {
     @Test
     public void shouldInvokeSubscriberServiceToUpdateSubscriberDetails() throws Exception {
         String expectedSubscriptionId = "sid";
-        String state = "s1";
         String district = "d1";
         String block = "b1";
         String panchayat = "p1";
-        SubscriberLocation location = new SubscriberLocation(state, district, block, panchayat);
+        SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
@@ -191,7 +189,6 @@ public class SubscriptionControllerTest {
         DateTime dob = DateTime.now().minusYears(23);
         String subscriptionId = "subscriptionId";
         String name = "name";
-        String state = "S1";
         String district = "D1";
         String block = "B1";
         String panchayat = "P1";
@@ -199,7 +196,7 @@ public class SubscriptionControllerTest {
         String pack = "BARI_KILKARI";
         int weekNumber = 13;
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null,
-                new LocationDimension(state, district, block, panchayat, "VALID"), null, null, null, DateTime.now());
+                new LocationDimension(district, block, panchayat, "VALID"), null, null, null, DateTime.now());
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
                 null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
 

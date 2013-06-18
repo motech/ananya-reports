@@ -10,8 +10,6 @@ import java.io.Serializable;
 public class SubscriberLocation implements Serializable {
     private static final long serialVersionUID = 2594607857496495633L;
     @JsonProperty
-    private String state;
-    @JsonProperty
     private String district;
     @JsonProperty
     private String block;
@@ -20,19 +18,10 @@ public class SubscriberLocation implements Serializable {
 
     public SubscriberLocation() {}
     
-    public SubscriberLocation(String state, String district, String block, String panchayat) {
-        this.state = state;
+    public SubscriberLocation(String district, String block, String panchayat) {
         this.district = district;
         this.block = block;
         this.panchayat = panchayat;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     @JsonIgnore
@@ -73,7 +62,6 @@ public class SubscriberLocation implements Serializable {
                 .append(this.district, that.district)
                 .append(this.block, that.block)
                 .append(this.panchayat, that.panchayat)
-                .append(this.state, that.state)
                 .isEquals();
     }
 
@@ -83,7 +71,6 @@ public class SubscriberLocation implements Serializable {
                 .append(this.district)
                 .append(this.block)
                 .append(this.panchayat)
-                .append(this.state)
                 .hashCode();
     }
 }

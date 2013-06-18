@@ -67,7 +67,7 @@ public class LocationService {
         if (locationDimension != null)
             return locationDimension;
 
-        locationDimension = new LocationDimension(location.getState(), location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name());
+        locationDimension = new LocationDimension(location.getDistrict(), location.getBlock(), location.getPanchayat(), LocationStatus.NOT_VERIFIED.name());
         allLocationDimensions.createOrUpdate(locationDimension);
         return locationDimension;
     }
@@ -86,7 +86,7 @@ public class LocationService {
         LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
         String locationStatus = locationSyncRequest.getLocationStatus();
         existingLocation = existingLocation == null ?
-                new LocationDimension(existingLocationRequest.getState(), existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat(), locationStatus)
+                new LocationDimension(existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat(), locationStatus)
                 : existingLocation;
         existingLocation.setStatus(locationStatus);
         existingLocation.setAlternateLocation(newLocation);
@@ -99,7 +99,7 @@ public class LocationService {
         LocationRequest newLocationRequest = locationSyncRequest.getNewLocation();
         LocationDimension newLocation = allLocationDimensions.fetchFor(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat());
         if (newLocation == null) {
-            newLocation = new LocationDimension(newLocationRequest.getState(), newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name());
+            newLocation = new LocationDimension(newLocationRequest.getDistrict(), newLocationRequest.getBlock(), newLocationRequest.getPanchayat(), LocationStatus.VALID.name());
             allLocationDimensions.createOrUpdate(newLocation);
             logger.info("Added new location : " + newLocation);
         }
