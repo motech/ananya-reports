@@ -40,6 +40,10 @@ public class LocationResponse {
         return district;
     }
 
+    public String getState() {
+        return state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
