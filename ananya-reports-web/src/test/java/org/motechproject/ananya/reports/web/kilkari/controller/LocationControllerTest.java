@@ -40,15 +40,21 @@ public class LocationControllerTest {
 
     @Test
     public void shouldReturnLocationDetailsBasedOnQuery() throws Exception {
+        String state = "Mystate";
         String district = "Mydistrict";
         String block="Myblock";
         String panchayat="Mypanchayat";
 
-        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.digDeepAndFetchFor(state, district, block, panchayat)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
         mockMvc(locationController)
-                .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
+                .perform(get("/location")
+                        .param("state", state)
+                        .param("district", district)
+                        .param("block", block)
+                        .param("panchayat", panchayat))
                 .andExpect(status().isOk())
                 .andExpect(content().type(HttpConstants.JSON_CONTENT_TYPE))
+                .andExpect(content().string(new Contains("\"state\":\"Mystate\"")))
                 .andExpect(content().string(new Contains("\"district\":\"Mydistrict\"")))
                 .andExpect(content().string(new Contains("\"block\":\"Myblock\"")))
                 .andExpect(content().string(new Contains("\"panchayat\":\"Mypanchayat\"")));
@@ -56,11 +62,12 @@ public class LocationControllerTest {
 
     @Test
     public void shouldReturn404IfNoneOfTheLocationParametersArePresent() throws Exception {
+        String state = "mystate";
         String district = "mydistrict";
         String block="myblock";
         String panchayat="mypanchayat";
 
-        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.digDeepAndFetchFor(state, district, block, panchayat)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
         mockMvc(locationController)
                 .perform(get("/location"))
                 .andExpect(status().isNotFound())
@@ -72,7 +79,7 @@ public class LocationControllerTest {
     @Test
     public void shouldUpdateLocation() throws Exception {
         DateTime now = DateTime.now();
-        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(new LocationRequest("D1","B1","P1"), new LocationRequest("D1","B1","P1"), LocationStatus.VALID.name(), now);
+        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(new LocationRequest("S1", "D1","B1","P1"), new LocationRequest("S1", "D1","B1","P1"), LocationStatus.VALID.name(), now);
 
         mockMvc(locationController)
                 .perform(post("/location")
@@ -91,7 +98,7 @@ public class LocationControllerTest {
 
     @Test
     public void shouldFailIfRequestNotValid() throws Exception {
-        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(null, new LocationRequest("D1","B1","P1"), LocationStatus.VALID.name(), null);
+        LocationSyncRequest expectedLocationRequest = new LocationSyncRequest(null, new LocationRequest("S1", "D1","B1","P1"), LocationStatus.VALID.name(), null);
 
         mockMvc(locationController)
                 .perform(post("/location")
@@ -106,8 +113,9 @@ public class LocationControllerTest {
         String district = "mydistrict";
         String block="myblock";
         String panchayat="mypanchayat";
+        String state="mystate";
 
-        when(locationService.digDeepAndFetchFor(district, block, panchayat)).thenReturn(null);
+        when(locationService.digDeepAndFetchFor(state, district, block, panchayat)).thenReturn(null);
         mockMvc(locationController)
                 .perform(get("/location").param("district", district).param("block", block).param("panchayat", panchayat))
                 .andExpect(status().isNotFound())

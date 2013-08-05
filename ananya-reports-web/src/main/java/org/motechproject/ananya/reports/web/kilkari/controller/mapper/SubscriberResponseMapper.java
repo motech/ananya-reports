@@ -13,7 +13,7 @@ public class SubscriberResponseMapper {
         LocationDimension locationDimension = subscriber.getLocationDimension();
         LocationResponse locationResponse = null;
         if (locationDimension != null)
-            locationResponse = new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat());
+            locationResponse = new LocationResponse(locationDimension.getState(), locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat());
         DateTime lastScheduledMessageDate = subscription.getLastScheduledMessageDate() != null ? new DateTime(subscription.getLastScheduledMessageDate().getTime()) : null;
 
         return new SubscriberResponse(subscription.getSubscriptionId(), subscriber.getName(), subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(),

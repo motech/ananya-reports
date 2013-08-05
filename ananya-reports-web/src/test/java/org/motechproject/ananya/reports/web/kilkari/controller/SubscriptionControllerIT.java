@@ -58,7 +58,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         channelDimension = new ChannelDimension("channel");
         dateDimension = allDateDimensions.fetchFor(DateTime.now());
-        locationDimension = new LocationDimension("disctrict", "block", "panchayat", "VALID");
+        locationDimension = new LocationDimension("state", "disctrict", "block", "panchayat", "VALID");
         subscriber = new Subscriber(name, 23, edd, dob, channelDimension,
                 locationDimension, dateDimension, null, null, DateTime.now());
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
@@ -88,7 +88,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         SubscriberResponse expectedSubscriberResponse = new SubscriberResponse(subscriptionId, subscriber.getName(),
                 subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(), subscriber.getEstimatedDateOfDelivery(),
-                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()), new DateTime(subscription.getLastModifiedTime()), new DateTime(subscriber.getLastModifiedTime()));
+                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getState(), locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()), new DateTime(subscription.getLastModifiedTime()), new DateTime(subscriber.getLastModifiedTime()));
 
         MvcResult result = mockMvc(subscriptionController)
                 .perform(get("/subscription/subscriber/" + subscriptionId))

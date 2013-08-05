@@ -23,12 +23,12 @@ public class LocationController {
 
     @RequestMapping(value = "/location", method = RequestMethod.GET)
     @ResponseBody
-    public LocationResponse getLocation(@RequestParam(required = false) String district, @RequestParam(required = false) String block, @RequestParam(required = false) String panchayat) {
-        LocationDimension locationDimension = locationService.digDeepAndFetchFor(district, block, panchayat);
+    public LocationResponse getLocation(@RequestParam(required = false) String state, @RequestParam(required = false) String district, @RequestParam(required = false) String block, @RequestParam(required = false) String panchayat) {
+        LocationDimension locationDimension = locationService.digDeepAndFetchFor(state, district, block, panchayat);
         if (locationDimension == null) {
             throw new NotFoundException("location not found");
         }
-        return new LocationResponse(locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat());
+        return new LocationResponse(locationDimension.getState(), locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat());
     }
 
     @RequestMapping(value = "/location", method = RequestMethod.POST)

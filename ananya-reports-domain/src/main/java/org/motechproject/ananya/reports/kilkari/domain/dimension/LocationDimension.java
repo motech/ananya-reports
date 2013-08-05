@@ -10,15 +10,18 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "location_dimension")
-@NamedQuery(name = LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT, query = "select l from LocationDimension l where UPPER(l.district)=:district and UPPER(l.block)=:block and UPPER(l.panchayat)=:panchayat")
+@NamedQuery(name = LocationDimension.FIND_BY_STATE_DISTRICT_BLOCK_AND_PANCHAYAT, query = "select l from LocationDimension l where UPPER(l.state)=:state and  UPPER(l.district)=:district and UPPER(l.block)=:block and UPPER(l.panchayat)=:panchayat")
 public class LocationDimension {
 
-    public static final String FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT = "find.by.district.block.and.panchayat";
+    public static final String FIND_BY_STATE_DISTRICT_BLOCK_AND_PANCHAYAT = "find.by.district.block.and.panchayat";
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "state")
+    private String state;
 
     @Column(name = "district")
     private String district;
@@ -43,7 +46,8 @@ public class LocationDimension {
     public LocationDimension() {
     }
 
-    public LocationDimension(String district, String block, String panchayat, String status) {
+    public LocationDimension(String state, String district, String block, String panchayat, String status) {
+        this.state = WordUtils.capitalizeFully(state);
         this.district = WordUtils.capitalizeFully(district);
         this.block = WordUtils.capitalizeFully(block);
         this.panchayat = WordUtils.capitalizeFully(panchayat);
@@ -96,6 +100,14 @@ public class LocationDimension {
 
     public void setAlternateLocation(LocationDimension alternateLocation) {
         this.alternateLocation = alternateLocation;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     @Override
