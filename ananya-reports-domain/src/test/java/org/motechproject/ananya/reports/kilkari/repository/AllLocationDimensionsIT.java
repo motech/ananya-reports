@@ -27,7 +27,7 @@ public class AllLocationDimensionsIT extends SpringIntegrationTest {
     @Test
     public void shouldFetchByDistrictBlockPanchayat() {
         DateTime now = DateTime.now();
-        LocationDimension expectedDimension = new LocationDimension("d1", "b1", "p1", LocationStatus.NOT_VERIFIED.name());
+        LocationDimension expectedDimension = new LocationDimension("s1", "d1", "b1", "p1", LocationStatus.NOT_VERIFIED.name());
         expectedDimension.setLastModified(new Timestamp(DateTime.now().minusDays(1).getMillis()));
         allLocationDimensions.createOrUpdate(expectedDimension);
 

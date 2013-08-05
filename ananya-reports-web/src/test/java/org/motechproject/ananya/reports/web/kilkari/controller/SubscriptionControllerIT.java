@@ -58,7 +58,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         channelDimension = new ChannelDimension("channel");
         dateDimension = allDateDimensions.fetchFor(DateTime.now());
-        locationDimension = new LocationDimension("disctrict", "block", "panchayat", "VALID");
+        locationDimension = new LocationDimension("state", "disctrict", "block", "panchayat", "VALID");
         subscriber = new Subscriber(name, 23, edd, dob, channelDimension,
                 locationDimension, dateDimension, null, null, DateTime.now());
         subscriptionPackDimension = new SubscriptionPackDimension(pack);

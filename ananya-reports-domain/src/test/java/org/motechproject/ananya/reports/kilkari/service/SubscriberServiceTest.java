@@ -42,21 +42,22 @@ public class SubscriberServiceTest {
 
     @Test
     public void shouldUpdateSubscriberDetails() {
+        String state = "S1";
         String district = "D1";
         String block = "B1";
         String panchayat = "P1";
-        SubscriberLocation location = new SubscriberLocation(district, block, panchayat);
+        SubscriberLocation location = new SubscriberLocation(state, district, block, panchayat);
         String subscriptionId = "abcd1234";
         DateTime createdAt = DateTime.now();
         String beneficiaryName = "name";
         Integer beneficiaryAge = 24;
-        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension("D2", "B2", "P2", "VALID"), null, null, null, createdAt.minusDays(5));
+        Subscriber subscriber = new Subscriber("oldName", 23, DateTime.now().plus(42), DateTime.now().minusYears(3), null, new LocationDimension(state, "D2", "B2", "P2", "VALID"), null, null, null, createdAt.minusDays(5));
         DateDimension expectedDateDimension = new DateDimension();
         Subscription subscription = mock(Subscription.class);
 
         when(subscription.getSubscriber()).thenReturn(subscriber);
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
-        when(locationService.createAndFetch(location)).thenReturn(new LocationDimension(district, block, panchayat, "VALID"));
+        when(locationService.createAndFetch(location)).thenReturn(new LocationDimension(state, district, block, panchayat, "VALID"));
         when(allDateDimensions.fetchFor(createdAt)).thenReturn(expectedDateDimension);
 
         subscriberService.update(new SubscriberReportRequest(createdAt, beneficiaryName, beneficiaryAge, location), subscriptionId);

@@ -43,7 +43,7 @@ public class AllSubscriptionsIT extends SpringIntegrationTest {
         template.save(operatorDimension);
         markForDeletion(operatorDimension);
 
-        locationDimension = new LocationDimension("district", "block", "panchayat", "VALID");
+        locationDimension = new LocationDimension("state", "district", "block", "panchayat", "VALID");
         template.save(locationDimension);
         markForDeletion(locationDimension);
 

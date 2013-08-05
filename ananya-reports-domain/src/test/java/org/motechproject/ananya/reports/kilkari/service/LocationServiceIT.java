@@ -24,7 +24,7 @@ public class LocationServiceIT extends SpringIntegrationTest {
         String block = "Block";
         String panchayat="Panchayat";
 
-        LocationDimension existingLocationDimension = new LocationDimension("district", "block", "panchayat", "VALID");
+        LocationDimension existingLocationDimension = new LocationDimension("state", "district", "block", "panchayat", "VALID");
         template.save(existingLocationDimension);
         markForDeletion(existingLocationDimension);
 
