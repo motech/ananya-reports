@@ -27,9 +27,9 @@ public class AllLocationDimensionsTest {
     @Test
     public void shouldReturnValidLocationForDistrictBlockAndPanchayat() {
         LocationDimension expectedLocationDimension = new LocationDimension("mystate", "mydistrict", "myblock", "mypanchayat", "VALID");
-        when(dataAccessTemplate.getUniqueResult(LocationDimension.FIND_BY_DISTRICT_BLOCK_AND_PANCHAYAT, new String[]{"district", "block", "panchayat"}, new String[]{"MYDISTRICT", "MYBLOCK", "MYPANCHAYAT"})).thenReturn(expectedLocationDimension);
+        when(dataAccessTemplate.getUniqueResult(LocationDimension.FIND_BY_STATE_DISTRICT_BLOCK_AND_PANCHAYAT, new String[]{"state", "district", "block", "panchayat"}, new String[]{"MYSTATE", "MYDISTRICT", "MYBLOCK", "MYPANCHAYAT"})).thenReturn(expectedLocationDimension);
 
-        LocationDimension locationDimension = allLocationDimensions.fetchFor("mydistrict", "myblock", "mypanchayat");
+        LocationDimension locationDimension = allLocationDimensions.fetchFor("mystate", "mydistrict", "myblock", "mypanchayat");
 
         assertEquals(expectedLocationDimension, locationDimension);
     }

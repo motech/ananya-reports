@@ -7,6 +7,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class LocationResponse {
 
     @JsonProperty
+    private String state;
+
+    @JsonProperty
     private String block;
 
     @JsonProperty
@@ -18,7 +21,8 @@ public class LocationResponse {
     public LocationResponse() {
     }
 
-    public LocationResponse(String district, String block, String panchayat) {
+    public LocationResponse(String state, String district, String block, String panchayat) {
+        this.state = state;
         this.district = district;
         this.block = block;
         this.panchayat = panchayat;
@@ -44,6 +48,7 @@ public class LocationResponse {
         LocationResponse that = (LocationResponse) o;
 
         return new EqualsBuilder()
+                .append(this.state, that.state)
                 .append(this.district, that.district)
                 .append(this.block, that.block)
                 .append(this.panchayat, that.panchayat)
@@ -53,6 +58,7 @@ public class LocationResponse {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+                .append(this.state)
                 .append(this.district)
                 .append(this.block)
                 .append(this.panchayat)
