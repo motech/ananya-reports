@@ -16,7 +16,7 @@
         <module>ananya-reports-purge</module>
         <module>ananya-reports-test-data</module>
     </modules>
-    <groupId>org.motechproject.ananya.reports</groupId>
+    <groupId>org.motechproject.ananya.reports-location-changes</groupId>
     <artifactId>ananya-reports</artifactId>
     <version>0.1-SNAPSHOT</version>
 
