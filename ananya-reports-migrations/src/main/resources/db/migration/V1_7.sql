@@ -1,0 +1,1 @@
+ALTER TABLE report.subscribers ALTER COLUMN msisdn TYPE BIGINT using msisdn::bigint;

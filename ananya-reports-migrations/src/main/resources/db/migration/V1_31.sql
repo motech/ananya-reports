@@ -1,0 +1,1 @@
+CREATE INDEX ON report.subscribers (location_id);

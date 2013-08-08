@@ -1,0 +1,1 @@
+update report.channel_dimension set channel='call_center' where channel='callcentre';

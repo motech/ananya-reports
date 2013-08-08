@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ananya-kilkari-report" xmlns:flyway="antlib:com.googlecode.flyway.ant">
+    <target name="clean.existing.database">
+
+        <echo message="Cleaning all databases"/>
+        <flyway:clean driver="org.postgresql.Driver"
+                      url="jdbc:postgresql://localhost/ananya_kilkari/"
+                      user="postgres"
+                      password="password"
+                      schemas="report"
+                      classpath="${runtime-classpath}"/>
+
+        <flyway:init driver="org.postgresql.Driver"
+                     url="jdbc:postgresql://localhost/ananya_kilkari/"
+                     user="postgres"
+                     password="password"
+                     schemas="report"
+                     classpath="${runtime-classpath}"
+                     initialVersion="0"
+                     initialDescription="Base setup" />
+    </target>
+
+    <target name="migrate.db">
+            <echo message="Applying database migrations"/>
+            <flyway:migrate driver="org.postgresql.Driver"
+                            url="jdbc:postgresql://localhost/ananya_kilkari/"
+                            user="postgres"
+                            password="password"
+                            schemas="report"
+                            baseDir="/db/migration"
+                            classpath="${runtime-classpath}"/>
+    </target>
+</project>

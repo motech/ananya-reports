@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<setup xmlns="http://databene.org/benerator/0.7.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://databene.org/benerator/0.7.0 http://databene.org/benerator-0.7.0.xsd">
+
+    <import platforms="db"/>
+    <include uri="benerator.properties"/>
+
+    <database id="ananya" url="jdbc:postgresql://localhost/ananya_kilkari/"
+              driver="org.postgresql.Driver" user="postgres" password="password" batch="false" schema="report"
+              catalog="ananya"/>
+
+    <execute target="ananya">
+        ALTER ROLE postgres set search_path=report, public;
+    </execute>
+
+    <bean id="subscribersSeq" spec="new DBSequenceGenerator('subscribers_id_seq', ananya, true)" />
+    <bean id="subscriptionsSeq" spec="new DBSequenceGenerator('subscriptions_id_seq', ananya, true)" />
+
+
+    <generate type="subscribers" count="subscribers_count" consumer="ananya">
+        <id name="id" generator="subscribersSeq" />
+        <reference name="channel_id" targetType="channel_dimension" source="ananya" distribution="random"/>
+        <reference name="location_id" targetType="location_dimension" source="ananya" distribution="random"/>
+        <reference name="time_id" targetType="time_dimension" source="ananya" distribution="random"/>
+        <reference name="operator_id" targetType="operator_dimension" source="ananya" distribution="random"/>
+
+        <variable name="person" generator="org.databene.domain.person.PersonGenerator"/>
+
+        <attribute name="msisdn" type="long" pattern="[7-9][0-9]{9}" unique="true"/>
+        <attribute name="name" type="string" script="person.givenName"/>
+        <attribute name="age_of_beneficiary" type="long" min="20" max="50" distribution="random"/>
+        <attribute name="estimated_date_of_delivery"
+                   generator="org.databene.benerator.primitive.datetime.DateGenerator"/>
+        <attribute name="date_of_birth" generator="org.databene.benerator.primitive.datetime.DateGenerator"/>
+    </generate>
+
+    <generate type="subscriptions" count="subscriptions_count" consumer="ananya">
+        <id name="id" generator="subscriptionsSeq" />
+        <reference name="subscriber_id" targetType="subscribers" source="ananya" distribution="random"/>
+        <reference name="subscription_pack_id" targetType="subscription_pack_dimension" source="ananya" distribution="random"/>
+        <reference name="channel_id" targetType="channel_dimension" source="ananya" distribution="random"/>
+        <reference name="location_id" targetType="location_dimension" source="ananya" distribution="random"/>
+        <reference name="time_id" targetType="time_dimension" source="ananya" distribution="random"/>
+        <reference name="operator_id" targetType="operator_dimension" source="ananya" distribution="random"/>
+
+        <attribute name="subscription_id" type="string" generator="org.databene.benerator.primitive.UUIDGenerator"
+                   unique="true"/>
+        <attribute name="last_modified_time" generator="org.databene.benerator.primitive.datetime.DateTimeGenerator"/>
+        <attribute name="week_number" type="long" min="1" max="34" distribution="random"/>
+        <attribute name="subscription_status"
+                   pattern="(NEW|NEW_EARLY|PENDING_ACTIVATION|ACTIVATION_FAILED|COMPLETED|ACTIVE|DEACTIVATION_REQUEST_RECEIVED|PENDING_DEACTIVATION|DEACTIVATED|SUSPENDED|PENDING_COMPLETION)"
+                   distribution="random"/>
+        <attribute name="start_date" generator="org.databene.benerator.primitive.datetime.DateTimeGenerator"/>
+    </generate>
+
+</setup>
