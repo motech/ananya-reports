@@ -124,6 +124,8 @@ public class SubscriptionControllerTest {
     @Test
     public void shouldReturnSubscriptionAndSubscriberDetails() throws Exception {
         String msisdn = "1234567890";
+
+        String referredByFLWMsisdn = "9876543210";
         DateTime edd = DateTime.now();
         DateTime dob = DateTime.now().minusYears(23);
         String subscriptionId = "subscriptionId";
@@ -134,10 +136,10 @@ public class SubscriptionControllerTest {
         String panchayat = "P1";
         String status = "ACTIVE";
         String pack = "BARI_KILKARI";
-        int weekNumber = 13;
+
         int startWeekNumber = 33;
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(state, district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
-        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
+        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null, referredByFLWMsisdn);
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
         List<SubscriberResponse> expectedReponseList = new ArrayList<SubscriberResponse>() {{
@@ -187,21 +189,26 @@ public class SubscriptionControllerTest {
     @Test
     public void shouldReturnSubscriberDetailsForAGivenSubscriptionId() throws Exception {
         String msisdn = "1234567890";
+
+        String referredByFLWMsisdn = "9876543210";
+
         DateTime edd = DateTime.now();
         DateTime dob = DateTime.now().minusYears(23);
         String subscriptionId = "subscriptionId";
         String name = "name";
+
         String state = "S1";
+
         String district = "D1";
         String block = "B1";
         String panchayat = "P1";
         String status = "ACTIVE";
         String pack = "BARI_KILKARI";
-        int weekNumber = 13;
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null,
                 new LocationDimension(state, district, block, panchayat, "VALID"), null, null, null, DateTime.now());
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
-                null, subscriptionId, DateTime.now(), DateTime.now(), status, null);
+                null, subscriptionId, DateTime.now(), DateTime.now(), status, null, referredByFLWMsisdn);
+
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
         when(subscriptionService.fetchFor(subscriptionId)).thenReturn(subscription);
@@ -292,6 +299,20 @@ public class SubscriptionControllerTest {
             public void describeTo(Description description) {
             }
         };
+    }
+
+    @Test
+    public void shouldChangeReferredByFLWMsisdnForSubscriptionId() throws Exception {
+        String referredByFLWMsisdn = "1234567890";
+        String subscriptionId = "subscriptionId";
+
+        SubscriptionChangeReferredFLWMsisdnReportRequest subscriptionChangeReferredFLWMsisdnReportRequest = TestUtils.fromJson(TestUtils.toJson(new SubscriptionChangeReferredFLWMsisdnReportRequest(subscriptionId, referredByFLWMsisdn, "reason", DateTime.now())), SubscriptionChangeReferredFLWMsisdnReportRequest.class);
+        mockMvc(subscriptionController)
+                .perform(post("/subscription/changereferredmsisdn")
+                        .body(TestUtils.toJson(subscriptionChangeReferredFLWMsisdnReportRequest).getBytes()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(subscriptionStatusMeasureService).changeReferredByFLWMsisdnForSubscription(subscriptionChangeReferredFLWMsisdnReportRequest);
     }
 }
 

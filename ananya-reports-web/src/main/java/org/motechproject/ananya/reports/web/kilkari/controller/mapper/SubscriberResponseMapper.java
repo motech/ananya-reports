@@ -17,6 +17,6 @@ public class SubscriberResponseMapper {
         DateTime lastScheduledMessageDate = subscription.getLastScheduledMessageDate() != null ? new DateTime(subscription.getLastScheduledMessageDate().getTime()) : null;
 
         return new SubscriberResponse(subscription.getSubscriptionId(), subscriber.getName(), subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(),
-                subscriber.getEstimatedDateOfDelivery(), lastScheduledMessageDate, locationResponse, new DateTime(subscription.getLastModifiedTime()), new DateTime(subscriber.getLastModifiedTime()));
+                subscriber.getEstimatedDateOfDelivery(), lastScheduledMessageDate, locationResponse, new DateTime(subscription.getLastModifiedTime()), new DateTime(subscriber.getLastModifiedTime()), subscription.getReferredByFLWMsisdn());
     }
 }

@@ -26,13 +26,14 @@ public class SubscriptionReportRequestBuilder {
     private String oldSubscriptionId;
     private String reason;
     private Integer startWeekNumber;
-
+    private Long referredByFLWMsisdn;
 
     public SubscriptionReportRequestBuilder() {
         String msisdn = "1"+ RandomStringUtils.randomNumeric(9);
 
         this.subscriptionId = UUID.randomUUID().toString();
         this.msisdn = Long.parseLong(msisdn);
+        this.referredByFLWMsisdn = Long.parseLong(RandomStringUtils.randomNumeric(10));
         this.name = "TestName";
         this.ageOfBeneficiary = 25;
         this.createdAt = DateTime.now();
@@ -52,7 +53,7 @@ public class SubscriptionReportRequestBuilder {
 
     public SubscriptionReportRequest build() {
         return new SubscriptionReportRequest(subscriptionId, channel, msisdn, pack, name, ageOfBeneficiary, createdAt, subscriptionStatus, estimatedDateOfDelivery, dateOfBirth,
-                location, operator, startDate, oldSubscriptionId, reason, startWeekNumber);
+                location, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn, false);
     }
 
     public SubscriptionReportRequestBuilder withChannel(String channel){
@@ -81,7 +82,7 @@ public class SubscriptionReportRequestBuilder {
     }
 
     public SubscriptionReportRequestBuilder withCreatedAt(DateTime createdAt){
-        this.name = name;
+        this.createdAt = createdAt;
         return this;
     }
 
@@ -95,6 +96,11 @@ public class SubscriptionReportRequestBuilder {
         return this;
     }
 
+    public SubscriptionReportRequestBuilder withDateOfBirth(DateTime dateOfBirth){
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+
     public SubscriptionReportRequestBuilder withOperator(String operator){
         this.operator = operator;
         return this;
@@ -105,8 +111,23 @@ public class SubscriptionReportRequestBuilder {
         return this;
     }
 
+    public SubscriptionReportRequestBuilder withReason(String reason){
+        this.reason = reason;
+        return this;
+    }
+
+    public SubscriptionReportRequestBuilder withStartWeekNumber(Integer startWeekNumber){
+        this.startWeekNumber = startWeekNumber;
+        return this;
+    }
+
     public SubscriptionReportRequestBuilder withOldSubscriptionId(String oldSubscriptionId){
         this.oldSubscriptionId = oldSubscriptionId;
+        return this;
+    }
+
+    public SubscriptionReportRequestBuilder withReferredByFLWMsisdn(Long referredByFLWMsisdn){
+        this.referredByFLWMsisdn = referredByFLWMsisdn;
         return this;
     }
 }

@@ -19,7 +19,7 @@ public class SubscriberLocation implements Serializable {
     private String panchayat;
 
     public SubscriberLocation() {}
-    
+
     public SubscriberLocation(String state, String district, String block, String panchayat) {
         this.state = state;
         this.district = district;

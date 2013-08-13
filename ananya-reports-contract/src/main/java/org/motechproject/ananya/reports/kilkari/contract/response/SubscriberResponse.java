@@ -24,11 +24,13 @@ public class SubscriberResponse {
 
     private DateTime lastUpdatedTimeForBeneficiary;
 
+    private String referredBy;
+
     public SubscriberResponse() {
     }
 
     public SubscriberResponse(String subscriptionId, String beneficiaryName, Integer beneficiaryAge, DateTime dateOfBirth, DateTime expectedDateOfDelivery,
-                              DateTime lastScheduledMessageDate, LocationResponse locationResponse, DateTime lastUpdatedTimeForSubscription, DateTime lastUpdatedTimeForBeneficiary) {
+                              DateTime lastScheduledMessageDate, LocationResponse locationResponse, DateTime lastUpdatedTimeForSubscription, DateTime lastUpdatedTimeForBeneficiary, String referredByFLWMsisdn) {
         this.subscriptionId = subscriptionId;
         this.beneficiaryName = beneficiaryName;
         this.beneficiaryAge = beneficiaryAge;
@@ -38,6 +40,7 @@ public class SubscriberResponse {
         this.locationResponse = locationResponse;
         this.lastUpdatedTimeForSubscription = lastUpdatedTimeForSubscription;
         this.lastUpdatedTimeForBeneficiary = lastUpdatedTimeForBeneficiary;
+        this.referredBy = referredByFLWMsisdn;
     }
 
     public String getSubscriptionId() {
@@ -72,6 +75,9 @@ public class SubscriberResponse {
         return lastUpdatedTimeForBeneficiary;
     }
 
+    public String getReferredBy() {
+        return referredBy;
+	  }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

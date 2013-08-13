@@ -14,8 +14,6 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
     @Autowired
     private AllCampaignScheduleAlerts allCampaignScheduleAlerts;
     @Autowired
-    private AllSubscriptions allSubscriptions;
-    @Autowired
     private AllDateDimensions allDateDimensions;
     @Autowired
     private AllTimeDimensions allTimeDimensions;
@@ -88,11 +86,12 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
 
         String subscriptionId = "sub11";
         Long msisdn = 123L;
+        String referredByFLWMsisdn = "9876543210";
         Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension,
                 locationDimension, dateDimension, operatorDimension, null, DateTime.now());
         String subscriptionStatus = "ACTIVE";
         subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null);
+                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null, referredByFLWMsisdn);
         template.save(subscriber);
         template.save(subscription);
         markForDeletion(subscriber);

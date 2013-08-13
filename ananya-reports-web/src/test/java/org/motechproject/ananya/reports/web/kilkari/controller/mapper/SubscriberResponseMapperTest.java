@@ -29,13 +29,14 @@ public class SubscriberResponseMapperTest {
         SubscriptionStatus status = SubscriptionStatus.ACTIVE;
         String pack = "BARI_KILKARI";
         Long msisdn = 123L;
+        String refferedByFLWMsisdn = "1234";
         Integer startWeekNumber = 45;
         Integer age = 23;
         DateTime lastScheduledDate = DateTime.now();
         DateTime subscriberModifiedTime = DateTime.now().plusDays(5);
         DateTime subscriptionModifiedTime = DateTime.now();
         Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(state, district, block, panchayat, "VALID"), null, null, startWeekNumber, subscriberModifiedTime);
-        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, subscriptionModifiedTime, DateTime.now(), status.name(), null);
+        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, subscriptionModifiedTime, DateTime.now(), status.name(), null, refferedByFLWMsisdn);
         subscription.setLastScheduledMessageDate(new Timestamp(lastScheduledDate.getMillis()));
         LocationResponse expectedLocation = new LocationResponse(state, district, block, panchayat);
 
@@ -50,12 +51,13 @@ public class SubscriberResponseMapperTest {
         assertEquals(lastScheduledDate.getMillis(), subscriberResponse.getLastScheduledMessageDate().getMillis());
         assertEquals(subscriptionModifiedTime, subscriberResponse.getLastUpdatedTimeForSubscription());
         assertEquals(subscriberModifiedTime, subscriberResponse.getLastUpdatedTimeForBeneficiary());
+        assertEquals(refferedByFLWMsisdn, subscriberResponse.getReferredBy());
     }
 
     @Test
     public void shouldHandleEmptyLocationDimension() {
         Subscriber subscriber = new Subscriber("name", 23, null, null, null, null, null, null, 22, DateTime.now());
-        Subscription subscription = new Subscription(123L, subscriber, new SubscriptionPackDimension("BARI_KILKARI"), null, null, null, "subscriptionId", DateTime.now(), DateTime.now(), SubscriptionStatus.ACTIVE.name(), null);
+        Subscription subscription = new Subscription(123L, subscriber, new SubscriptionPackDimension("BARI_KILKARI"), null, null, null, "subscriptionId", DateTime.now(), DateTime.now(), SubscriptionStatus.ACTIVE.name(), null, null);
 
         SubscriberResponse subscriberResponse = SubscriberResponseMapper.mapFrom(subscription);
 

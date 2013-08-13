@@ -52,8 +52,8 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         Integer percentageListened = 90;
         String serviceOption = "HELP";
         String callStatus = "SUCCESS";
-        Integer retryCount = 2;
         String campaignId = "week1";
+        String referredByFLWMsisdn = "9876543210";
         DateTime subscriberCreatedDateTime = DateTime.now().minusMonths(1);
         DateTime callStartDateTime = DateTime.now();
         Long msisdn = 1234567L;
@@ -74,7 +74,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         Subscriber subscriber = new Subscriber(null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator, null, DateTime.now());
         subscriber = allSubscribers.save(subscriber);
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operator,
-                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null);
+                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null, referredByFLWMsisdn);
         subscription = allSubscriptions.save(subscription);
 
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
@@ -112,6 +112,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         DateTime subscriberCreatedDateTime = DateTime.now().minusMonths(1);
         DateTime callStartDateTime = DateTime.now();
         Long msisdn = 1234567L;
+        String referredByFLWMsisdn = "9876543210";
         DateTime callEndDateTime = callStartDateTime.plusMinutes(10);
         String callSource = CampaignMessageCallSource.OBD.name();
         markForDeletion(template.save(new CampaignDimension(campaignId, 3600, 2400)));
@@ -128,7 +129,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         Subscriber subscriber = new Subscriber(null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator, null, DateTime.now());
         subscriber = allSubscribers.save(subscriber);
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operator,
-                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null);
+                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null, referredByFLWMsisdn);
         subscription = allSubscriptions.save(subscription);
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
                 callStatus,

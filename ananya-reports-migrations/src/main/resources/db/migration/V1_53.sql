@@ -3,3 +3,5 @@ UPDATE report.location_dimension set state = 'Bihar';
 ALTER TABLE report.location_dimension alter COLUMN state set NOT NULL;
 ALTER TABLE report.location_dimension DROP CONSTRAINT unq_district_block_panchayat;
 ALTER TABLE report.location_dimension ADD CONSTRAINT unq_state_district_block_panchayat UNIQUE (state, district, block, panchayat);
+
+ALTER TABLE report.subscriptions ADD COLUMN referred_by_flw_msisdn VARCHAR(10);
