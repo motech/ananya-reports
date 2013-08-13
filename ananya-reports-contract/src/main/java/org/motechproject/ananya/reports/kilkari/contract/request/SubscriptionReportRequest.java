@@ -43,12 +43,16 @@ public class SubscriptionReportRequest implements Serializable {
 
     private Integer startWeekNumber;
 
+    private Long referredByFLWMsisdn;
+
+    private boolean requestedFromSM;
+
     public SubscriptionReportRequest() {
     }
 
     public SubscriptionReportRequest(String subscriptionId, String channel, Long msisdn, String pack, String name, Integer ageOfBeneficiary,
                                      DateTime createdAt, String subscriptionStatus, DateTime estimatedDateOfDelivery, DateTime dateOfBirth,
-                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId, String reason, Integer startWeekNumber) {
+                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId, String reason, Integer startWeekNumber, Long referredByFLWMsisdn, boolean requestedFromSM) {
         this.subscriptionId = subscriptionId;
         this.channel = channel;
         this.msisdn = msisdn;
@@ -65,6 +69,8 @@ public class SubscriptionReportRequest implements Serializable {
         this.oldSubscriptionId = oldSubscriptionId;
         this.reason = reason;
         this.startWeekNumber = startWeekNumber;
+        this.referredByFLWMsisdn = referredByFLWMsisdn;
+        this.requestedFromSM = requestedFromSM;
     }
 
     public String getOperator() {
@@ -129,6 +135,18 @@ public class SubscriptionReportRequest implements Serializable {
 
     public Integer getStartWeekNumber() {
         return startWeekNumber;
+    }
+
+    public static long getSerialversionuid() {
+		  return serialVersionUID;
+	  }
+
+    public Long getReferredByFLWMsisdn() {
+      return referredByFLWMsisdn;
+    }
+
+    public boolean isRequestedFromSM() {
+      return requestedFromSM;
     }
 
     @Override

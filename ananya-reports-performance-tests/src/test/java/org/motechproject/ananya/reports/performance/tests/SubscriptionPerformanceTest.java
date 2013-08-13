@@ -49,7 +49,7 @@ public class SubscriptionPerformanceTest extends BasePerformanceTest {
 
     private SubscriptionReportRequest createSubscriptionRequest() {
         SubscriptionReportRequest request = new SubscriptionReportRequest(UUID.randomUUID().toString(), "IVR", getRandomMsisdn(), "NANHI_KILKARI", null, null, DateTime.now(), "NEW", DateTime.now().plusDays(2),
-                null, null, "AIRTEL", DateTime.now(), null, "Reason", null);
+                null, null, "AIRTEL", DateTime.now(), null, "Reason", null, null, false);
         return request;
     }
 

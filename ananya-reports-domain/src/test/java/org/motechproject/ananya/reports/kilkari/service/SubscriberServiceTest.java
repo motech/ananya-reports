@@ -81,9 +81,9 @@ public class SubscriberServiceTest {
         Subscriber subscriber1 = new Subscriber();
         Set<Subscription> subscriptions = new HashSet<>();
         SubscriptionPackDimension subscriptionPackDimension = new SubscriptionPackDimension("BARI_KILKARI");
-        Subscription subscription1 = new Subscription(1L, subscriber1, subscriptionPackDimension, null, null, null, null, DateTime.now(), DateTime.now(), "NEW", null);
+        Subscription subscription1 = new Subscription(1L, subscriber1, subscriptionPackDimension, null, null, null, null, DateTime.now(), DateTime.now(), "NEW", null, null);
         subscriptions.add(subscription1);
-        Subscription subscription2 = new Subscription(1L, subscriber1, subscriptionPackDimension, null, null, null, null, DateTime.now(), DateTime.now(), "NEW", null);
+        Subscription subscription2 = new Subscription(1L, subscriber1, subscriptionPackDimension, null, null, null, null, DateTime.now(), DateTime.now(), "NEW", null, null);
         subscriptions.add(subscription2);
         HashSet<Subscriber> expectedSubscribers = new HashSet<>();
         expectedSubscribers.add(subscriber1);

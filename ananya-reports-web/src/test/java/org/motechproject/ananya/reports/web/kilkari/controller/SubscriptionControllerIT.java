@@ -40,6 +40,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
     String msisdn;
     String subscriptionId;
+    String refferedByFLWMsisdn;
     ChannelDimension channelDimension;
     DateDimension dateDimension;
     Subscriber subscriber;
@@ -49,6 +50,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
     private void createSubscriptionForTest() {
         msisdn = "1234567890";
+        refferedByFLWMsisdn = "9876543210";
         subscriptionId = "subscriptionId";
         DateTime edd = DateTime.now();
         DateTime dob = DateTime.now().minusYears(23);
@@ -63,7 +65,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, null, null, DateTime.now());
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
         subscription = new Subscription(Long.parseLong(msisdn), subscriber, subscriptionPackDimension, channelDimension,
-                null, dateDimension, subscriptionId, DateTime.now().plusDays(5), DateTime.now(), status, null);
+                null, dateDimension, subscriptionId, DateTime.now().plusDays(5), DateTime.now(), status, null, refferedByFLWMsisdn);
         subscription.setLastScheduledMessageDate(new Timestamp(DateTime.now().getMillis()));
         saveAndMarkForDeletion(channelDimension, subscriptionPackDimension, locationDimension, subscriber, subscription);
     }
@@ -88,7 +90,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
 
         SubscriberResponse expectedSubscriberResponse = new SubscriberResponse(subscriptionId, subscriber.getName(),
                 subscriber.getAgeOfBeneficiary(), subscriber.getDateOfBirth(), subscriber.getEstimatedDateOfDelivery(),
-                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getState(), locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()), new DateTime(subscription.getLastModifiedTime()), new DateTime(subscriber.getLastModifiedTime()));
+                new DateTime(subscription.getLastScheduledMessageDate().getTime()), new LocationResponse(locationDimension.getState(), locationDimension.getDistrict(), locationDimension.getBlock(), locationDimension.getPanchayat()), new DateTime(subscription.getLastModifiedTime()), new DateTime(subscriber.getLastModifiedTime()), refferedByFLWMsisdn);
 
         MvcResult result = mockMvc(subscriptionController)
                 .perform(get("/subscription/subscriber/" + subscriptionId))

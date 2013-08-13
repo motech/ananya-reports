@@ -75,6 +75,12 @@ public class SubscriptionController {
         subscriptionStatusMeasureService.changeMsisdnForNewEarlySubscription(subscriberChangeMsisdnReportRequest);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/subscription/changereferredmsisdn")
+    @ResponseBody
+    public void updateSubscriptionForChangedReferredByFLWMsisdn(@RequestBody SubscriptionChangeReferredFLWMsisdnReportRequest subscriberChangeReferredFLWMsisdnReportRequest) {
+        subscriptionStatusMeasureService.changeReferredByFLWMsisdnForSubscription(subscriberChangeReferredFLWMsisdnReportRequest);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/subscription/campaignScheduleAlert")
     @ResponseBody
     public void createCampaignScheduleAlert(@RequestBody CampaignScheduleAlertRequest campaignScheduleAlertRequest) {

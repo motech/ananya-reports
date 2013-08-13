@@ -61,13 +61,16 @@ public class Subscription {
     @Column(name = "message_campaign_pack")
     private String messageCampaignPack;
 
+    @Column(name = "referred_by_flw_msisdn")
+    private String referredByFLWMsisdn;
+
     public Subscription() {
     }
 
     public Subscription(Long msisdn, Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
                         DateDimension dateDimension, String subscriptionId,
-                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Subscription oldSubscription) {
+                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Subscription oldSubscription, String referredByFLWMsisdn) {
         this.msisdn = msisdn;
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
@@ -80,6 +83,7 @@ public class Subscription {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.subscriptionStatus = subscriptionStatus;
         this.messageCampaignPack = MessageCampaignPack.from(subscriptionPackDimension.getSubscriptionPack()).name();
+        this.referredByFLWMsisdn = referredByFLWMsisdn;
     }
 
     public Integer getId() {
@@ -130,6 +134,10 @@ public class Subscription {
         return startDate;
     }
 
+    public String getReferredByFLWMsisdn() {
+		    return referredByFLWMsisdn;
+	  }
+
     public Timestamp getLastScheduledMessageDate() {
         return lastScheduledMessageDate;
     }
@@ -146,6 +154,11 @@ public class Subscription {
     public void updateMsisdn(Long msisdn, DateTime lastModifiedTime) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.msisdn = msisdn;
+    }
+
+    public void updateReferredByFLWMsisdn(String referredByFLWMsisdn, DateTime lastModifiedTime) {
+        this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
+        this.referredByFLWMsisdn = referredByFLWMsisdn;
     }
 
     public void updateMessageCampaignPack(MessageCampaignPack messageCampaignPack, DateTime lastModifiedTime) {
