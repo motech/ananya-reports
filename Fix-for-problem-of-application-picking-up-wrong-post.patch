@@ -1,0 +1,233 @@
+From b9d5c93a44bd9b7b86ecd69e29504bf6f76d9b84 Mon Sep 17 00:00:00 2001
+From: Ashok <ashokks@thoughtworks.com>
+Date: Wed, 8 May 2013 17:50:44 +0530
+Subject: [PATCH] Fix for problem of application picking up wrong postgres
+ properties and trying to access localhost.
+
+---
+ ananya-reports-config/pom.xml                      |   13 ++++++++
+ .../src/main/resources/ananya_reports.properties   |    5 ---
+ .../src/main/resources/log4j.properties            |   32 --------------------
+ .../src/main/resources/postgres.properties         |    5 ---
+ .../src/test/resources/ananya_reports.properties   |    5 +++
+ .../src/test/resources/log4j.properties            |   32 ++++++++++++++++++++
+ .../src/test/resources/postgres.properties         |    5 +++
+ ananya-reports-domain/pom.xml                      |    1 +
+ .../resources/applicationKilkariReportsContext.xml |    4 +--
+ ananya-reports-purge/pom.xml                       |    2 ++
+ ananya-reports-web/pom.xml                         |    2 +-
+ 11 files changed, 61 insertions(+), 45 deletions(-)
+ delete mode 100644 ananya-reports-config/src/main/resources/ananya_reports.properties
+ delete mode 100644 ananya-reports-config/src/main/resources/log4j.properties
+ delete mode 100644 ananya-reports-config/src/main/resources/postgres.properties
+ create mode 100644 ananya-reports-config/src/test/resources/ananya_reports.properties
+ create mode 100644 ananya-reports-config/src/test/resources/log4j.properties
+ create mode 100644 ananya-reports-config/src/test/resources/postgres.properties
+
+diff --git a/ananya-reports-config/pom.xml b/ananya-reports-config/pom.xml
+index 6b1b2f0..b9f2e5e 100644
+--- a/ananya-reports-config/pom.xml
++++ b/ananya-reports-config/pom.xml
+@@ -14,6 +14,19 @@
+ 
+     <build>
+         <finalName>ananya-reports-config</finalName>
++        <plugins>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-jar-plugin</artifactId>
++                <executions>
++                    <execution>
++                        <goals>
++                            <goal>test-jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin>
++        </plugins>
+     </build>
+ 
+     <dependencies>
+diff --git a/ananya-reports-config/src/main/resources/ananya_reports.properties b/ananya-reports-config/src/main/resources/ananya_reports.properties
+deleted file mode 100644
+index 8d38f4d..0000000
+--- a/ananya-reports-config/src/main/resources/ananya_reports.properties
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#ananya-report:hibernate-settings
+-hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+-hibernate.show_sql=false
+-hibernate.format_sql=false
+-hibernate.default_schema=report
+\ No newline at end of file
+diff --git a/ananya-reports-config/src/main/resources/log4j.properties b/ananya-reports-config/src/main/resources/log4j.properties
+deleted file mode 100644
+index ae96ad3..0000000
+--- a/ananya-reports-config/src/main/resources/log4j.properties
++++ /dev/null
+@@ -1,32 +0,0 @@
+-log4j.rootLogger=DEBUG, file, console
+-
+-log4j.appender.file=org.apache.log4j.RollingFileAppender
+-log4j.appender.file.File=ananya-reports.log
+-log4j.appender.file.MaxFileSize=4MB
+-log4j.appender.file.MaxBackupIndex=10
+-log4j.appender.file.layout=org.apache.log4j.EnhancedPatternLayout
+-log4j.appender.file.layout.ConversionPattern=[%t] - %d %p [%c] - %m%n
+-
+-log4j.appender.email=org.motechproject.web.logger.EmailAppender
+-log4j.appender.email.SMTPHost=gmail-smtp-in.l.google.com
+-log4j.appender.email.From=ananya_errors@thoughtworks.com
+-log4j.appender.email.To=ananya_errors@thoughtworks.com
+-log4j.appender.email.Subject=Ananya Kilkari Report Error
+-log4j.appender.email.BufferSize=5
+-log4j.appender.email.layout=org.apache.log4j.EnhancedPatternLayout
+-log4j.appender.email.layout.ConversionPattern=[%t] - %d %p [%c] - %m%n
+-log4j.appender.email.Threshold=ERROR
+-
+-log4j.appender.console=org.apache.log4j.ConsoleAppender
+-log4j.appender.console.layout=org.apache.log4j.EnhancedPatternLayout
+-log4j.appender.console.layout.ConversionPattern=[%t] - %d %p [%c] - %m%n
+-
+-log4j.logger.org.springframework=ERROR, file, console
+-log4j.logger.org.apache=ERROR, file, console
+-log4j.logger.org.hibernate=ERROR,file,console
+-
+-#Switch the following logger to Debug to log requests and responses
+-log4j.logger.RequestResponseLogger=INFO
+-
+-#Swithch the following logger to DEBUG for report logs
+-log4j.logger.org.motechproject.ananya.reports=INFO
+\ No newline at end of file
+diff --git a/ananya-reports-config/src/main/resources/postgres.properties b/ananya-reports-config/src/main/resources/postgres.properties
+deleted file mode 100644
+index 3760c77..0000000
+--- a/ananya-reports-config/src/main/resources/postgres.properties
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#ananya-report:jdbc Settings
+-jdbc.driverClassName=org.postgresql.Driver
+-jdbc.username=postgres
+-jdbc.password=password
+-jdbc.url=jdbc:postgresql://localhost/ananya_kilkari/
+\ No newline at end of file
+diff --git a/ananya-reports-config/src/test/resources/ananya_reports.properties b/ananya-reports-config/src/test/resources/ananya_reports.properties
+new file mode 100644
+index 0000000..8d38f4d
+--- /dev/null
++++ b/ananya-reports-config/src/test/resources/ananya_reports.properties
+@@ -0,0 +1,5 @@
++#ananya-report:hibernate-settings
++hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
++hibernate.show_sql=false
++hibernate.format_sql=false
++hibernate.default_schema=report
+\ No newline at end of file
+diff --git a/ananya-reports-config/src/test/resources/log4j.properties b/ananya-reports-config/src/test/resources/log4j.properties
+new file mode 100644
+index 0000000..ae96ad3
+--- /dev/null
++++ b/ananya-reports-config/src/test/resources/log4j.properties
+@@ -0,0 +1,32 @@
++log4j.rootLogger=DEBUG, file, console
++
++log4j.appender.file=org.apache.log4j.RollingFileAppender
++log4j.appender.file.File=ananya-reports.log
++log4j.appender.file.MaxFileSize=4MB
++log4j.appender.file.MaxBackupIndex=10
++log4j.appender.file.layout=org.apache.log4j.EnhancedPatternLayout
++log4j.appender.file.layout.ConversionPattern=[%t] - %d %p [%c] - %m%n
++
++log4j.appender.email=org.motechproject.web.logger.EmailAppender
++log4j.appender.email.SMTPHost=gmail-smtp-in.l.google.com
++log4j.appender.email.From=ananya_errors@thoughtworks.com
++log4j.appender.email.To=ananya_errors@thoughtworks.com
++log4j.appender.email.Subject=Ananya Kilkari Report Error
++log4j.appender.email.BufferSize=5
++log4j.appender.email.layout=org.apache.log4j.EnhancedPatternLayout
++log4j.appender.email.layout.ConversionPattern=[%t] - %d %p [%c] - %m%n
++log4j.appender.email.Threshold=ERROR
++
++log4j.appender.console=org.apache.log4j.ConsoleAppender
++log4j.appender.console.layout=org.apache.log4j.EnhancedPatternLayout
++log4j.appender.console.layout.ConversionPattern=[%t] - %d %p [%c] - %m%n
++
++log4j.logger.org.springframework=ERROR, file, console
++log4j.logger.org.apache=ERROR, file, console
++log4j.logger.org.hibernate=ERROR,file,console
++
++#Switch the following logger to Debug to log requests and responses
++log4j.logger.RequestResponseLogger=INFO
++
++#Swithch the following logger to DEBUG for report logs
++log4j.logger.org.motechproject.ananya.reports=INFO
+\ No newline at end of file
+diff --git a/ananya-reports-config/src/test/resources/postgres.properties b/ananya-reports-config/src/test/resources/postgres.properties
+new file mode 100644
+index 0000000..3760c77
+--- /dev/null
++++ b/ananya-reports-config/src/test/resources/postgres.properties
+@@ -0,0 +1,5 @@
++#ananya-report:jdbc Settings
++jdbc.driverClassName=org.postgresql.Driver
++jdbc.username=postgres
++jdbc.password=password
++jdbc.url=jdbc:postgresql://localhost/ananya_kilkari/
+\ No newline at end of file
+diff --git a/ananya-reports-domain/pom.xml b/ananya-reports-domain/pom.xml
+index 111c60e..9580ca4 100644
+--- a/ananya-reports-domain/pom.xml
++++ b/ananya-reports-domain/pom.xml
+@@ -28,6 +28,7 @@
+             <artifactId>ananya-reports-config</artifactId>
+             <version>${project.version}</version>
+             <scope>test</scope>
++            <classifier>tests</classifier>
+         </dependency>
+ 
+         <dependency>
+diff --git a/ananya-reports-domain/src/main/resources/applicationKilkariReportsContext.xml b/ananya-reports-domain/src/main/resources/applicationKilkariReportsContext.xml
+index 631df48..3d90163 100644
+--- a/ananya-reports-domain/src/main/resources/applicationKilkariReportsContext.xml
++++ b/ananya-reports-domain/src/main/resources/applicationKilkariReportsContext.xml
+@@ -5,8 +5,8 @@
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+ 
+-    <context:property-placeholder location="classpath*:ananya_reports.properties" ignore-unresolvable="true"/>
+-    <context:property-placeholder location="classpath*:postgres.properties" ignore-unresolvable="true"/>
++    <context:property-placeholder location="classpath:ananya_reports.properties" ignore-unresolvable="true"/>
++    <context:property-placeholder location="classpath:postgres.properties" ignore-unresolvable="true"/>
+ 
+     <context:component-scan base-package="org.motechproject.ananya.reports"/>
+ 
+diff --git a/ananya-reports-purge/pom.xml b/ananya-reports-purge/pom.xml
+index 45b0ffe..292dccb 100644
+--- a/ananya-reports-purge/pom.xml
++++ b/ananya-reports-purge/pom.xml
+@@ -21,6 +21,8 @@
+             <groupId>org.motechproject.ananya.reports</groupId>
+             <artifactId>ananya-reports-config</artifactId>
+             <version>${project.version}</version>
++            <scope>test</scope>
++            <classifier>tests</classifier>
+         </dependency>
+     </dependencies>
+ </project>
+\ No newline at end of file
+diff --git a/ananya-reports-web/pom.xml b/ananya-reports-web/pom.xml
+index 45d5951..0657b17 100644
+--- a/ananya-reports-web/pom.xml
++++ b/ananya-reports-web/pom.xml
+@@ -116,7 +116,7 @@
+                         <configuration>
+                             <target>
+                                 <copy todir="${project.build.outputDirectory}">
+-                                    <fileset dir="${project.basedir}/../ananya-reports-config/src/main/resources">
++                                    <fileset dir="${project.basedir}/../ananya-reports-config/src/test/resources">
+                                         <include name="*.properties"/>
+                                     </fileset>
+                                 </copy>
+-- 
+1.7.10
+

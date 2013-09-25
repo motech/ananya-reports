@@ -28,6 +28,7 @@
             <artifactId>ananya-reports-config</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
+            <classifier>tests</classifier>
         </dependency>
 
         <dependency>
