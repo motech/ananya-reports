@@ -91,7 +91,7 @@ public class AllCampaignScheduleAlertsIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, operatorDimension, null, DateTime.now());
         String subscriptionStatus = "ACTIVE";
         subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension,
-                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null, referredByFLWMsisdn);
+                operatorDimension, dateDimension, subscriptionId, now, DateTime.now(), subscriptionStatus, null, referredByFLWMsisdn, true);
         template.save(subscriber);
         template.save(subscription);
         markForDeletion(subscriber);

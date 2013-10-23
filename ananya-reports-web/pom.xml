@@ -116,7 +116,7 @@
                         <configuration>
                             <target>
                                 <copy todir="${project.build.outputDirectory}">
-                                    <fileset dir="${project.basedir}/../ananya-reports-config/src/main/resources">
+                                    <fileset dir="${project.basedir}/../ananya-reports-config/src/test/resources">
                                         <include name="*.properties"/>
                                     </fileset>
                                 </copy>

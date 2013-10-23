@@ -92,11 +92,11 @@ public class ReportsPurgeServiceIT {
         template.save(campaignDimension);
         Subscriber subscriber = new Subscriber("", 0, now, now, channelDimension, null, dateDimension, null, null, DateTime.now());
         template.save(subscriber);
-        Subscription subscription1 = new Subscription(msisdnToPurge, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId1", now, now, "ACTIVE", null, null);
+        Subscription subscription1 = new Subscription(msisdnToPurge, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId1", now, now, "ACTIVE", null, null, false);
         template.save(subscription1);
-        Subscription subscription2 = new Subscription(9876543210L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId2", now, now, "ACTIVE", subscription1, null);
+        Subscription subscription2 = new Subscription(9876543210L, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId2", now, now, "ACTIVE", subscription1, null, false);
         template.save(subscription2);
-        Subscription subscription3 = new Subscription(msisdnToPurge, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId3", now, now, "ACTIVE", subscription2, null);
+        Subscription subscription3 = new Subscription(msisdnToPurge, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId3", now, now, "ACTIVE", subscription2, null, false);
         template.save(subscription3);
         template.save(new SubscriptionStatusMeasure(subscription1, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now));
         template.save(new SubscriptionStatusMeasure(subscription2, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now));

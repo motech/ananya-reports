@@ -79,7 +79,7 @@ public class SubscriptionStatusMeasureServiceTest {
 
         SubscriberLocation subscriberLocation = new SubscriberLocation(state, district, block, panchayat);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack
-                , name, age, createdAt, "NEW", edd, dob, subscriberLocation, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn, false);
+                , name, age, createdAt, "NEW", edd, dob, subscriberLocation, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn,true, false);
 
         ChannelDimension channelDimension = new ChannelDimension();
         DateDimension dateDimension = new DateDimension();
@@ -152,9 +152,9 @@ public class SubscriptionStatusMeasureServiceTest {
         Subscriber subscriber = new Subscriber(name, Integer.valueOf(age), edd, dob, channelDimension, locationDimension, dateDimension, null, startWeekNumber, createdAt.minusDays(5));
         String oldSubscriptionId = "oldSubscriptionId";
         Subscription oldSubscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null, referredByFLWMsisdn.toString());
+                dateDimension, oldSubscriptionId, DateTime.now(), startDate.minusDays(5), "NEW", null, referredByFLWMsisdn.toString(), true);
         SubscriptionReportRequest subscriptionReportRequest = new SubscriptionReportRequest(subscriptionId, channel, msisdn, subscriptionPack, null, null,
-                createdAt, "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason, newStartWeekNumber, referredByFLWMsisdn, false);
+                createdAt, "NEW", newEdd, newDob, null, null, startDate, oldSubscriptionId, reason, newStartWeekNumber, referredByFLWMsisdn,true, false);
 
         final Subscription[] subscriptionCapture = new Subscription[1];
 
@@ -408,12 +408,12 @@ public class SubscriptionStatusMeasureServiceTest {
         String referredByFLWMsisdn = "9876543210";
         DateTime now = DateTime.now();
         Subscription subscription = new Subscription();
-        subscription.updateReferredByFLWMsisdn(referredByFLWMsisdn, now.minusDays(2));
+        subscription.updateReferredByFLWMsisdnAndFlag(referredByFLWMsisdn, now.minusDays(2), true);
         String subscriptionId = "subscriptionId";
         String expectedReason = "some random reason";
         when(allSubscriptions.findBySubscriptionId(subscriptionId)).thenReturn(subscription);
 
-        subscriptionStatusMeasureService.changeReferredByFLWMsisdnForSubscription(new SubscriptionChangeReferredFLWMsisdnReportRequest(subscriptionId, referredByFLWMsisdn, expectedReason, now));
+        subscriptionStatusMeasureService.changeReferredByFLWMsisdnForSubscription(new SubscriptionChangeReferredFLWMsisdnReportRequest(subscriptionId, referredByFLWMsisdn, expectedReason, now, true));
 
         ArgumentCaptor<Subscription> captor = ArgumentCaptor.forClass(Subscription.class);
         verify(allSubscriptions).update(captor.capture());

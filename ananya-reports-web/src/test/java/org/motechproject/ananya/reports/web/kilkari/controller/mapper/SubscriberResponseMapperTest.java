@@ -36,7 +36,7 @@ public class SubscriberResponseMapperTest {
         DateTime subscriberModifiedTime = DateTime.now().plusDays(5);
         DateTime subscriptionModifiedTime = DateTime.now();
         Subscriber subscriber = new Subscriber(name, age, edd, dob, null, new LocationDimension(state, district, block, panchayat, "VALID"), null, null, startWeekNumber, subscriberModifiedTime);
-        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, subscriptionModifiedTime, DateTime.now(), status.name(), null, refferedByFLWMsisdn);
+        Subscription subscription = new Subscription(msisdn, subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, subscriptionModifiedTime, DateTime.now(), status.name(), null, refferedByFLWMsisdn, true);
         subscription.setLastScheduledMessageDate(new Timestamp(lastScheduledDate.getMillis()));
         LocationResponse expectedLocation = new LocationResponse(state, district, block, panchayat);
 
@@ -57,7 +57,7 @@ public class SubscriberResponseMapperTest {
     @Test
     public void shouldHandleEmptyLocationDimension() {
         Subscriber subscriber = new Subscriber("name", 23, null, null, null, null, null, null, 22, DateTime.now());
-        Subscription subscription = new Subscription(123L, subscriber, new SubscriptionPackDimension("BARI_KILKARI"), null, null, null, "subscriptionId", DateTime.now(), DateTime.now(), SubscriptionStatus.ACTIVE.name(), null, null);
+        Subscription subscription = new Subscription(123L, subscriber, new SubscriptionPackDimension("BARI_KILKARI"), null, null, null, "subscriptionId", DateTime.now(), DateTime.now(), SubscriptionStatus.ACTIVE.name(), null, null, false);
 
         SubscriberResponse subscriberResponse = SubscriberResponseMapper.mapFrom(subscription);
 

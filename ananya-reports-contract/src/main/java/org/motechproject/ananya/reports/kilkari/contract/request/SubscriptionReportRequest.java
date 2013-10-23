@@ -44,6 +44,8 @@ public class SubscriptionReportRequest implements Serializable {
     private Integer startWeekNumber;
 
     private Long referredByFLWMsisdn;
+    
+    private boolean referredByFLWFlag;
 
     private boolean requestedFromSM;
 
@@ -52,7 +54,7 @@ public class SubscriptionReportRequest implements Serializable {
 
     public SubscriptionReportRequest(String subscriptionId, String channel, Long msisdn, String pack, String name, Integer ageOfBeneficiary,
                                      DateTime createdAt, String subscriptionStatus, DateTime estimatedDateOfDelivery, DateTime dateOfBirth,
-                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId, String reason, Integer startWeekNumber, Long referredByFLWMsisdn, boolean requestedFromSM) {
+                                     SubscriberLocation location, String operator, DateTime startDate, String oldSubscriptionId, String reason, Integer startWeekNumber, Long referredByFLWMsisdn, boolean referredByFLWFlag ,boolean requestedFromSM) {
         this.subscriptionId = subscriptionId;
         this.channel = channel;
         this.msisdn = msisdn;
@@ -70,6 +72,7 @@ public class SubscriptionReportRequest implements Serializable {
         this.reason = reason;
         this.startWeekNumber = startWeekNumber;
         this.referredByFLWMsisdn = referredByFLWMsisdn;
+        this.referredByFLWFlag = referredByFLWFlag;
         this.requestedFromSM = requestedFromSM;
     }
 
@@ -101,7 +104,11 @@ public class SubscriptionReportRequest implements Serializable {
         return ageOfBeneficiary;
     }
 
-    public DateTime getEstimatedDateOfDelivery() {
+    public boolean isReferredByFLWFlag() {
+		return referredByFLWFlag;
+	}
+
+	public DateTime getEstimatedDateOfDelivery() {
         return estimatedDateOfDelivery;
     }
 

@@ -63,6 +63,9 @@ public class Subscription {
 
     @Column(name = "referred_by_flw_msisdn")
     private String referredByFLWMsisdn;
+    
+    @Column(name = "referred_by_flag")
+    private boolean referredByFLWMsisdnFlag;
 
     public Subscription() {
     }
@@ -70,7 +73,7 @@ public class Subscription {
     public Subscription(Long msisdn, Subscriber subscriber, SubscriptionPackDimension subscriptionPackDimension,
                         ChannelDimension channelDimension, OperatorDimension operatorDimension,
                         DateDimension dateDimension, String subscriptionId,
-                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Subscription oldSubscription, String referredByFLWMsisdn) {
+                        DateTime lastModifiedTime, DateTime startDate, String subscriptionStatus, Subscription oldSubscription, String referredByFLWMsisdn, boolean referredByFLWMsisdnFlag ) {
         this.msisdn = msisdn;
         this.subscriber = subscriber;
         this.subscriptionPackDimension = subscriptionPackDimension;
@@ -84,6 +87,7 @@ public class Subscription {
         this.subscriptionStatus = subscriptionStatus;
         this.messageCampaignPack = MessageCampaignPack.from(subscriptionPackDimension.getSubscriptionPack()).name();
         this.referredByFLWMsisdn = referredByFLWMsisdn;
+        this.referredByFLWMsisdnFlag = referredByFLWMsisdnFlag;
     }
 
     public Integer getId() {
@@ -138,7 +142,11 @@ public class Subscription {
 		    return referredByFLWMsisdn;
 	  }
 
-    public Timestamp getLastScheduledMessageDate() {
+    public boolean isReferredByFLWMsisdnFlag() {
+		return referredByFLWMsisdnFlag;
+	}
+
+	public Timestamp getLastScheduledMessageDate() {
         return lastScheduledMessageDate;
     }
 
@@ -156,9 +164,10 @@ public class Subscription {
         this.msisdn = msisdn;
     }
 
-    public void updateReferredByFLWMsisdn(String referredByFLWMsisdn, DateTime lastModifiedTime) {
+    public void updateReferredByFLWMsisdnAndFlag(String referredByFLWMsisdn, DateTime lastModifiedTime, boolean flag) {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
         this.referredByFLWMsisdn = referredByFLWMsisdn;
+        this.referredByFLWMsisdnFlag = flag;
     }
 
     public void updateMessageCampaignPack(MessageCampaignPack messageCampaignPack, DateTime lastModifiedTime) {

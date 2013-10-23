@@ -18,15 +18,19 @@ public class SubscriptionChangeReferredFLWMsisdnReportRequest implements Seriali
     private String reason;
     @JsonProperty
     private DateTime createdAt;
+    @JsonProperty
+    private boolean referredByFlag;
 
     public SubscriptionChangeReferredFLWMsisdnReportRequest() {
     }
 
-    public SubscriptionChangeReferredFLWMsisdnReportRequest(String subscriptionId, String referredBy, String reason, DateTime createdAt) {
+    public SubscriptionChangeReferredFLWMsisdnReportRequest(String subscriptionId, String referredBy, String reason, DateTime createdAt, boolean referredByFlag) {
         this.subscriptionId = subscriptionId;
         this.referredBy = referredBy;
         this.reason = reason;
         this.createdAt = createdAt;
+        this.referredByFlag=referredByFlag;
+       
     }
 
     public String getSubscriptionId() {
@@ -37,7 +41,11 @@ public class SubscriptionChangeReferredFLWMsisdnReportRequest implements Seriali
         return referredBy;
     }
 
-    public String getReason() {
+    public boolean isReferredByFlag() {
+		return referredByFlag;
+	}
+
+	public String getReason() {
         return reason;
     }
 
@@ -45,7 +53,7 @@ public class SubscriptionChangeReferredFLWMsisdnReportRequest implements Seriali
         return createdAt;
     }
 
-    @Override
+	@Override
     public boolean equals(Object other) {
         return EqualsBuilder.reflectionEquals(this, other);
     }

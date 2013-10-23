@@ -139,7 +139,7 @@ public class SubscriptionControllerTest {
 
         int startWeekNumber = 33;
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null, new LocationDimension(state, district, block, panchayat, "VALID"), null, null, startWeekNumber, DateTime.now());
-        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null, referredByFLWMsisdn);
+        Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null, null, subscriptionId, DateTime.now(), DateTime.now(), status, null, referredByFLWMsisdn, true);
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
         List<SubscriberResponse> expectedReponseList = new ArrayList<SubscriberResponse>() {{
@@ -207,7 +207,7 @@ public class SubscriptionControllerTest {
         Subscriber subscriber = new Subscriber(name, 23, edd, dob, null,
                 new LocationDimension(state, district, block, panchayat, "VALID"), null, null, null, DateTime.now());
         Subscription subscription = new Subscription(Long.parseLong(msisdn), subscriber, new SubscriptionPackDimension(pack), null, null,
-                null, subscriptionId, DateTime.now(), DateTime.now(), status, null, referredByFLWMsisdn);
+                null, subscriptionId, DateTime.now(), DateTime.now(), status, null, referredByFLWMsisdn, true);
 
 
         final SubscriberResponse expectedResponse = SubscriberResponseMapper.mapFrom(subscription);
@@ -306,7 +306,7 @@ public class SubscriptionControllerTest {
         String referredByFLWMsisdn = "1234567890";
         String subscriptionId = "subscriptionId";
 
-        SubscriptionChangeReferredFLWMsisdnReportRequest subscriptionChangeReferredFLWMsisdnReportRequest = TestUtils.fromJson(TestUtils.toJson(new SubscriptionChangeReferredFLWMsisdnReportRequest(subscriptionId, referredByFLWMsisdn, "reason", DateTime.now())), SubscriptionChangeReferredFLWMsisdnReportRequest.class);
+        SubscriptionChangeReferredFLWMsisdnReportRequest subscriptionChangeReferredFLWMsisdnReportRequest = TestUtils.fromJson(TestUtils.toJson(new SubscriptionChangeReferredFLWMsisdnReportRequest(subscriptionId, referredByFLWMsisdn, "reason", DateTime.now(), true)), SubscriptionChangeReferredFLWMsisdnReportRequest.class);
         mockMvc(subscriptionController)
                 .perform(post("/subscription/changereferredmsisdn")
                         .body(TestUtils.toJson(subscriptionChangeReferredFLWMsisdnReportRequest).getBytes()).contentType(MediaType.APPLICATION_JSON))

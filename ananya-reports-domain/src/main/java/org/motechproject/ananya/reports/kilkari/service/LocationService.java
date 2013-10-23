@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public class LocationService {
     private AllLocationDimensions allLocationDimensions;
     private AllSubscribers allSubscribers;
     private static Logger logger = Logger.getLogger(LocationService.class);
-    private static final Object SYNC_LOCK = new Object();
+    private static HashMap<String, Object> hmLocationDetailsLock = new HashMap<String, Object>();
 
 
     public LocationService() {
@@ -42,7 +43,8 @@ public class LocationService {
 
     @Transactional
     public void addOrUpdate(LocationSyncRequest locationSyncRequest) {
-        synchronized (SYNC_LOCK) {
+    	Object syncLockObject = getSyncLockObject(locationSyncRequest);
+		synchronized (syncLockObject) {
             if (isNotLatestRequest(locationSyncRequest)) {
                 logger.info("Not syncing " + locationSyncRequest + " since it is not the latest request.");
                 return;
@@ -120,4 +122,16 @@ public class LocationService {
     private boolean oldLocationIsNotPresent(LocationDimension oldLocation) {
         return oldLocation == null;
     }
+    
+    private Object getSyncLockObject(LocationSyncRequest locationSyncRequest){
+		LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
+		String key = getKey(new LocationDimension(existingLocationRequest.getState(), existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat(), LocationStatus.NOT_VERIFIED.name()));
+		if(!hmLocationDetailsLock.containsKey(key))
+			hmLocationDetailsLock.put(key, new Object());
+		return hmLocationDetailsLock.get(key);
+	}
+
+    private String getKey(LocationDimension location){
+		return location.getState()+"_"+location.getDistrict()+"_"+location.getBlock()+"_"+location.getPanchayat();
+	}
 }

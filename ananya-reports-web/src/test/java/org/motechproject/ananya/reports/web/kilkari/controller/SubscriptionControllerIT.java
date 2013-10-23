@@ -65,7 +65,7 @@ public class SubscriptionControllerIT extends SpringIntegrationTest {
                 locationDimension, dateDimension, null, null, DateTime.now());
         subscriptionPackDimension = new SubscriptionPackDimension(pack);
         subscription = new Subscription(Long.parseLong(msisdn), subscriber, subscriptionPackDimension, channelDimension,
-                null, dateDimension, subscriptionId, DateTime.now().plusDays(5), DateTime.now(), status, null, refferedByFLWMsisdn);
+                null, dateDimension, subscriptionId, DateTime.now().plusDays(5), DateTime.now(), status, null, refferedByFLWMsisdn, true);
         subscription.setLastScheduledMessageDate(new Timestamp(DateTime.now().getMillis()));
         saveAndMarkForDeletion(channelDimension, subscriptionPackDimension, locationDimension, subscriber, subscription);
     }

@@ -83,7 +83,9 @@ public class SubscriptionStatusMeasureService {
             subscriber = createNewSubscriber(subscriptionReportRequest, channelDimension, dateDimension, locationDimension,operatorDimension);
 
         subscriber = allSubscribers.save(subscriber);
-        Subscription subscription = saveSubscription(msisdn, subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), createdAt, subscriptionStatus, oldSubscription, subscriptionReportRequest.getReferredByFLWMsisdn()!=null?subscriptionReportRequest.getReferredByFLWMsisdn().toString():null);
+        String referredByFLWMsisdn = subscriptionReportRequest.getReferredByFLWMsisdn()!=null?subscriptionReportRequest.getReferredByFLWMsisdn().toString():null;
+        boolean referredByFLWMsisdnFlag = subscriptionReportRequest.isReferredByFLWFlag();
+        Subscription subscription = saveSubscription(msisdn, subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), createdAt, subscriptionStatus, oldSubscription, referredByFLWMsisdn, referredByFLWMsisdnFlag);
        
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, weekNumber, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null, createdAt);
     }
@@ -161,9 +163,9 @@ public class SubscriptionStatusMeasureService {
 
     private Subscription saveSubscription(Long msisdn, String subscriptionId, ChannelDimension channelDimension, OperatorDimension operatorDimension, SubscriptionPackDimension subscriptionPackDimension,
                                           DateDimension dateDimension, Subscriber subscriber,
-                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Subscription oldSubscription, String referredByFLWMsisdn) {
+                                          DateTime startDate, DateTime lastModifiedTime, String subscriptionStatus, Subscription oldSubscription, String referredByFLWMsisdn, boolean referredByFLWMsisdnFlag) {
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operatorDimension,
-                dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, oldSubscription, referredByFLWMsisdn);
+                dateDimension, subscriptionId, lastModifiedTime, startDate, subscriptionStatus, oldSubscription, referredByFLWMsisdn, referredByFLWMsisdnFlag);
         subscription = subscriptionService.makeFor(subscription);
         return subscription;
     }
@@ -171,7 +173,7 @@ public class SubscriptionStatusMeasureService {
     @Transactional
     public void changeReferredByFLWMsisdnForSubscription(SubscriptionChangeReferredFLWMsisdnReportRequest request) {
           Subscription subscription = allSubscriptions.findBySubscriptionId(request.getSubscriptionId());
-          subscription.updateReferredByFLWMsisdn(request.getReferredBy(), request.getCreatedAt());
+          subscription.updateReferredByFLWMsisdnAndFlag(request.getReferredBy() ,request.getCreatedAt(), request.isReferredByFlag());
           allSubscriptions.update(subscription);
     }
 }

@@ -54,12 +54,12 @@ public class ReportsPurgeServiceTest {
         DateTime now = DateTime.now();
 
         Set<Subscription> subscriptionSet1 = new LinkedHashSet<>();
-        Subscription subscription1 = new Subscription(Long.valueOf(msisdn1), new Subscriber(), new SubscriptionPackDimension("NANHI_KILKARI"), null, null, null, "subscriptionId1", now, now, "ACTIVE", null, null);
+        Subscription subscription1 = new Subscription(Long.valueOf(msisdn1), new Subscriber(), new SubscriptionPackDimension("NANHI_KILKARI"), null, null, null, "subscriptionId1", now, now, "ACTIVE", null, null, false);
         subscriptionSet1.add(subscription1);
         when(subscriptionService.getAllRelatedSubscriptions(msisdn1)).thenReturn(subscriptionSet1);
         Set<Subscription> subscriptionSet2 = new LinkedHashSet<>();
-        Subscription subscription2 = new Subscription(Long.valueOf(msisdn2), new Subscriber(), new SubscriptionPackDimension("NANHI_KILKARI"), null, null, null, "subscriptionId2", now, now, "ACTIVE", null, null);
-        Subscription subscription3 = new Subscription(1234567892L, new Subscriber(), new SubscriptionPackDimension("NANHI_KILKARI"), null, null, null, "subscriptionId3", now, now, "ACTIVE", subscription2, null);
+        Subscription subscription2 = new Subscription(Long.valueOf(msisdn2), new Subscriber(), new SubscriptionPackDimension("NANHI_KILKARI"), null, null, null, "subscriptionId2", now, now, "ACTIVE", null, null, false);
+        Subscription subscription3 = new Subscription(1234567892L, new Subscriber(), new SubscriptionPackDimension("NANHI_KILKARI"), null, null, null, "subscriptionId3", now, now, "ACTIVE", subscription2, null, false);
         subscriptionSet1.add(subscription3);
         subscriptionSet1.add(subscription2);
         when(subscriptionService.getAllRelatedSubscriptions(msisdn2)).thenReturn(subscriptionSet2);

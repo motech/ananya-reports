@@ -27,6 +27,7 @@ public class SubscriptionReportRequestBuilder {
     private String reason;
     private Integer startWeekNumber;
     private Long referredByFLWMsisdn;
+	private boolean referredByFLWMsisdnFlag; 
 
     public SubscriptionReportRequestBuilder() {
         String msisdn = "1"+ RandomStringUtils.randomNumeric(9);
@@ -38,6 +39,7 @@ public class SubscriptionReportRequestBuilder {
         this.ageOfBeneficiary = 25;
         this.createdAt = DateTime.now();
         this.subscriptionStatus = "NEW";
+        this.referredByFLWMsisdnFlag = true;
 
         String testState = "testState"+RandomStringUtils.randomNumeric(100);
         String testDistrict = "testDistrict"+RandomStringUtils.randomNumeric(100);
@@ -53,7 +55,7 @@ public class SubscriptionReportRequestBuilder {
 
     public SubscriptionReportRequest build() {
         return new SubscriptionReportRequest(subscriptionId, channel, msisdn, pack, name, ageOfBeneficiary, createdAt, subscriptionStatus, estimatedDateOfDelivery, dateOfBirth,
-                location, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn, false);
+                location, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn,referredByFLWMsisdnFlag, false);
     }
 
     public SubscriptionReportRequestBuilder withChannel(String channel){
@@ -128,6 +130,11 @@ public class SubscriptionReportRequestBuilder {
 
     public SubscriptionReportRequestBuilder withReferredByFLWMsisdn(Long referredByFLWMsisdn){
         this.referredByFLWMsisdn = referredByFLWMsisdn;
+        return this;
+    }
+    
+    public SubscriptionReportRequestBuilder withReferredByFLWMsisdnFlag(boolean referredByFLWMsisdnFlag){
+        this.referredByFLWMsisdnFlag = referredByFLWMsisdnFlag;
         return this;
     }
 }

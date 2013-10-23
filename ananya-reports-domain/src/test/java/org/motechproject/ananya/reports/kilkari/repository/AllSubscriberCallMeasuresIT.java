@@ -74,7 +74,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         Subscriber subscriber = new Subscriber(null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator, null, DateTime.now());
         subscriber = allSubscribers.save(subscriber);
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operator,
-                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null, referredByFLWMsisdn);
+                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null, referredByFLWMsisdn, true);
         subscription = allSubscriptions.save(subscription);
 
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
@@ -129,7 +129,7 @@ public class AllSubscriberCallMeasuresIT extends SpringIntegrationTest {
         Subscriber subscriber = new Subscriber(null, 25, null, null, channelDimension, location, subscriberCreatedDate, operator, null, DateTime.now());
         subscriber = allSubscribers.save(subscriber);
         Subscription subscription = new Subscription(msisdn, subscriber, subscriptionPackDimension, channelDimension, operator,
-                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null, referredByFLWMsisdn);
+                dateDimension, "123", DateTime.now(), subscriberCreatedDateTime, "NEW", null, referredByFLWMsisdn, true);
         subscription = allSubscriptions.save(subscription);
         allSubscriberCallMeasures.createFor(new SubscriberCallMeasure(
                 callStatus,
