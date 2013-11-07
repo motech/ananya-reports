@@ -44,6 +44,18 @@ public class SubscriptionController {
     public void updateSubscriber(@RequestBody SubscriberReportRequest subscriberReportRequest, @PathVariable("subscriptionId") String subscriptionId) {
         subscriberService.update(subscriberReportRequest, subscriptionId);
     }
+    
+    @RequestMapping(method = RequestMethod.PUT, value = "/subscriber/changesubscription/{subscriptionId}")
+    @ResponseBody
+    public void updateSubscriberForChangeSubscription(@RequestBody SubscriberChangeSubscriptionReportRequest subscriberReportRequest, @PathVariable("subscriptionId") String subscriptionId) {
+        subscriberService.updateForChangeSubscriptonRequest(subscriberReportRequest, subscriptionId);
+    }
+    
+    @RequestMapping(method = RequestMethod.PUT, value = "/subscription/changesubscription/{subscriptionId}")
+    @ResponseBody
+    public void updateSubscription(@RequestBody ChangeSubscriptionReportRequest subscriptionChangeRequest, @PathVariable String subscriptionId) {
+    	subscriptionStatusMeasureService.updateForChangeSubscription(subscriptionChangeRequest);
+    }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/subscription/{subscriptionId}")
     @ResponseBody

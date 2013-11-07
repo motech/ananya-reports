@@ -5,8 +5,10 @@ import org.joda.time.DateTime;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionChangeReferredFLWMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
+import org.motechproject.ananya.reports.kilkari.contract.request.ChangeSubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionStateChangeRequest;
+import org.motechproject.ananya.reports.kilkari.domain.MessageCampaignPack;
 import org.motechproject.ananya.reports.kilkari.domain.SubscriptionStatus;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.*;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
@@ -90,7 +92,22 @@ public class SubscriptionStatusMeasureService {
         saveSubscriptionStatusMeasure(subscription, subscriptionStatus, weekNumber, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null, createdAt);
     }
 
-
+    @Transactional
+    public void updateForChangeSubscription(ChangeSubscriptionReportRequest subscriptionStateChangeRequest) {
+        Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
+        DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
+       
+        if (new Timestamp(createdAt.getMillis()).compareTo(subscription.getLastModifiedTime()) != -1)
+        	subscription.updateStartTime(subscriptionStateChangeRequest.getStartDate(), createdAt);
+        else
+            logger.warn(String.format("Subscription %s cannot be updated to latest status. It is an older record\n " +
+                    "Last modified time of subscription: %s\n " +
+                    "Current time: %s",
+                    subscription.getSubscriptionId(), subscription.getLastModifiedTime().toString(), createdAt.toDateTime().toString()));
+        allSubscriptions.update(subscription);
+        
+    }
+    
     @Transactional
     public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
         Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());

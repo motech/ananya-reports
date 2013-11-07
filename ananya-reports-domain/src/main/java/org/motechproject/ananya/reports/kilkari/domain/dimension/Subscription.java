@@ -175,6 +175,12 @@ public class Subscription {
         this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
     }
 
+    public void updateStartTime(DateTime startDate, DateTime lastModifiedTime) {
+        this.startDate = new Timestamp(startDate.getMillis());
+        this.lastModifiedTime = new Timestamp(lastModifiedTime.getMillis());
+    }
+
+    
     public void setLastScheduledMessageDate(Timestamp lastScheduledMessageDate) {
         this.lastScheduledMessageDate = lastScheduledMessageDate;
     }

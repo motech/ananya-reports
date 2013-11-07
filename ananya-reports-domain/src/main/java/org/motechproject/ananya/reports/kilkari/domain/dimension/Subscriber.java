@@ -3,6 +3,7 @@ package org.motechproject.ananya.reports.kilkari.domain.dimension;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateTime;
+import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeSubscriptionReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberReportRequest;
 
 import javax.persistence.*;
@@ -122,6 +123,13 @@ public class Subscriber {
         lastModifiedTime = new Timestamp(subscriberReportRequest.getCreatedAt().getMillis());
     }
 
+    public void updateWith(SubscriberChangeSubscriptionReportRequest subscriberReportRequest) {
+        dateOfBirth = convertToDate(subscriberReportRequest.getDateOfBirth());
+        estimatedDateOfDelivery = convertToDate(subscriberReportRequest.getEstimatedDateOfDelivery());
+        startWeekNumber =  subscriberReportRequest.getStartWeekNumber();
+        lastModifiedTime = new Timestamp(subscriberReportRequest.getCreatedAt().getMillis());
+    }
+    
     public void updateSubscriptionDates(DateTime edd, DateTime dob, Integer startWeekNumber, DateTime lastModifiedTime) {
         if (isNotUpdatable(edd, dob, startWeekNumber))
             return;
