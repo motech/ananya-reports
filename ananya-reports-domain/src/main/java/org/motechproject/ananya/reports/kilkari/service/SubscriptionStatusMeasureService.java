@@ -109,6 +109,7 @@ public class SubscriptionStatusMeasureService {
 
 	}
 
+	
 	@Transactional
 	public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
 		Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
@@ -128,8 +129,9 @@ public class SubscriptionStatusMeasureService {
 					"Current time: %s",
 					subscription.getSubscriptionId(), subscription.getLastModifiedTime().toString(), createdAt.toDateTime().toString()));
 		allSubscriptions.update(subscription);
-		logger.info("checking if renewal callback was already received: check returned "+allSubscriptionStatusMeasure.checkIfEntryIsPresentForSubscriptionStatusAndDate(subscription, subscription.getSubscriptionStatus().toString(), dateDimension));
-		if(!allSubscriptionStatusMeasure.checkIfEntryIsPresentForSubscriptionStatusAndDate(subscription, subscription.getSubscriptionStatus().toString(), dateDimension))	
+		boolean entryExistsInDb = allSubscriptionStatusMeasure.checkIfEntryIsPresentForSubscriptionStatusAndDate(subscription, subscription.getSubscriptionStatus().toString(), dateDimension);
+		logger.info("checking if callback was already received: check returned "+entryExistsInDb);
+		if(!entryExistsInDb)	
 			saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionStateChangeRequest.getWeekNumber(), dateDimension, timeDimension, operatorDimension,
 					subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(), createdAt);
 	}

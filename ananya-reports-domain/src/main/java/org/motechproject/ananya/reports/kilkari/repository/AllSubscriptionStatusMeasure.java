@@ -6,6 +6,8 @@ import org.hibernate.criterion.Restrictions;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.DateDimension;
 import org.motechproject.ananya.reports.kilkari.domain.dimension.Subscription;
 import org.motechproject.ananya.reports.kilkari.domain.measure.SubscriptionStatusMeasure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class AllSubscriptionStatusMeasure {
     @Autowired
     private DataAccessTemplate template;
+    private static final Logger logger = LoggerFactory.getLogger(AllSubscriptionStatusMeasure.class);
 
     public void add(SubscriptionStatusMeasure subscriptionStatusMeasure) {
         template.saveOrUpdate(subscriptionStatusMeasure);
@@ -33,6 +36,7 @@ public class AllSubscriptionStatusMeasure {
         criteria.add(Restrictions.eq("dateDimension", dateDimension));
         criteria.add(Property.forName("status").eq(status.toUpperCase()));
         List<SubscriptionStatusMeasure> subscriptionStatusMeasures = template.findByCriteria(criteria);
-        return subscriptionStatusMeasures!=null?true:false;
+        logger.info("subscriptionStatusMeasures list is:"+subscriptionStatusMeasures!=null?subscriptionStatusMeasures.toString():"empty");
+        return (subscriptionStatusMeasures==null||subscriptionStatusMeasures.isEmpty())?false:true;
     }
 }
