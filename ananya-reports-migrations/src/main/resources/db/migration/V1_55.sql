@@ -1,0 +1,1 @@
+ALTER TABLE report.subscription_status_measure ADD COLUMN mode character varying(50);
