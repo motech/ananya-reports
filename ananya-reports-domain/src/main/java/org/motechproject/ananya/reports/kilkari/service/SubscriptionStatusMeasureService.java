@@ -90,7 +90,7 @@ public class SubscriptionStatusMeasureService {
 		boolean referredByFLWMsisdnFlag = subscriptionReportRequest.isReferredByFLWFlag();
 		Subscription subscription = saveSubscription(msisdn, subscriptionId, channelDimension, operatorDimension, subscriptionPackDimension, dateDimension, subscriber, subscriptionReportRequest.getStartDate(), createdAt, subscriptionStatus, oldSubscription, referredByFLWMsisdn, referredByFLWMsisdnFlag);
 
-		saveSubscriptionStatusMeasure(subscription, subscriptionStatus, weekNumber, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null, createdAt);
+		saveSubscriptionStatusMeasure(subscription, subscriptionStatus, weekNumber, dateDimension, timeDimension, operatorDimension, subscriptionReportRequest.getReason(), null, createdAt, subscriptionReportRequest.getMode());
 	}
 
 	@Transactional
@@ -109,7 +109,6 @@ public class SubscriptionStatusMeasureService {
 
 	}
 
-	
 	@Transactional
 	public void update(SubscriptionStateChangeRequest subscriptionStateChangeRequest) {
 		Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
@@ -133,7 +132,7 @@ public class SubscriptionStatusMeasureService {
 		logger.info("checking if callback was already received: check returned "+entryExistsInDb);
 		if(!entryExistsInDb)	
 			saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionStateChangeRequest.getWeekNumber(), dateDimension, timeDimension, operatorDimension,
-					subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(), createdAt);
+					subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(), createdAt, subscriptionStateChangeRequest.getMode());
 	}
 
 	@Transactional
@@ -143,7 +142,7 @@ public class SubscriptionStatusMeasureService {
 		DateDimension dateDimension = allDateDimensions.fetchFor(request.getCreatedAt());
 		TimeDimension timeDimension = allTimeDimensions.fetchFor(request.getCreatedAt());
 
-		saveSubscriptionStatusMeasure(subscription, SubscriptionStatus.NEW_EARLY.name(), null, dateDimension, timeDimension, null, request.getReason(), null, request.getCreatedAt());
+		saveSubscriptionStatusMeasure(subscription, SubscriptionStatus.NEW_EARLY.name(), null, dateDimension, timeDimension, null, request.getReason(), null, request.getCreatedAt(), "changeMsisdnRequest");
 	}
 
 	private void updateMsisdnOnSubscription(SubscriberChangeMsisdnReportRequest request, Subscription subscription) {
@@ -174,11 +173,11 @@ public class SubscriptionStatusMeasureService {
 
 	private void saveSubscriptionStatusMeasure(Subscription subscription, String subscriptionStatus, Integer subscriptionWeekNumber,
 			DateDimension dateDimension, TimeDimension timeDimension, OperatorDimension operatorDimension,
-			String reason, Integer graceCount, DateTime createdAt) {
+			String reason, Integer graceCount, DateTime createdAt, String mode) {
 
 		SubscriptionStatusMeasure subscriptionStatusMeasure = new SubscriptionStatusMeasure(subscription, subscriptionStatus,
 				subscriptionWeekNumber, reason, graceCount, subscription.getChannelDimension(), operatorDimension,
-				subscription.getSubscriptionPackDimension(), dateDimension, timeDimension, createdAt);
+				subscription.getSubscriptionPackDimension(), dateDimension, timeDimension, createdAt, mode);
 		allSubscriptionStatusMeasure.add(subscriptionStatusMeasure);
 	}
 

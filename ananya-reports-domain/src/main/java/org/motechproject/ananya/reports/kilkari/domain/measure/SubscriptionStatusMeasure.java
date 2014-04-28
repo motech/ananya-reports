@@ -27,6 +27,9 @@ public class SubscriptionStatusMeasure {
 
     @Column(name = "remarks")
     private String remarks;
+    
+    @Column(name = "mode")
+    private String mode;
 
     @Column(name = "grace_count")
     private Integer graceCount;
@@ -59,7 +62,7 @@ public class SubscriptionStatusMeasure {
 
     public SubscriptionStatusMeasure(Subscription subscription, String status, Integer weekNumber, String remarks,
                                      Integer graceCount, ChannelDimension channelDimension, OperatorDimension operatorDimension,
-                                     SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension, TimeDimension timeDimension, DateTime lastModifiedTime) {
+                                     SubscriptionPackDimension subscriptionPackDimension, DateDimension dateDimension, TimeDimension timeDimension, DateTime lastModifiedTime, String mode) {
         this.subscription = subscription;
         this.status = status;
         this.weekNumber = weekNumber;
@@ -71,6 +74,7 @@ public class SubscriptionStatusMeasure {
         this.dateDimension = dateDimension;
         this.timeDimension = timeDimension;
         this.lastModifiedTime = lastModifiedTime == null ? null : new Timestamp(lastModifiedTime.getMillis());
+        this.mode = mode;
     }
 
     public Integer getId() {
@@ -120,8 +124,14 @@ public class SubscriptionStatusMeasure {
     public TimeDimension getTimeDimension() {
         return timeDimension;
     }
+    
+    
 
-    public boolean isCreatedBefore(SubscriptionStatusMeasure that) {
+    public String getMode() {
+		return mode;
+	}
+
+	public boolean isCreatedBefore(SubscriptionStatusMeasure that) {
         int dateDiff = this.getDateDimension().getDate().compareTo(that.getDateDimension().getDate());
         int timeDiff = this.getTimeDimension().compareTo(that.getTimeDimension());
         return dateDiff == 0 ? timeDiff == -1 : dateDiff == -1;

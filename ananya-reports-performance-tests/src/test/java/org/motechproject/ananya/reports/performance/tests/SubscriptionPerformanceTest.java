@@ -44,12 +44,12 @@ public class SubscriptionPerformanceTest extends BasePerformanceTest {
     }
 
     private SubscriptionStateChangeRequest createStateChangeRequest(SubscriptionReportRequest createRequest) {
-        return new SubscriptionStateChangeRequest(createRequest.getSubscriptionId(), "PENDING_ACTIVATION", "Any Reason", DateTime.now(), createRequest.getOperator(), 0, null);
+        return new SubscriptionStateChangeRequest(createRequest.getSubscriptionId(), "PENDING_ACTIVATION", "Any Reason", DateTime.now(), createRequest.getOperator(), 0, null,"ivr");
     }
 
     private SubscriptionReportRequest createSubscriptionRequest() {
         SubscriptionReportRequest request = new SubscriptionReportRequest(UUID.randomUUID().toString(), "IVR", getRandomMsisdn(), "NANHI_KILKARI", null, null, DateTime.now(), "NEW", DateTime.now().plusDays(2),
-                null, null, "AIRTEL", DateTime.now(), null, "Reason", null, null,false, false);
+                null, null, "AIRTEL", DateTime.now(), null, "Reason", null, null,false, false,"ivr");
         return request;
     }
 

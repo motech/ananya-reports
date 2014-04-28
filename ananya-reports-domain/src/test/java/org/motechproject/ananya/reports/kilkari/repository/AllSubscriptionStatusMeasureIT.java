@@ -52,7 +52,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         template.save(subscription);
         Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
 
-        allSubscriptionStatusMeasure.add(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, createdAt));
+        allSubscriptionStatusMeasure.add(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, createdAt,"ivr"));
 
         List<SubscriptionStatusMeasure> subscriptionStatusMeasures = template.loadAll(SubscriptionStatusMeasure.class);
         assertEquals(1, subscriptionStatusMeasures.size());
@@ -78,7 +78,7 @@ public class AllSubscriptionStatusMeasureIT extends SpringIntegrationTest {
         Subscription subscription = new Subscription(msisdn, subscriberFromDb, subscriptionPackDimension, channelDimension, null, dateDimension, subscriptionId, DateTime.now(), DateTime.now(), "ACTIVE", null, null, false);
         template.save(subscription);
         Subscription subscriptionFromDb = template.loadAll(Subscription.class).get(0);
-        template.save(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, createdAt));
+        template.save(new SubscriptionStatusMeasure(subscriptionFromDb, "ACTIVE", 13, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, createdAt,"ivr"));
 
         allSubscriptionStatusMeasure.deleteFor(subscription);
 

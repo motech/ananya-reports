@@ -98,9 +98,9 @@ public class ReportsPurgeServiceIT {
         template.save(subscription2);
         Subscription subscription3 = new Subscription(msisdnToPurge, subscriber, subscriptionPackDimension, channelDimension, null, dateDimension, "subscriptionId3", now, now, "ACTIVE", subscription2, null, false);
         template.save(subscription3);
-        template.save(new SubscriptionStatusMeasure(subscription1, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now));
-        template.save(new SubscriptionStatusMeasure(subscription2, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now));
-        template.save(new SubscriptionStatusMeasure(subscription3, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now));
+        template.save(new SubscriptionStatusMeasure(subscription1, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now,"ivr"));
+        template.save(new SubscriptionStatusMeasure(subscription2, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now,"ivr"));
+        template.save(new SubscriptionStatusMeasure(subscription3, "ACTIVE", 38, null, null, channelDimension, null, subscriptionPackDimension, dateDimension, timeDimension, now,"ivr"));
         template.save(new SubscriberCallMeasure("NA", 64, 38, null, subscription1, null, subscriptionPackDimension, campaignDimension, dateDimension, timeDimension, dateDimension, timeDimension, "INBOX", "ACTIVE", 7));
         template.save(new SubscriberCallMeasure("ND", 64, 38, null, subscription2, null, subscriptionPackDimension, campaignDimension, dateDimension, timeDimension, dateDimension, timeDimension, "INBOX", "ACTIVE", 7));
         template.save(new SubscriberCallMeasure("SUCCESS", 64, 38, null, subscription3, null, subscriptionPackDimension, campaignDimension, dateDimension, timeDimension, dateDimension, timeDimension, "INBOX", "ACTIVE", 7));

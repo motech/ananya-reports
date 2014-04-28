@@ -28,6 +28,7 @@ public class SubscriptionReportRequestBuilder {
     private Integer startWeekNumber;
     private Long referredByFLWMsisdn;
 	private boolean referredByFLWMsisdnFlag; 
+	private String mode;
 
     public SubscriptionReportRequestBuilder() {
         String msisdn = "1"+ RandomStringUtils.randomNumeric(9);
@@ -51,11 +52,12 @@ public class SubscriptionReportRequestBuilder {
         this.oldSubscriptionId = null;
         this.reason = "Script data";
         this.startWeekNumber = 1;
+        this.mode = "ivr";
     }
 
     public SubscriptionReportRequest build() {
         return new SubscriptionReportRequest(subscriptionId, channel, msisdn, pack, name, ageOfBeneficiary, createdAt, subscriptionStatus, estimatedDateOfDelivery, dateOfBirth,
-                location, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn,referredByFLWMsisdnFlag, false);
+                location, operator, startDate, oldSubscriptionId, reason, startWeekNumber, referredByFLWMsisdn,referredByFLWMsisdnFlag, false,mode);
     }
 
     public SubscriptionReportRequestBuilder withChannel(String channel){

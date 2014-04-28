@@ -11,7 +11,7 @@ public class SubscriptionStateChangeRequestBuilder {
     private String operator;
     private Integer graceCount;
     private Integer weekNumber;
-
+    private String mode;
 
     public SubscriptionStateChangeRequestBuilder(String subscriptionId) {
         this.subscriptionId = subscriptionId;
@@ -19,10 +19,11 @@ public class SubscriptionStateChangeRequestBuilder {
         this.graceCount = 0;
         this.createdAt = DateTime.now();
         this.weekNumber = 1;
+        this.mode = "IVR";
     }
 
     public SubscriptionStateChangeRequest build(){
-        return new SubscriptionStateChangeRequest(subscriptionId,subscriptionStatus,reason,createdAt,operator,graceCount,weekNumber);
+        return new SubscriptionStateChangeRequest(subscriptionId,subscriptionStatus,reason,createdAt,operator,graceCount,weekNumber,mode);
     }
 
     public SubscriptionStateChangeRequestBuilder withSubscriptionStatus(String status) {

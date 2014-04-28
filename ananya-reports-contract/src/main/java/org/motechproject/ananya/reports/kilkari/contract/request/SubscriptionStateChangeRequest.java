@@ -22,6 +22,9 @@ public class SubscriptionStateChangeRequest implements Serializable {
 
     @JsonProperty
     private String operator;
+    
+    @JsonProperty
+    private String mode;
 
     @JsonProperty
     private Integer graceCount;
@@ -32,7 +35,7 @@ public class SubscriptionStateChangeRequest implements Serializable {
     public SubscriptionStateChangeRequest() {
     }
 
-    public SubscriptionStateChangeRequest(String subscriptionId, String subscriptionStatus, String reason, DateTime createdAt, String operator, Integer graceCount, Integer weekNumber) {
+    public SubscriptionStateChangeRequest(String subscriptionId, String subscriptionStatus, String reason, DateTime createdAt, String operator, Integer graceCount, Integer weekNumber, String mode) {
         this.subscriptionId = subscriptionId;
         this.subscriptionStatus = subscriptionStatus;
         this.reason = reason;
@@ -40,13 +43,22 @@ public class SubscriptionStateChangeRequest implements Serializable {
         this.operator = operator;
         this.graceCount = graceCount;
         this.weekNumber = weekNumber;
+        this.mode = mode;
     }
 
     public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public String getSubscriptionStatus() {
+    public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	public String getSubscriptionStatus() {
         return subscriptionStatus;
     }
 
