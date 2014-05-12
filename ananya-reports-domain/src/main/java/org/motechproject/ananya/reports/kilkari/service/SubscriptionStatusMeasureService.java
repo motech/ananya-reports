@@ -133,6 +133,10 @@ public class SubscriptionStatusMeasureService {
 		if(!entryExistsInDb)	
 			saveSubscriptionStatusMeasure(subscription, subscriptionStatus, subscriptionStateChangeRequest.getWeekNumber(), dateDimension, timeDimension, operatorDimension,
 					subscriptionStateChangeRequest.getReason(), subscriptionStateChangeRequest.getGraceCount(), createdAt, subscriptionStateChangeRequest.getMode());
+		else{
+			logger.info("The request for subscription "+subscriptionStateChangeRequest.getSubscriptionId()+" " +
+					" for subscription status:"+subscriptionStateChangeRequest.getSubscriptionStatus()+" has already been u[pdated so not doing anything.");
+		}
 	}
 
 	@Transactional
