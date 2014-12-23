@@ -2,6 +2,7 @@ package org.motechproject.ananya.reports.kilkari.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberChangeMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriptionChangeReferredFLWMsisdnReportRequest;
 import org.motechproject.ananya.reports.kilkari.contract.request.SubscriberLocation;
@@ -98,7 +99,7 @@ public class SubscriptionStatusMeasureService {
 		Subscription subscription = subscriptionService.fetchFor(subscriptionStateChangeRequest.getSubscriptionId());
 		DateTime createdAt = subscriptionStateChangeRequest.getCreatedAt();
 
-		if (new Timestamp(createdAt.getMillis()).compareTo(subscription.getLastModifiedTime()) != -1)
+		if (compareCreatedAtLastModifiedTime(createdAt,subscription.getLastModifiedTime()))
 			subscription.updateStartTime(subscriptionStateChangeRequest.getStartDate(), createdAt);
 		else
 			logger.warn(String.format("Subscription %s cannot be updated to latest status. It is an older record\n " +
@@ -107,6 +108,13 @@ public class SubscriptionStatusMeasureService {
 					subscription.getSubscriptionId(), subscription.getLastModifiedTime().toString(), createdAt.toDateTime().toString()));
 		allSubscriptions.update(subscription);
 
+	}
+	
+	private boolean compareCreatedAtLastModifiedTime(DateTime createdAt, Timestamp lastModifiedTime ){
+		//Added below line is added for getting default timezone which is "IST"
+		DateTimeZone ISTTimezone = DateTimeZone.getDefault();
+		createdAt = createdAt.withZone(ISTTimezone);
+		return new Timestamp(createdAt.getMillis()).compareTo(lastModifiedTime) != -1;
 	}
 
 	@Transactional
@@ -120,7 +128,7 @@ public class SubscriptionStatusMeasureService {
 		OperatorDimension operatorDimension = StringUtils.isEmpty(subscriptionStateChangeRequest.getOperator())?subscription.getOperatorDimension() : allOperatorDimensions.fetchFor(subscriptionStateChangeRequest.getOperator());
 		subscription.getSubscriber().setOperatorDimension(operatorDimension);
 		subscription.setOperatorDimension(operatorDimension);
-		if (new Timestamp(createdAt.getMillis()).compareTo(subscription.getLastModifiedTime()) != -1)
+		if (compareCreatedAtLastModifiedTime(createdAt,subscription.getLastModifiedTime()))
 			subscription.updateStatus(createdAt, subscriptionStatus);
 		else
 			logger.warn(String.format("Subscription %s cannot be updated to latest status. It is an older record\n " +
