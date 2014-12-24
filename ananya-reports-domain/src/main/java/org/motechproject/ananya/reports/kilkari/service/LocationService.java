@@ -125,13 +125,13 @@ public class LocationService {
     
     private Object getSyncLockObject(LocationSyncRequest locationSyncRequest){
 		LocationRequest existingLocationRequest = locationSyncRequest.getExistingLocation();
-		String key = getKey(new LocationDimension(existingLocationRequest.getState(), existingLocationRequest.getDistrict(), existingLocationRequest.getBlock(), existingLocationRequest.getPanchayat(), LocationStatus.NOT_VERIFIED.name()));
+		String key = getKey(new LocationDimension(existingLocationRequest.getState(), existingLocationRequest.getDistrict(), null, null, null));
 		if(!hmLocationDetailsLock.containsKey(key))
 			hmLocationDetailsLock.put(key, new Object());
 		return hmLocationDetailsLock.get(key);
 	}
 
     private String getKey(LocationDimension location){
-		return location.getState()+"_"+location.getDistrict()+"_"+location.getBlock()+"_"+location.getPanchayat();
+		return location.getState()+"_"+location.getDistrict();
 	}
 }
